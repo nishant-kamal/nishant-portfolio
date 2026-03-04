@@ -62,17 +62,12 @@ export default function Education() {
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
 
-        .edu-label {
-          font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #a78bfa;
-          letter-spacing: 0.15em; text-transform: uppercase;
-          background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2);
-          padding: 6px 14px; border-radius: 99px; display: inline-block; margin-bottom: 24px;
-        }
-
         .edu-headline {
-          font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; line-height: 1;
+          font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; line-height: 1.1;
           letter-spacing: -0.04em; margin-bottom: 80px;
         }
+
+        .edu-headline em { font-style: normal; color: #a78bfa; }
 
         /* The Power Grid Timeline */
         .timeline-grid {
@@ -151,9 +146,8 @@ export default function Education() {
         }
       `}</style>
 
-      <section className="edu-root">
+      <section className="edu-root" id="education">
         <div className="container">
-          <div className="edu-label">04 — Academic Foundations</div>
           <h2 className="edu-headline">Building on <em>Engineering</em> Excellence.</h2>
 
           <div className="timeline-grid">
