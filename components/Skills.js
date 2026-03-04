@@ -66,17 +66,6 @@ export default function Skills() {
           padding: 0 24px;
         }
 
-        .skills-eyebrow {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.75rem;
-          font-weight: 500;
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          color: #94a3b8;
-          margin-bottom: 16px;
-          display: block;
-        }
-
         .skills-heading {
           font-size: clamp(2.5rem, 6vw, 3.75rem);
           font-weight: 800;
@@ -248,8 +237,7 @@ export default function Skills() {
         }
       `}</style>
 
-      <section className="skills-container">
-        <span className="skills-eyebrow">Expertise // 03</span>
+      <section className="skills-container" id="skills">
         <h2 className="skills-heading">
           Technical <span>Stack</span><br />
           & Ecosystem.
