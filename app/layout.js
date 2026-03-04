@@ -1,17 +1,15 @@
 import "./globals.css"
 import Navbar from "../components/Navbar"
-import { Syne, Space_Mono } from "next/font/google"
+import { Inter, JetBrains_Mono } from "next/font/google"
 
-const syne = Syne({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
   variable: "--font-sans",
   display: "swap",
 })
 
-const spaceMono = Space_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["400", "700"],
   variable: "--font-mono",
   display: "swap",
 })
@@ -23,22 +21,21 @@ export const metadata = {
     template: "%s | Nishant Kamal",
   },
   description:
-    "Portfolio of Nishant Kamal, Site Reliability Engineer with 6+ years of experience in Kubernetes, AWS, distributed systems, DevOps automation, and platform engineering.",
+    "Expert Site Reliability Engineer with 6+ years specializing in Kubernetes, AWS, and Platform Engineering. Building resilient, scalable systems that never sleep.",
   keywords: [
     "Nishant Kamal",
     "Site Reliability Engineer",
-    "DevOps Engineer",
-    "Kubernetes",
-    "AWS",
+    "SRE Portfolio",
+    "Kubernetes Expert",
+    "AWS Infrastructure",
     "Terraform",
-    "Kafka",
+    "GitOps",
     "Platform Engineering",
   ],
   authors: [{ name: "Nishant Kamal" }],
   openGraph: {
-    title: "Nishant Kamal | Site Reliability Engineer",
-    description:
-      "Portfolio of Nishant Kamal - Site Reliability Engineer specializing in Kubernetes, AWS, DevOps and platform engineering.",
+    title: "Nishant Kamal | SRE & Platform Architect",
+    description: "Designing resilient infrastructure and scalable cloud platforms. Explore the tech stack and production tools.",
     url: "https://nishantkamal.com",
     siteName: "Nishant Kamal Portfolio",
     locale: "en_US",
@@ -46,9 +43,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nishant Kamal | Site Reliability Engineer",
-    description:
-      "Portfolio of Nishant Kamal - Site Reliability Engineer specializing in Kubernetes, AWS, DevOps and platform engineering.",
+    title: "Nishant Kamal | SRE",
+    description: "Production-ready systems and cloud-native architecture.",
   },
   robots: {
     index: true,
@@ -58,34 +54,33 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${syne.variable} ${spaceMono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
-        {/* Preconnect for font performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
-        {/* Favicon / theme color */}
-        <meta name="theme-color" content="#021712" />
+        
+        {/* Updated theme color for Midnight Theme */}
+        <meta name="theme-color" content="#020617" />
         <meta name="color-scheme" content="dark" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className={syne.className}>
+      <body className={inter.className} style={{ background: '#020617' }}>
 
-        {/* ── Ambient noise texture overlay ── */}
+        {/* ── Background Noise Texture ── */}
         <div className="layout-noise" aria-hidden="true" />
 
-        {/* ── Corner grid accent (top-left) ── */}
-        <div className="layout-corner-tl" aria-hidden="true" />
+        {/* ── Top-left Cyan Glow ── */}
+        <div className="layout-glow-tl" aria-hidden="true" />
 
         {/* ── Navbar ── */}
         <Navbar />
 
-        {/* ── Page content ── */}
+        {/* ── Main Content ── */}
         <main className="layout-main">
           {children}
         </main>
 
-        {/* ── Footer line ── */}
+        {/* ── Footer ── */}
         <footer className="layout-footer" role="contentinfo">
           <div className="layout-footer-inner">
             <span className="footer-mono">
@@ -93,88 +88,86 @@ export default function RootLayout({ children }) {
               nishantkamal.com
             </span>
             <span className="footer-copy">
-              © {new Date().getFullYear()} — built with obsession
+              © {new Date().getFullYear()} — Engineering Reliability
             </span>
             <span className="footer-mono footer-stack">
-              Next.js · Tailwind · Vercel
+              Next.js · Tailwind · JetBrains Mono
             </span>
           </div>
         </footer>
 
-        {/* Inline critical layout styles */}
+        {/* ── Critical Layout Styles ── */}
         <style>{`
-          /* ── Layout shell ── */
           .layout-main {
-            min-height: 100svh;
+            min-height: 100vh;
             position: relative;
             z-index: 1;
           }
 
-          /* ── Noise texture ── */
+          /* Subtle digital noise */
           .layout-noise {
             position: fixed;
             inset: 0;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.032;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            background-size: 200px 200px;
+            opacity: 0.015;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
             mix-blend-mode: overlay;
           }
 
-          /* ── Top-left corner accent ── */
-          .layout-corner-tl {
+          /* Updated Glow: Cyan/Purple Tint */
+          .layout-glow-tl {
             position: fixed;
             top: 0; left: 0;
-            width: 320px; height: 320px;
-            background: radial-gradient(ellipse at top left, rgba(0,200,150,0.07) 0%, transparent 70%);
+            width: 50vw; height: 50vh;
+            background: radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
             pointer-events: none;
             z-index: 0;
           }
 
-          /* ── Footer ── */
           .layout-footer {
             position: relative;
             z-index: 10;
-            border-top: 1px solid var(--border);
-            background: var(--bg-surface);
-            padding: 1.4rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: #020617;
+            padding: 2rem;
           }
+
           .layout-footer-inner {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.6rem;
+            gap: 1rem;
           }
+
           .footer-mono {
             font-family: var(--font-mono);
-            font-size: 0.65rem;
-            letter-spacing: 0.12em;
-            color: var(--text-dim);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: #475569;
             text-transform: uppercase;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
           }
+
           .footer-dot {
-            display: inline-block;
-            width: 5px; height: 5px;
+            width: 6px; height: 6px;
             border-radius: 50%;
-            background: var(--teal);
-            opacity: 0.7;
-            animation: pulse-ring 2.5s ease-in-out infinite;
+            background: #38bdf8;
+            box-shadow: 0 0 10px #38bdf8;
           }
+
           .footer-copy {
             font-family: var(--font-mono);
-            font-size: 0.65rem;
-            letter-spacing: 0.08em;
-            color: var(--text-dim);
+            font-size: 0.7rem;
+            color: #64748b;
           }
-          @media (max-width: 640px) {
-            .layout-footer-inner { justify-content: center; text-align: center; }
+
+          @media (max-width: 768px) {
+            .layout-footer-inner { flex-direction: column; text-align: center; }
             .footer-stack { display: none; }
           }
         `}</style>
