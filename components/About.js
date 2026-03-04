@@ -45,14 +45,6 @@ export default function About() {
 
         .container { max-width: 1300px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 10; }
 
-        .section-tag {
-          display: inline-block;
-          font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #a78bfa;
-          background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2);
-          padding: 6px 14px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.1em;
-          margin-bottom: 24px;
-        }
-
         .bento-grid {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
@@ -102,9 +94,8 @@ export default function About() {
 
       <section className="about-root" id="about" ref={sectionRef}>
         <div className="container">
-          {/* Header section updated to be left-aligned */}
+          {/* Header section left-aligned with "01" tag removed */}
           <div style={{ textAlign: 'left', marginBottom: '60px' }}>
-            <span className="section-tag">01 — Identity Analysis</span>
             <h2 style={{ fontSize: 'clamp(3.5rem, 8vw, 6rem)', fontWeight: 800, letterSpacing: '-0.04em', margin: '0 0 16px 0' }}>
               About <span style={{ color: '#a78bfa' }}>Me.</span>
             </h2>
