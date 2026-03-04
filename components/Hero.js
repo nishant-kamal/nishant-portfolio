@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const roles = [
@@ -213,11 +212,7 @@ export default function Hero() {
         .hero-img {
           position: absolute; inset: 6px; border-radius: 50%;
           overflow: hidden; z-index: 1;
-          /* required for Next.js Image fill prop */
-        }
-        .hero-img span,
-        .hero-img img {
-          border-radius: 50% !important;
+          /* Next.js Image with fill needs position relative on direct parent */
         }
 
         /* floating tags around image */
@@ -323,12 +318,11 @@ export default function Hero() {
                 <div className="hero-img-ring-mask" />
               </div>
               <div className="hero-img">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="/profile.png"
                   alt="Nishant Kamal"
-                  fill
-                  style={{ objectFit: "cover" }}
-                  priority
+                  style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
                 />
               </div>
               <span className="float-tag ft-1">Kubernetes ☸</span>
