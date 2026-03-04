@@ -21,6 +21,7 @@ export default function Hero() {
 
   useEffect(() => {
     setMounted(true);
+    
     // Mouse Parallax Logic
     const handleMouseMove = (e) => {
       if (!heroRef.current) return;
@@ -94,7 +95,7 @@ export default function Hero() {
     };
   }, []);
 
-  // Typewriter
+  // Typewriter Logic
   useEffect(() => {
     if (!mounted) return;
     const current = roles[roleIndex];
@@ -250,7 +251,6 @@ export default function Hero() {
 
         .btn-ghost:hover { background: rgba(255, 255, 255, 0.05); }
 
-        /* Advanced Profile Morph */
         .visual-box {
           position: relative;
           z-index: 5;
@@ -286,7 +286,6 @@ export default function Hero() {
           filter: contrast(1.1);
         }
 
-        /* Bento Grid V2 */
         .bento-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -362,8 +361,13 @@ export default function Hero() {
               </p>
 
               <div className="btn-group">
-                <a href="#work" className="btn btn-primary">Project</a>
-                <a href="/cv.pdf" className="btn btn-ghost">Download Resume</a>
+                {/* Fixed: Link set to #projects to match standard section IDs */}
+                <a href="#projects" className="btn btn-primary">View Projects</a>
+                
+                {/* Fixed: Link set to /resume.pdf and added download attribute */}
+                <a href="/resume.pdf" download="Nishant_Kamal_Resume.pdf" className="btn btn-ghost">
+                  Download Resume
+                </a>
               </div>
             </div>
 
