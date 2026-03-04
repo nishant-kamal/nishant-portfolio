@@ -9,7 +9,7 @@ export default function Contact() {
       </p>
 
       <a
-        href="https://github.com/imnishantdevops"
+        href="https://github.com/nishant-kamal"
         target="_blank"
         className="block mt-2 text-indigo-400 hover:text-indigo-300"
       >
