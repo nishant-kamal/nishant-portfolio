@@ -27,7 +27,7 @@ export default function Contact() {
         <iframe name="hidden_iframe" style={{ display: "none" }} />
 
         <form
-          action="https://docs.google.com/forms/d/e/1FAIpQLSdFDvV17pSY1mYeHVLXUdo6su3l2jEhJTwNr4mtI-VBqMudhA/formResponse?usp=pp_url"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSeOfYCnQBiw8tp8xF3jBA16_EGd4BItPuAavMXxGqmsFjnpMA/formResponse"
           method="POST"
           target="hidden_iframe"
           onSubmit={handleSubmit}
@@ -50,7 +50,7 @@ export default function Contact() {
           />
 
           <textarea
-            name="entry.1065046570"
+            name="entry.839337160"
             placeholder="Message"
             rows="4"
             className="w-full p-3 bg-slate-800 border border-slate-700 rounded"
