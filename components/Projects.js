@@ -28,15 +28,18 @@ export default function Projects() {
         {projects.map((project) => (
           <div
             key={project.title}
-            className="bg-slate-900 border border-slate-800 p-6 rounded-xl hover:border-indigo-500 transition"
+            className="group bg-slate-900 border border-slate-800 p-6 rounded-xl transition transform hover:-translate-y-1 hover:border-indigo-500"
           >
+
             <h3 className="text-xl font-semibold">
               {project.title}
             </h3>
 
-            <p className="text-gray-400 mt-3">
+            {/* hidden until hover */}
+            <p className="text-gray-400 mt-3 max-h-0 overflow-hidden group-hover:max-h-40 transition-all duration-500">
               {project.description}
             </p>
+
           </div>
         ))}
 
