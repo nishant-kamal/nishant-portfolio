@@ -4,14 +4,26 @@ import { useEffect, useState } from "react";
 
 const roles = [
   "Site Reliability Engineer",
-  "Platform Architect",
-  "Cloud Infrastructure Lead",
+  "DevOps Engineer",
+  "Infrastructure Automator",
 ];
 
-const highlights = [
-  { icon: "🛠️", title: "PLATFORM FOCUS", desc: "Building resilient K8s clusters and self-healing systems." },
-  { icon: "📈", title: "SRE STRATEGY", desc: "Scaling products and people through data-driven reliability." },
-  { icon: "🛡️", title: "SECURITY FIRST", desc: "Zero-trust architecture and automated compliance." }
+const bentoHighlights = [
+  { 
+    icon: "☸️", 
+    title: "K8S ECOSYSTEM", 
+    desc: "Scaling production-grade clusters with zero-downtime deployments and high availability." [cite: 34, 35]
+  },
+  { 
+    icon: "☁️", 
+    title: "AWS ARCHITECTURE", 
+    desc: "Designing secure, multi-region cloud infrastructure optimized for performance and cost." [cite: 111, 112]
+  },
+  { 
+    icon: "✈️", 
+    title: "CROSSPLANE & GITOPS", 
+    desc: "Building K8s-native control planes to manage cloud resources as custom resources." [cite: 96, 108]
+  }
 ];
 
 export default function Hero() {
@@ -48,8 +60,9 @@ export default function Hero() {
           font-family: 'Plus Jakarta Sans', sans-serif;
           background: #020617;
           color: #fff;
-          padding: 140px 0 100px;
+          padding: 100px 0 60px;
           position: relative;
+          overflow: hidden;
         }
 
         .hero-container {
@@ -58,178 +71,211 @@ export default function Hero() {
           padding: 0 24px;
         }
 
-        /* Heading: Mimicking the Baldeep Reference */
-        .hero-title {
-          font-size: clamp(3rem, 7vw, 5.2rem);
+        /* High-Authority Headline */
+        .hero-headline {
+          font-size: clamp(3.2rem, 7.5vw, 5.5rem);
           font-weight: 800;
-          line-height: 1;
-          letter-spacing: -0.04em;
-          margin-bottom: 32px;
-          max-width: 1000px;
+          line-height: 0.95;
+          letter-spacing: -0.05em;
+          margin-bottom: 28px;
+          max-width: 1100px;
         }
 
-        .text-accent {
-          color: #a78bfa; /* Soft Purple from reference */
+        .text-purple {
+          background: linear-gradient(135deg, #a78bfa 0%, #818cf8 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
 
-        .hero-desc {
-          font-size: 1.3rem;
+        .hero-sub-desc {
+          font-size: 1.2rem;
           color: #94a3b8;
           line-height: 1.6;
-          max-width: 800px;
+          max-width: 700px;
           margin-bottom: 48px;
+          font-weight: 400;
         }
 
-        .hero-layout-top {
+        .hero-main-row {
           display: grid;
-          grid-template-columns: 1.4fr 0.6fr;
+          grid-template-columns: 1.3fr 0.7fr;
           align-items: center;
           gap: 60px;
-          margin-bottom: 80px;
+          margin-bottom: 70px;
         }
 
-        /* Profile Image with Signature Glow */
-        .profile-wrap {
+        /* Executive Profile Frame */
+        .profile-signature-wrap {
           display: flex;
           justify-content: flex-end;
-          position: relative;
         }
 
-        .profile-frame {
-          width: 340px;
-          height: 340px;
+        .profile-signature-frame {
+          width: 360px;
+          height: 360px;
           border-radius: 50%;
-          padding: 8px;
-          background: linear-gradient(135deg, rgba(167, 139, 250, 0.5), transparent);
-          box-shadow: 0 0 60px rgba(167, 139, 250, 0.15);
+          position: relative;
+          background: radial-gradient(circle at center, rgba(167, 139, 250, 0.25), transparent 70%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(167, 139, 250, 0.15);
+          box-shadow: 0 0 60px rgba(139, 92, 246, 0.1);
         }
 
-        .profile-img {
-          width: 100%;
-          height: 100%;
+        .profile-img-inner {
+          width: 92%;
+          height: 92%;
           border-radius: 50%;
           object-fit: cover;
           background: #0f172a;
+          border: 4px solid #020617;
         }
 
-        /* Bento Highlight Cards */
-        .bento-row {
+        /* System Status Badge */
+        .status-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 6px 14px;
+          background: rgba(34, 197, 94, 0.1);
+          border: 1px solid rgba(34, 197, 94, 0.2);
+          border-radius: 99px;
+          margin-bottom: 32px;
+        }
+        .status-dot {
+          width: 7px; height: 7px; background: #22c55e; border-radius: 50%;
+          box-shadow: 0 0 10px #22c55e; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        /* Bento Grid Architecture */
+        .bento-highlights-row {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
+          gap: 24px;
         }
 
-        .bento-card {
-          background: #0f172a;
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          padding: 32px;
-          border-radius: 20px;
-          transition: all 0.3s ease;
+        .bento-card-glass {
+          background: rgba(15, 23, 42, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.04);
+          padding: 36px;
+          border-radius: 28px;
+          backdrop-filter: blur(12px);
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .bento-card:hover {
-          border-color: #a78bfa;
-          background: #141d33;
-          transform: translateY(-5px);
+        .bento-card-glass:hover {
+          border-color: rgba(167, 139, 250, 0.4);
+          background: rgba(30, 41, 59, 0.6);
+          transform: translateY(-8px);
         }
 
-        .card-tag {
+        .card-eyebrow {
           font-family: 'JetBrains Mono', monospace;
-          font-size: 0.7rem;
-          font-weight: 600;
-          color: #64748b;
+          font-size: 0.75rem;
+          color: #a78bfa;
           letter-spacing: 0.15em;
           text-transform: uppercase;
+          margin-bottom: 16px;
           display: flex;
           align-items: center;
-          gap: 8px;
-          margin-bottom: 16px;
+          gap: 10px;
         }
 
-        .card-tag span { color: #a78bfa; font-size: 1.1rem; }
-
-        .card-content {
+        .card-body {
           font-size: 0.95rem;
-          color: #94a3b8;
-          line-height: 1.5;
+          color: #64748b;
+          line-height: 1.6;
+          font-weight: 500;
         }
 
-        /* Action Buttons */
-        .action-btns {
+        /* Executive Buttons */
+        .btn-wrapper {
           display: flex;
-          gap: 20px;
+          gap: 18px;
           margin-bottom: 80px;
         }
 
-        .btn-filled {
-          background: #8b5cf6;
-          color: #fff;
-          padding: 18px 40px;
+        .btn-main {
+          background: #f8fafc;
+          color: #020617;
+          padding: 18px 44px;
           border-radius: 99px;
           font-weight: 700;
           font-size: 1rem;
           text-decoration: none;
-          box-shadow: 0 15px 30px -10px rgba(139, 92, 246, 0.5);
-          transition: 0.3s;
+          transition: all 0.3s ease;
         }
 
-        .btn-outline {
+        .btn-main:hover { background: #a78bfa; color: #fff; transform: scale(1.03); }
+
+        .btn-ghost {
           border: 1px solid rgba(255, 255, 255, 0.1);
           color: #fff;
-          padding: 18px 40px;
+          padding: 18px 44px;
           border-radius: 99px;
           font-weight: 600;
           text-decoration: none;
           transition: 0.3s;
         }
 
-        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); }
+        .btn-ghost:hover { background: rgba(255, 255, 255, 0.05); border-color: #fff; }
 
-        @media (max-width: 1100px) {
-          .hero-layout-top { grid-template-columns: 1fr; text-align: center; }
-          .profile-wrap { justify-content: center; order: -1; }
-          .bento-row { grid-template-columns: 1fr; }
-          .hero-title, .hero-desc { margin-left: auto; margin-right: auto; }
-          .action-btns { justify-content: center; }
+        @media (max-width: 1024px) {
+          .hero-main-row { grid-template-columns: 1fr; text-align: center; }
+          .profile-signature-wrap { justify-content: center; order: -1; margin-bottom: 40px; }
+          .bento-highlights-row { grid-template-columns: 1fr; }
+          .hero-headline, .hero-sub-desc { margin-left: auto; margin-right: auto; }
+          .btn-wrapper { justify-content: center; }
         }
       `}</style>
 
       <section className="hero-section">
         <div className="hero-container">
-          <div className="hero-layout-top">
-            <div className="hero-content">
-              <h1 className="hero-title">
-                From systems to strategy—scaling <span className="text-accent">platforms</span> and possibility.
+          <div className="hero-main-row">
+            <div className="hero-info">
+              <div className="status-badge">
+                <div className="status-dot"></div>
+                <span style={{ fontSize: '0.65rem', fontFamily: 'JetBrains Mono', color: '#22c55e', letterSpacing: '0.1em' }}>
+                  SYSTEM ONLINE: READY FOR PRODUCTION [cite: 168]
+                </span>
+              </div>
+
+              <h1 className="hero-headline">
+                Engineering <span className="text-purple">resilient systems</span> that scale for the next billion. [cite: 151, 131]
               </h1>
               
-              <div style={{ fontFamily: 'JetBrains Mono', color: '#a78bfa', marginBottom: '24px', fontSize: '1.2rem' }}>
+              <div style={{ fontFamily: 'JetBrains Mono', color: '#a78bfa', marginBottom: '32px', fontSize: '1.25rem', fontWeight: 500 }}>
                 &gt; {displayed}<span className="animate-pulse">_</span>
               </div>
 
-              <p className="hero-desc">
-                I help future-ready organizations ship resilient platforms, modernize Cloud/DevOps muscle, and turn ambitious roadmaps into measurable value.
+              <p className="hero-sub-desc">
+                I’m <strong>Nishant Kamal</strong>, an SRE with <strong>6+ years</strong> of experience building 
+                reliable platforms[cite: 56, 168]. I specialize in <strong>Kubernetes hardening</strong>, 
+                distributed observability, and cloud automation via <strong>Crossplane</strong>[cite: 34, 35, 96].
               </p>
 
-              <div className="action-btns">
-                <a href="#projects" className="btn-filled">Project</a>
-                <a href="/resume.pdf" className="btn-outline">Download resume</a>
+              <div className="btn-wrapper">
+                <a href="#projects" className="btn-main">Analyze Projects</a>
+                <a href="/resume.pdf" className="btn-ghost">Technical Resume</a>
               </div>
             </div>
 
-            <div className="profile-wrap">
-              <div className="profile-frame">
-                <img src="/profile.png" alt="Nishant Kamal" className="profile-img" />
+            <div className="profile-signature-wrap">
+              <div className="profile-signature-frame">
+                <img src="/profile.png" alt="Nishant Kamal" className="profile-img-inner" />
               </div>
             </div>
           </div>
 
-          <div className="bento-row">
-            {highlights.map((item, idx) => (
-              <div key={idx} className="bento-card">
-                <div className="card-tag">
-                  <span>{item.icon}</span> {item.title}
+          <div className="bento-highlights-row">
+            {bentoHighlights.map((item, idx) => (
+              <div key={idx} className="bento-card-glass">
+                <div className="card-eyebrow">
+                  <span style={{ fontSize: '1.4rem' }}>{item.icon}</span> {item.title}
                 </div>
-                <div className="card-content">
+                <div className="card-body">
                   {item.desc}
                 </div>
               </div>
