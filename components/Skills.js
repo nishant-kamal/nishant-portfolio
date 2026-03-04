@@ -1,20 +1,36 @@
 export default function Skills() {
-  return (
-    <section style={{ marginBottom: "60px" }}>
-      <h2>Tech Stack</h2>
 
-      <ul>
-        <li>Kubernetes</li>
-        <li>AWS (EKS, EC2, S3, IAM)</li>
-        <li>Docker</li>
-        <li>Terraform</li>
-        <li>Kafka</li>
-        <li>Debezium</li>
-        <li>FluxCD</li>
-        <li>Prometheus</li>
-        <li>Grafana</li>
-        <li>Istio Service Mesh</li>
-      </ul>
+  const skills = [
+    "Kubernetes",
+    "AWS",
+    "Kafka",
+    "Debezium",
+    "Terraform",
+    "Docker",
+    "FluxCD",
+    "Prometheus",
+    "Grafana",
+    "Istio"
+  ]
+
+  return (
+    <section id="skills" className="mt-24">
+
+      <h2 className="text-3xl font-bold mb-10">Tech Stack</h2>
+
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+
+        {skills.map((tech) => (
+          <div
+            key={tech}
+            className="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center hover:border-indigo-500 transition"
+          >
+            {tech}
+          </div>
+        ))}
+
+      </div>
+
     </section>
-  );
+  )
 }
