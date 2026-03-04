@@ -13,7 +13,7 @@ export default function Contact() {
         target="_blank"
         className="block mt-2 text-indigo-400 hover:text-indigo-300"
       >
-        github.com/imnishantdevops
+        github.com/nishant-kamal
       </a>
 
       <p className="text-gray-400 mt-2">
