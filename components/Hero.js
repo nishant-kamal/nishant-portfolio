@@ -22,7 +22,7 @@ export default function Hero() {
           </a>
 
           <a
-            href="/nishant-portfolio/resume.pdf"
+            href="/resume.pdf"
             className="border border-gray-600 hover:border-gray-400 px-6 py-3 rounded-xl"
           >
             Download Resume
@@ -31,7 +31,7 @@ export default function Hero() {
       </div>
     <div className="flex justify-center">
       <Image
-        src="/nishant-portfolio/profile.png"
+        src="/profile.png"
         alt="Nishant Kamal"
         width={400}
         height={400}
