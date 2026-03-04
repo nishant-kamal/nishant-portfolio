@@ -28,7 +28,12 @@ export default function Home() {
             <Hero />
           </section>
         </div>
-
+        {/* About */}
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <section id="about">
+            <About />
+          </section>
+        </div>
         {/* Stats — contained */}
         <div className="max-w-6xl mx-auto px-6 py-16">
           <section id="stats">
@@ -40,13 +45,6 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 py-16">
           <section id="skills">
             <Skills />
-          </section>
-        </div>
-
-        {/* About */}
-        <div className="max-w-6xl mx-auto px-6 py-16">
-          <section id="about">
-            <About />
           </section>
         </div>
 
