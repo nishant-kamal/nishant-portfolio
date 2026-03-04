@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 const roles = [
   "Site Reliability Engineer",
-  "Platform Engineer",
-  "Cloud Architect",
-  "DevOps Practitioner",
+  "Platform Architect",
+  "Cloud Infrastructure Specialist",
+  "DevOps Automation Lead",
 ];
 
 export default function Hero() {
@@ -22,11 +22,11 @@ export default function Hero() {
     const current = roles[roleIndex];
     let timeout;
     if (!deleting && displayed.length < current.length) {
-      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 60);
+      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 50);
     } else if (!deleting && displayed.length === current.length) {
-      timeout = setTimeout(() => setDeleting(true), 2200);
+      timeout = setTimeout(() => setDeleting(true), 2500);
     } else if (deleting && displayed.length > 0) {
-      timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 30);
+      timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 25);
     } else if (deleting && displayed.length === 0) {
       setDeleting(false);
       setRoleIndex((i) => (i + 1) % roles.length);
@@ -37,227 +37,267 @@ export default function Hero() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
         .hero-section {
-          font-family: 'Inter', sans-serif;
+          font-family: 'Plus Jakarta Sans', sans-serif;
           position: relative;
-          min-height: 90vh;
+          min-height: 100vh;
           display: flex; 
           align-items: center;
           background: #020617;
           overflow: hidden;
-          padding: 100px 0;
+          padding: 80px 0;
         }
 
-        .hero-grid-bg {
-          position: absolute; inset: 0; pointer-events: none; z-index: 0;
-          background-image:
-            linear-gradient(rgba(56,189,248,.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(56,189,248,.04) 1px, transparent 1px);
-          background-size: 50px 50px;
-          mask-image: radial-gradient(circle at 50% 50%, black, transparent 90%);
+        /* Advanced Background Layering */
+        .hero-bg-layers {
+          position: absolute; inset: 0; pointer-events: none;
+        }
+        
+        .grid-overlay {
+          position: absolute; inset: 0;
+          background-image: 
+            linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+          background-size: 4rem 4rem;
+          mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
         }
 
-        .hero-blob {
-          position: absolute; border-radius: 50%;
-          filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.5;
-        }
-        .hero-blob-1 {
-          width: 500px; height: 500px; top: -10%; left: -5%;
-          background: radial-gradient(circle, rgba(14,165,233,.15) 0%, transparent 70%);
-          animation: heroFloat 12s ease-in-out infinite alternate;
-        }
-
-        @keyframes heroFloat {
-          from { transform: translate(0,0) scale(1); }
-          to   { transform: translate(30px, 20px) scale(1.05); }
+        .mesh-glow {
+          position: absolute;
+          top: -10%; left: 50%;
+          transform: translateX(-50%);
+          width: 80vw; height: 60vh;
+          background: radial-gradient(circle at center, rgba(56, 189, 248, 0.15), transparent 70%);
+          filter: blur(80px);
+          z-index: 0;
         }
 
         .hero-inner {
           position: relative; z-index: 10;
-          width: 100%;
-          display: grid; grid-template-columns: 1.2fr 0.8fr;
-          gap: 60px; align-items: center;
+          display: grid; grid-template-columns: 1.3fr 0.7fr;
+          gap: 40px; align-items: center;
         }
 
-        @media (max-width: 960px) {
-          .hero-inner { grid-template-columns: 1fr; gap: 60px; text-align: center; }
+        @media (max-width: 1024px) {
+          .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 60px; }
           .hero-image-col { order: -1; display: flex; justify-content: center; }
-          .hero-ctas, .hero-socials { justify-content: center; }
-          .hero-desc { margin-left: auto; margin-right: auto; }
+          .hero-desc { margin: 0 auto 40px; }
+          .hero-ctas { justify-content: center; }
         }
 
-        .hero-badge {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
-          color: #38bdf8;
-          background: rgba(56,189,248,.1);
-          border: 1px solid rgba(56,189,248,.2);
-          padding: 8px 16px; border-radius: 99px;
-          display: inline-flex; align-items: center; gap: 10px;
+        /* SRE Status Badge */
+        .status-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          padding: 8px 16px;
+          background: rgba(15, 23, 42, 0.6);
+          border: 1px solid rgba(56, 189, 248, 0.2);
+          border-radius: 12px;
+          backdrop-filter: blur(10px);
           margin-bottom: 32px;
+          animation: slideInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .hero-badge-dot {
-          width: 8px; height: 8px; border-radius: 50%;
-          background: #38bdf8;
-          box-shadow: 0 0 10px #38bdf8;
-          animation: pulse 2s infinite;
+        .status-dot {
+          width: 8px; height: 8px;
+          background: #22c55e;
+          border-radius: 50%;
+          box-shadow: 0 0 12px #22c55e;
+          position: relative;
         }
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+        .status-dot::after {
+          content: ""; position: absolute; inset: -4px;
+          border: 1px solid #22c55e; border-radius: 50%;
+          animation: ripple 2s linear infinite;
+        }
 
-        .hero-h1 {
-          font-size: clamp(2.8rem, 6vw, 4.5rem);
-          font-weight: 800; line-height: 1.1;
-          letter-spacing: -0.04em; color: #f8fafc;
+        @keyframes ripple {
+          to { transform: scale(3); opacity: 0; }
+        }
+
+        .status-text {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.7rem; color: #94a3b8;
+          letter-spacing: 0.1em; text-transform: uppercase;
+        }
+
+        /* Typography */
+        .hero-title {
+          font-size: clamp(3rem, 7vw, 5rem);
+          font-weight: 800; line-height: 0.95;
+          letter-spacing: -0.05em; color: #fff;
           margin-bottom: 24px;
         }
-        .hero-h1 span {
-          background: linear-gradient(90deg, #38bdf8, #818cf8);
+        .hero-title span {
+          background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
 
-        .hero-typewriter {
+        .typewriter-box {
           font-family: 'JetBrains Mono', monospace;
-          font-size: clamp(1.1rem, 2vw, 1.4rem);
-          color: #94a3b8; font-weight: 500;
-          margin-bottom: 32px; height: 1.5em;
-          display: flex; align-items: center; gap: 4px;
+          font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+          color: #38bdf8;
+          margin-bottom: 32px;
+          height: 1.6em;
+          display: flex; align-items: center;
         }
-        .cursor {
-          display: inline-block; width: 3px; height: 1.2em;
-          background: #38bdf8; box-shadow: 0 0 10px #38bdf8;
-          animation: blink 1s step-end infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
 
         .hero-desc {
-          font-size: 1.1rem; color: #64748b; line-height: 1.8;
-          max-width: 600px; margin-bottom: 48px;
-        }
-        .hero-desc strong { color: #f1f5f9; font-weight: 600; }
-
-        .btn-primary {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em;
-          color: #020617; background: #f8fafc;
-          padding: 16px 32px; border-radius: 12px;
-          text-decoration: none; transition: all 0.3s;
-        }
-        .btn-primary:hover {
-          background: #38bdf8; transform: translateY(-3px);
-          box-shadow: 0 10px 25px -5px rgba(56,189,248,0.4);
+          font-size: 1.15rem; color: #94a3b8;
+          line-height: 1.7; max-width: 600px;
+          margin-bottom: 48px;
         }
 
-        .btn-secondary {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.85rem; color: #94a3b8;
-          border: 1px solid rgba(255,255,255,.1);
-          background: rgba(255,255,255,.03);
-          padding: 16px 32px; border-radius: 12px;
-          text-decoration: none; transition: all 0.3s;
-        }
-        .btn-secondary:hover {
-          background: rgba(255,255,255,.08); color: #fff;
-          border-color: rgba(255,255,255,.2); transform: translateY(-3px);
-        }
-
-        .hero-socials { display: flex; gap: 24px; margin-top: 48px; }
-        .social-link {
-          font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
-          color: #475569; text-decoration: none; transition: all 0.2s;
-          display: flex; align-items: center; gap: 8px;
-        }
-        .social-link:hover { color: #38bdf8; transform: translateY(-2px); }
-
-        /* Image Column Styling */
-        .hero-img-wrap {
-          position: relative; width: 320px; height: 320px;
-        }
-        .hero-img-ring {
-          position: absolute; inset: -12px; border-radius: 35% 65% 70% 30% / 30% 30% 70% 70%;
-          background: linear-gradient(45deg, #38bdf8, #818cf8);
-          animation: morph 8s ease-in-out infinite; opacity: 0.3;
-        }
-        @keyframes morph {
-          0%, 100% { border-radius: 35% 65% 70% 30% / 30% 30% 70% 70%; }
-          50% { border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%; }
-        }
-
-        .hero-img {
-          position: absolute; inset: 0; border-radius: 24px;
-          overflow: hidden; z-index: 1; border: 1px solid rgba(255,255,255,0.1);
+        /* Premium Buttons */
+        .btn-glow {
+          position: relative;
+          padding: 16px 36px;
+          font-weight: 700;
+          font-size: 0.9rem;
+          color: #fff;
           background: #0f172a;
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 14px;
+          overflow: hidden;
+          transition: 0.3s;
+          text-decoration: none;
+          display: inline-flex; align-items: center;
+        }
+        .btn-glow:hover {
+          border-color: #38bdf8;
+          box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+          transform: translateY(-2px);
+        }
+        .btn-glow::before {
+          content: ""; position: absolute; top: -50%; left: -50%;
+          width: 200%; height: 200%;
+          background: radial-gradient(circle, rgba(56,189,248,0.1), transparent 70%);
+          transition: 0.5s;
         }
 
-        .float-tag {
-          position: absolute; z-index: 10;
-          font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-          color: #fff; background: rgba(15, 23, 42, 0.8);
-          border: 1px solid var(--b-clr);
-          padding: 8px 16px; border-radius: 12px;
-          backdrop-filter: blur(8px);
-          animation: float 4s ease-in-out infinite alternate;
+        /* Profile Image Container */
+        .image-radar-wrap {
+          position: relative;
+          width: 380px; height: 380px;
+          display: flex; align-items: center; justify-content: center;
         }
-        @keyframes float { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+
+        .radar-circle {
+          position: absolute; inset: 0;
+          border: 1px solid rgba(56, 189, 248, 0.1);
+          border-radius: 50%;
+        }
+        .radar-circle:nth-child(2) { inset: 40px; opacity: 0.6; }
+        .radar-circle:nth-child(3) { inset: 80px; opacity: 0.3; }
+
+        .image-container {
+          position: relative;
+          width: 260px; height: 260px;
+          border-radius: 30px;
+          z-index: 5;
+          overflow: hidden;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: #0f172a;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .floating-tag {
+          position: absolute;
+          padding: 10px 18px;
+          background: rgba(15, 23, 42, 0.8);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(56, 189, 248, 0.3);
+          border-radius: 14px;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.75rem; color: #fff;
+          z-index: 10;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+          animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-15px) rotate(2deg); }
+        }
+
+        @keyframes slideInDown {
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
       `}</style>
 
       <section className="hero-section">
-        <div className="hero-grid-bg" />
-        <div className="hero-blob hero-blob-1" />
+        <div className="hero-bg-layers">
+          <div className="grid-overlay" />
+          <div className="mesh-glow" />
+        </div>
 
-        <div className="max-w-6xl mx-auto px-6 w-full">
+        <div className="max-w-7xl mx-auto px-6 w-full">
           <div className="hero-inner">
             <div className="hero-left">
-              <div className="hero-badge">
-                <span className="hero-badge-dot" />
-                System Status: Ready for Production
+              <div className="status-badge">
+                <div className="status-dot" />
+                <span className="status-text">Production Systems: Operational</span>
               </div>
 
-              <h1 className="hero-h1">
-                Engineering <span>Reliability</span><br />
-                at Cloud Scale.
+              <h1 className="hero-title">
+                Architecting <span>Reliability</span><br />
+                at Global Scale.
               </h1>
 
-              <div className="hero-typewriter">
-                <span style={{ color: '#38bdf8' }}>//</span>
-                <span className="ml-3">{displayed}</span>
-                <span className="cursor" />
+              <div className="typewriter-box">
+                <span style={{ color: '#64748b', marginRight: '12px' }}>&gt;_</span>
+                <span>{displayed}</span>
+                <span style={{ 
+                  display: 'inline-block', width: '3px', height: '1.2em', 
+                  background: '#38bdf8', marginLeft: '4px',
+                  animation: 'blink 1s step-end infinite'
+                }} />
               </div>
 
               <p className="hero-desc">
-                I'm <strong>Nishant Kamal</strong>, an SRE with <strong>6+ years</strong> 
-                of experience building resilient platforms. I specialize in automating 
-                the lifecycle of <strong>Kubernetes</strong> clusters and high-traffic distributed systems.
+                I’m <strong>Nishant Kamal</strong>. I build and scale the invisible 
+                infrastructure that powers modern enterprises. Specializing in 
+                <strong> Kubernetes hardening</strong> and cloud-native resilience.
               </p>
 
-              <div className="hero-ctas">
-                <a href="#projects" className="btn-primary">Explore Work</a>
-                <a href="/resume.pdf" target="_blank" className="btn-secondary">Technical Resume ↗</a>
-              </div>
-
-              <div className="hero-socials">
-                <a href="https://github.com/imnishantdevops" className="social-link">GitHub</a>
-                <a href="https://linkedin.com" className="social-link">LinkedIn</a>
-                <a href="mailto:nishant.kamal2015@gmail.com" className="social-link">Email</a>
+              <div className="hero-ctas flex gap-4">
+                <a href="#projects" className="btn-glow" style={{ background: '#fff', color: '#020617' }}>
+                  Analyze Projects
+                </a>
+                <a href="/resume.pdf" className="btn-glow">
+                  <span style={{ marginRight: '8px' }}>[</span> View Specs <span style={{ marginLeft: '8px' }}>]</span>
+                </a>
               </div>
             </div>
 
             <div className="hero-image-col">
-              <div className="hero-img-wrap">
-                <div className="hero-img-ring" />
-                <div className="hero-img">
+              <div className="image-radar-wrap">
+                <div className="radar-circle" />
+                <div className="radar-circle" />
+                <div className="radar-circle" />
+                
+                <div className="image-container">
                   <img
                     src="/profile.png"
                     alt="Nishant Kamal"
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", filter: 'contrast(1.1)' }}
                   />
                 </div>
-                <span className="float-tag" style={{ top: '10%', right: '-20px', '--b-clr': '#38bdf8' }}>☸ K8s</span>
-                <span className="float-tag" style={{ bottom: '20%', left: '-30px', '--b-clr': '#a78bfa' }}>☁ AWS</span>
-                <span className="float-tag" style={{ bottom: '5%', right: '0px', '--b-clr': '#34d399' }}>⚙ GitOps</span>
+
+                <div className="floating-tag" style={{ top: '20%', left: '-20px', animationDelay: '0s' }}>
+                  <span style={{ color: '#38bdf8' }}>☸</span> k8s.cluster
+                </div>
+                <div className="floating-tag" style={{ bottom: '25%', right: '-30px', animationDelay: '1s' }}>
+                  <span style={{ color: '#a78bfa' }}>☁</span> aws.infra
+                </div>
+                <div className="floating-tag" style={{ top: '60%', left: '-40px', animationDelay: '2s' }}>
+                  <span style={{ color: '#34d399' }}>⚙</span> gitops.cd
+                </div>
               </div>
             </div>
           </div>
