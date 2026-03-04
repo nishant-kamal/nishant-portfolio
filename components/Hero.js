@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const roles = ["Site Reliability Engineer", "Platform Architect", "Control Plane Engineer"];
+const roles = ["Site Reliability Engineer", "Platform Engineering", "Devops Engineer"];
 
 const bentoHighlights = [
   { icon: "☸️", title: "K8S ECOSYSTEM", desc: "Scaling production-grade clusters with zero-downtime and high availability." },
