@@ -37,304 +37,230 @@ export default function Hero() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
         .hero-section {
-          font-family: 'Syne', sans-serif;
+          font-family: 'Inter', sans-serif;
           position: relative;
-          min-height: 92vh;
-          display: flex; align-items: center;
+          min-height: 90vh;
+          display: flex; 
+          align-items: center;
+          background: #020617;
           overflow: hidden;
-          padding: 80px 0 60px;
+          padding: 100px 0;
         }
 
-        /* background grid */
         .hero-grid-bg {
           position: absolute; inset: 0; pointer-events: none; z-index: 0;
           background-image:
-            linear-gradient(rgba(56,189,248,.035) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(56,189,248,.035) 1px, transparent 1px);
-          background-size: 52px 52px;
+            linear-gradient(rgba(56,189,248,.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(56,189,248,.04) 1px, transparent 1px);
+          background-size: 50px 50px;
+          mask-image: radial-gradient(circle at 50% 50%, black, transparent 90%);
         }
 
-        /* blobs */
         .hero-blob {
           position: absolute; border-radius: 50%;
-          filter: blur(110px); pointer-events: none; z-index: 0;
+          filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.5;
         }
         .hero-blob-1 {
-          width: 600px; height: 600px; top: -200px; left: -150px;
-          background: radial-gradient(circle, rgba(14,165,233,.12) 0%, transparent 70%);
-          animation: heroFloat 14s ease-in-out infinite alternate;
+          width: 500px; height: 500px; top: -10%; left: -5%;
+          background: radial-gradient(circle, rgba(14,165,233,.15) 0%, transparent 70%);
+          animation: heroFloat 12s ease-in-out infinite alternate;
         }
-        .hero-blob-2 {
-          width: 400px; height: 400px; bottom: -100px; right: -80px;
-          background: radial-gradient(circle, rgba(139,92,246,.1) 0%, transparent 70%);
-          animation: heroFloat 10s ease-in-out infinite alternate-reverse;
-        }
+
         @keyframes heroFloat {
-          from { transform: translate(0,0); }
-          to   { transform: translate(24px, 16px); }
+          from { transform: translate(0,0) scale(1); }
+          to   { transform: translate(30px, 20px) scale(1.05); }
         }
 
         .hero-inner {
-          position: relative; z-index: 1;
+          position: relative; z-index: 10;
           width: 100%;
-          display: grid; grid-template-columns: 1fr auto;
-          gap: 64px; align-items: center;
-        }
-        @media (max-width: 768px) {
-          .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-          .hero-image-col { display: flex; justify-content: center; order: -1; }
+          display: grid; grid-template-columns: 1.2fr 0.8fr;
+          gap: 60px; align-items: center;
         }
 
-        /* left col */
-        .hero-left { }
+        @media (max-width: 960px) {
+          .hero-inner { grid-template-columns: 1fr; gap: 60px; text-align: center; }
+          .hero-image-col { order: -1; display: flex; justify-content: center; }
+          .hero-ctas, .hero-socials { justify-content: center; }
+          .hero-desc { margin-left: auto; margin-right: auto; }
+        }
 
         .hero-badge {
-          font-family: 'DM Mono', monospace;
-          font-size: .78rem; letter-spacing: .15em; text-transform: uppercase;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
           color: #38bdf8;
-          background: rgba(56,189,248,.08);
+          background: rgba(56,189,248,.1);
           border: 1px solid rgba(56,189,248,.2);
-          padding: 6px 16px; border-radius: 99px;
-          display: inline-flex; align-items: center; gap: 8px;
-          margin-bottom: 28px;
-          animation: fadeUp .6s ease both;
+          padding: 8px 16px; border-radius: 99px;
+          display: inline-flex; align-items: center; gap: 10px;
+          margin-bottom: 32px;
         }
+
         .hero-badge-dot {
-          width: 6px; height: 6px; border-radius: 50%;
+          width: 8px; height: 8px; border-radius: 50%;
           background: #38bdf8;
-          animation: blink 1.8s ease-in-out infinite;
+          box-shadow: 0 0 10px #38bdf8;
+          animation: pulse 2s infinite;
         }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
 
         .hero-h1 {
-          font-size: clamp(2.4rem, 5.5vw, 4.2rem);
-          font-weight: 800; line-height: 1.06;
-          letter-spacing: -.025em; color: #f8fafc;
-          margin-bottom: 20px;
-          animation: fadeUp .7s ease .1s both;
+          font-size: clamp(2.8rem, 6vw, 4.5rem);
+          font-weight: 800; line-height: 1.1;
+          letter-spacing: -0.04em; color: #f8fafc;
+          margin-bottom: 24px;
         }
-        .hero-h1 em { font-style: normal; color: #38bdf8; }
+        .hero-h1 span {
+          background: linear-gradient(90deg, #38bdf8, #818cf8);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
 
         .hero-typewriter {
-          font-family: 'DM Mono', monospace;
-          font-size: clamp(1rem, 2vw, 1.25rem);
-          color: #64748b; letter-spacing: .04em;
-          margin-bottom: 28px; height: 34px;
-          display: flex; align-items: center; gap: 2px;
-          animation: fadeUp .7s ease .2s both;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: clamp(1.1rem, 2vw, 1.4rem);
+          color: #94a3b8; font-weight: 500;
+          margin-bottom: 32px; height: 1.5em;
+          display: flex; align-items: center; gap: 4px;
         }
         .cursor {
-          display: inline-block; width: 2px; height: 1.1em;
-          background: #38bdf8; border-radius: 1px;
+          display: inline-block; width: 3px; height: 1.2em;
+          background: #38bdf8; box-shadow: 0 0 10px #38bdf8;
           animation: blink 1s step-end infinite;
-          margin-left: 2px;
         }
+        @keyframes blink { 50% { opacity: 0; } }
 
         .hero-desc {
-          font-size: 1.05rem; color: #64748b; line-height: 1.8;
-          max-width: 560px; margin-bottom: 40px;
-          animation: fadeUp .7s ease .3s both;
+          font-size: 1.1rem; color: #64748b; line-height: 1.8;
+          max-width: 600px; margin-bottom: 48px;
         }
-        .hero-desc strong { color: #94a3b8; font-weight: 500; }
+        .hero-desc strong { color: #f1f5f9; font-weight: 600; }
 
-        .hero-ctas {
-          display: flex; gap: 14px; flex-wrap: wrap;
-          animation: fadeUp .7s ease .4s both;
-        }
         .btn-primary {
-          font-family: 'DM Mono', monospace;
-          font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
-          color: #050810; background: #38bdf8;
-          padding: 13px 30px; border-radius: 10px;
-          text-decoration: none;
-          transition: background .2s, box-shadow .2s, transform .15s;
-          font-weight: 500;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em;
+          color: #020617; background: #f8fafc;
+          padding: 16px 32px; border-radius: 12px;
+          text-decoration: none; transition: all 0.3s;
         }
         .btn-primary:hover {
-          background: #7dd3fc;
-          box-shadow: 0 0 24px rgba(56,189,248,.35);
-          transform: translateY(-1px);
+          background: #38bdf8; transform: translateY(-3px);
+          box-shadow: 0 10px 25px -5px rgba(56,189,248,0.4);
         }
+
         .btn-secondary {
-          font-family: 'DM Mono', monospace;
-          font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
-          color: #94a3b8;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.85rem; color: #94a3b8;
           border: 1px solid rgba(255,255,255,.1);
           background: rgba(255,255,255,.03);
-          padding: 13px 30px; border-radius: 10px;
-          text-decoration: none;
-          transition: border-color .2s, color .2s, transform .15s;
+          padding: 16px 32px; border-radius: 12px;
+          text-decoration: none; transition: all 0.3s;
         }
         .btn-secondary:hover {
-          border-color: rgba(255,255,255,.25); color: #e2e8f0;
-          transform: translateY(-1px);
+          background: rgba(255,255,255,.08); color: #fff;
+          border-color: rgba(255,255,255,.2); transform: translateY(-3px);
         }
 
-        /* social links */
-        .hero-socials {
-          display: flex; gap: 20px; margin-top: 36px;
-          animation: fadeUp .7s ease .5s both;
-        }
+        .hero-socials { display: flex; gap: 24px; margin-top: 48px; }
         .social-link {
-          font-family: 'DM Mono', monospace; font-size: .76rem;
-          letter-spacing: .1em; text-transform: uppercase;
-          color: #475569; text-decoration: none;
-          display: flex; align-items: center; gap: 7px;
-          transition: color .2s;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+          color: #475569; text-decoration: none; transition: all 0.2s;
+          display: flex; align-items: center; gap: 8px;
         }
-        .social-link:hover { color: #38bdf8; }
-        .social-link svg { width: 15px; height: 15px; }
+        .social-link:hover { color: #38bdf8; transform: translateY(-2px); }
 
-        /* image col */
-        .hero-image-col { position: relative; }
-
+        /* Image Column Styling */
         .hero-img-wrap {
-          position: relative; width: 280px; height: 280px;
-          animation: fadeUp .8s ease .2s both;
+          position: relative; width: 320px; height: 320px;
         }
-        @media (max-width: 768px) { .hero-img-wrap { width: 220px; height: 220px; } }
-
         .hero-img-ring {
-          position: absolute; inset: -8px; border-radius: 50%;
-          background: conic-gradient(from 0deg, #38bdf8, #8b5cf6, #38bdf8);
-          animation: spin 8s linear infinite;
-          opacity: .5;
+          position: absolute; inset: -12px; border-radius: 35% 65% 70% 30% / 30% 30% 70% 70%;
+          background: linear-gradient(45deg, #38bdf8, #818cf8);
+          animation: morph 8s ease-in-out infinite; opacity: 0.3;
         }
-        .hero-img-ring-mask {
-          position: absolute; inset: 3px; border-radius: 50%;
-          background: #050810;
+        @keyframes morph {
+          0%, 100% { border-radius: 35% 65% 70% 30% / 30% 30% 70% 70%; }
+          50% { border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%; }
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
         .hero-img {
-          position: absolute; inset: 6px; border-radius: 50%;
-          overflow: hidden; z-index: 1;
-          /* Next.js Image with fill needs position relative on direct parent */
+          position: absolute; inset: 0; border-radius: 24px;
+          overflow: hidden; z-index: 1; border: 1px solid rgba(255,255,255,0.1);
+          background: #0f172a;
         }
 
-        /* floating tags around image */
         .float-tag {
-          position: absolute; z-index: 2;
-          font-family: 'DM Mono', monospace; font-size: .6rem;
-          letter-spacing: .08em; color: #38bdf8;
-          background: rgba(5,8,16,.9);
-          border: 1px solid rgba(56,189,248,.25);
-          padding: 5px 10px; border-radius: 8px;
-          white-space: nowrap;
-          animation: tagFloat 4s ease-in-out infinite alternate;
+          position: absolute; z-index: 10;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+          color: #fff; background: rgba(15, 23, 42, 0.8);
+          border: 1px solid var(--b-clr);
+          padding: 8px 16px; border-radius: 12px;
+          backdrop-filter: blur(8px);
+          animation: float 4s ease-in-out infinite alternate;
         }
-        .ft-1 { top: 8%; right: -40px; animation-delay: 0s; }
-        .ft-2 { bottom: 20%; right: -50px; animation-delay: -1.5s; color: #a78bfa; border-color: rgba(167,139,250,.25); }
-        .ft-3 { bottom: 5%; left: -20px; animation-delay: -3s; color: #34d399; border-color: rgba(52,211,153,.25); }
-        @keyframes tagFloat {
-          from { transform: translateY(0); }
-          to   { transform: translateY(-8px); }
-        }
-
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(24px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-
-        /* scroll hint */
-        .scroll-hint {
-          position: absolute; bottom: 32px; left: 50%;
-          transform: translateX(-50%);
-          display: flex; flex-direction: column; align-items: center; gap: 8px;
-          animation: fadeUp 1s ease 1s both;
-        }
-        .scroll-line {
-          width: 1px; height: 48px;
-          background: linear-gradient(to bottom, rgba(56,189,248,.4), transparent);
-          animation: scrollPulse 2s ease-in-out infinite;
-        }
-        .scroll-label {
-          font-family: 'DM Mono', monospace; font-size: .58rem;
-          color: #1e293b; letter-spacing: .15em; text-transform: uppercase;
-        }
-        @keyframes scrollPulse {
-          0%,100% { opacity: .4; transform: scaleY(1); }
-          50%      { opacity: 1;  transform: scaleY(1.1); }
-        }
+        @keyframes float { from { transform: translateY(0); } to { transform: translateY(-10px); } }
       `}</style>
 
       <section className="hero-section">
         <div className="hero-grid-bg" />
         <div className="hero-blob hero-blob-1" />
-        <div className="hero-blob hero-blob-2" />
 
-        <div className="hero-inner" style={{ width: "100%" }}>
-          {/* LEFT */}
-          <div className="hero-left">
-            <div className="hero-badge">
-              <span className="hero-badge-dot" />
-              Available for opportunities
+        <div className="max-w-6xl mx-auto px-6 w-full">
+          <div className="hero-inner">
+            <div className="hero-left">
+              <div className="hero-badge">
+                <span className="hero-badge-dot" />
+                System Status: Ready for Production
+              </div>
+
+              <h1 className="hero-h1">
+                Engineering <span>Reliability</span><br />
+                at Cloud Scale.
+              </h1>
+
+              <div className="hero-typewriter">
+                <span style={{ color: '#38bdf8' }}>//</span>
+                <span className="ml-3">{displayed}</span>
+                <span className="cursor" />
+              </div>
+
+              <p className="hero-desc">
+                I'm <strong>Nishant Kamal</strong>, an SRE with <strong>6+ years</strong> 
+                of experience building resilient platforms. I specialize in automating 
+                the lifecycle of <strong>Kubernetes</strong> clusters and high-traffic distributed systems.
+              </p>
+
+              <div className="hero-ctas">
+                <a href="#projects" className="btn-primary">Explore Work</a>
+                <a href="/resume.pdf" target="_blank" className="btn-secondary">Technical Resume ↗</a>
+              </div>
+
+              <div className="hero-socials">
+                <a href="https://github.com/imnishantdevops" className="social-link">GitHub</a>
+                <a href="https://linkedin.com" className="social-link">LinkedIn</a>
+                <a href="mailto:nishant.kamal2015@gmail.com" className="social-link">Email</a>
+              </div>
             </div>
 
-            <h1 className="hero-h1">
-              Building platforms<br />
-              that <em>never fail.</em>
-            </h1>
-
-            <div className="hero-typewriter">
-              <span>{displayed}</span>
-              <span className="cursor" />
-            </div>
-
-            <p className="hero-desc">
-              I'm <strong>Nishant Kamal</strong>, a Site Reliability Engineer with{" "}
-              <strong>6+ years</strong> designing resilient cloud infrastructure and
-              operating large-scale <strong>Kubernetes environments</strong> on AWS.
-            </p>
-
-            <div className="hero-ctas">
-              <a href="#projects" className="btn-primary">View Projects</a>
-              <a href="/resume.pdf" target="_blank" className="btn-secondary">Download Resume ↗</a>
-            </div>
-
-            <div className="hero-socials">
-              <a href="https://github.com/imnishantdevops" target="_blank" className="social-link">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-                GitHub
-              </a>
-              <a href="mailto:nishant.kamal2015@gmail.com" className="social-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                Email
-              </a>
-              <a href="https://linkedin.com" target="_blank" className="social-link">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
-                LinkedIn
-              </a>
+            <div className="hero-image-col">
+              <div className="hero-img-wrap">
+                <div className="hero-img-ring" />
+                <div className="hero-img">
+                  <img
+                    src="/profile.png"
+                    alt="Nishant Kamal"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                </div>
+                <span className="float-tag" style={{ top: '10%', right: '-20px', '--b-clr': '#38bdf8' }}>☸ K8s</span>
+                <span className="float-tag" style={{ bottom: '20%', left: '-30px', '--b-clr': '#a78bfa' }}>☁ AWS</span>
+                <span className="float-tag" style={{ bottom: '5%', right: '0px', '--b-clr': '#34d399' }}>⚙ GitOps</span>
+              </div>
             </div>
           </div>
-
-          {/* RIGHT — image */}
-          <div className="hero-image-col">
-            <div className="hero-img-wrap">
-              <div className="hero-img-ring">
-                <div className="hero-img-ring-mask" />
-              </div>
-              <div className="hero-img">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/profile.png"
-                  alt="Nishant Kamal"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
-                />
-              </div>
-              <span className="float-tag ft-1">Kubernetes ☸</span>
-              <span className="float-tag ft-2">AWS ⬡</span>
-              <span className="float-tag ft-3">Terraform △</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="scroll-hint">
-          <span className="scroll-label">Scroll</span>
-          <div className="scroll-line" />
         </div>
       </section>
     </>
