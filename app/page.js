@@ -1,6 +1,10 @@
-// app/page.js — Server Component
-// metadata must live here (not in a "use client" file)
-import PageClient from "./PageClient"
+import Hero from "../components/Hero"
+import Stats from "../components/Stats"
+import Skills from "../components/Skills"
+import Projects from "../components/Projects"
+import Education from "../components/Education"
+import Contact from "../components/Contact"
+import About from "../components/About"
 
 export const metadata = {
   title: "Nishant | Site Reliability Engineer",
@@ -9,5 +13,44 @@ export const metadata = {
 }
 
 export default function Home() {
-  return <PageClient />
+  return (
+    <main className="max-w-6xl mx-auto px-6 py-16 space-y-32">
+
+      {/* Hero Section */}
+      <section id="home">
+        <Hero />
+      </section>
+
+      {/* Stats */}
+      <section id="stats">
+        <Stats />
+      </section>
+
+      {/* Skills */}
+      <section id="skills">
+        <Skills />
+      </section>
+
+      {/* About */}
+      <section id="about">
+        <About />
+      </section>
+
+      {/* Projects */}
+      <section id="projects">
+        <Projects />
+      </section>
+
+      {/* Education */}
+      <section id="education">
+        <Education />
+      </section>
+
+      {/* Contact */}
+      <section id="contact">
+        <Contact />
+      </section>
+
+    </main>
+  )
 }
