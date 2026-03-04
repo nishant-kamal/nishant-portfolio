@@ -1,6 +1,5 @@
 import {
   SiKubernetes,
-  SiAmazon,
   SiApachekafka,
   SiTerraform,
   SiDocker,
@@ -9,13 +8,13 @@ import {
   SiIstio
 } from "react-icons/si"
 
-import { FaServer } from "react-icons/fa"
+import { FaAws, FaServer } from "react-icons/fa"
 
 export default function Skills() {
 
   const skills = [
     { name: "Kubernetes", icon: <SiKubernetes /> },
-    { name: "AWS", icon: <SiAmazon /> },
+    { name: "AWS", icon: <FaAws /> },
     { name: "Kafka", icon: <SiApachekafka /> },
     { name: "Debezium", icon: <FaServer /> },
     { name: "Terraform", icon: <SiTerraform /> },
@@ -41,7 +40,6 @@ export default function Skills() {
             className="group relative bg-slate-900 border border-slate-800 rounded-xl p-6 text-center transition hover:border-indigo-500 hover:-translate-y-1"
           >
 
-            {/* subtle glow */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-indigo-500/10 rounded-xl"></div>
 
             <div className="relative flex flex-col items-center">
