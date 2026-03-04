@@ -213,10 +213,11 @@ export default function Hero() {
         .hero-img {
           position: absolute; inset: 6px; border-radius: 50%;
           overflow: hidden; z-index: 1;
+          /* required for Next.js Image fill prop */
         }
+        .hero-img span,
         .hero-img img {
-          width: 100% !important; height: 100% !important;
-          object-fit: cover;
+          border-radius: 50% !important;
         }
 
         /* floating tags around image */
@@ -322,7 +323,13 @@ export default function Hero() {
                 <div className="hero-img-ring-mask" />
               </div>
               <div className="hero-img">
-                <Image src="/profile.png" alt="Nishant Kamal" width={280} height={280} style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+                <Image
+                  src="/profile.png"
+                  alt="Nishant Kamal"
+                  fill
+                  style={{ objectFit: "cover" }}
+                  priority
+                />
               </div>
               <span className="float-tag ft-1">Kubernetes ☸</span>
               <span className="float-tag ft-2">AWS ⬡</span>
