@@ -46,9 +46,11 @@ export default function About() {
         .container { max-width: 1300px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 10; }
 
         .section-tag {
+          display: inline-block;
           font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #a78bfa;
           background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2);
           padding: 6px 14px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.1em;
+          margin-bottom: 24px;
         }
 
         .bento-grid {
@@ -70,7 +72,6 @@ export default function About() {
         .bento-card.visible { opacity: 1; transform: translateY(0); }
         .bento-card:hover { border-color: rgba(167, 139, 250, 0.3); background: rgba(30, 41, 59, 0.5); }
 
-        /* Adjusted Grid Layout */
         .card-identity { grid-column: span 8; }
         .card-terminal { grid-column: span 4; }
         .card-story { grid-column: span 12; }
@@ -99,13 +100,20 @@ export default function About() {
         .t-dot { width: 10px; height: 10px; border-radius: 50%; }
       `}</style>
 
-      <section className="about-root" ref={sectionRef}>
+      <section className="about-root" id="about" ref={sectionRef}>
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+          {/* Header section updated to be left-aligned */}
+          <div style={{ textAlign: 'left', marginBottom: '60px' }}>
             <span className="section-tag">01 — Identity Analysis</span>
-            <h2 style={{ fontSize: 'clamp(3rem, 7vw, 5rem)', fontWeight: 800, letterSpacing: '-0.04em', marginTop: '24px' }}>
-              Building <span style={{ color: '#a78bfa' }}>Robust</span> Systems.
+            <h2 style={{ fontSize: 'clamp(3.5rem, 8vw, 6rem)', fontWeight: 800, letterSpacing: '-0.04em', margin: '0 0 16px 0' }}>
+              About <span style={{ color: '#a78bfa' }}>Me.</span>
             </h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+               <div style={{ width: '40px', height: '1px', background: '#334155' }}></div>
+               <p style={{ color: '#64748b', fontFamily: 'JetBrains Mono', fontSize: '0.9rem', textTransform: 'uppercase' }}>
+                 Building Robust Systems & Scalable Infrastructure
+               </p>
+            </div>
           </div>
 
           <div className="bento-grid">
@@ -149,7 +157,7 @@ export default function About() {
               </div>
             </div>
 
-            {/* Card 3: Narrative & Stack (Expanded) */}
+            {/* Card 3: Narrative & Stack */}
             <div className={`bento-card card-story ${inView ? "visible" : ""}`} style={{ transitionDelay: '0.3s' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '48px' }}>
                 <div>
