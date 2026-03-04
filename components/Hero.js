@@ -5,8 +5,13 @@ import { useEffect, useState } from "react";
 const roles = [
   "Site Reliability Engineer",
   "Platform Architect",
-  "Cloud Infrastructure Specialist",
-  "DevOps Automation Lead",
+  "Cloud Infrastructure Lead",
+];
+
+const highlights = [
+  { icon: "🛠️", title: "PLATFORM FOCUS", desc: "Building resilient K8s clusters and self-healing systems." },
+  { icon: "📈", title: "SRE STRATEGY", desc: "Scaling products and people through data-driven reliability." },
+  { icon: "🛡️", title: "SECURITY FIRST", desc: "Zero-trust architecture and automated compliance." }
 ];
 
 export default function Hero() {
@@ -37,269 +42,198 @@ export default function Hero() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
         .hero-section {
           font-family: 'Plus Jakarta Sans', sans-serif;
-          position: relative;
-          min-height: 100vh;
-          display: flex; 
-          align-items: center;
           background: #020617;
-          overflow: hidden;
-          padding: 80px 0;
-        }
-
-        /* Advanced Background Layering */
-        .hero-bg-layers {
-          position: absolute; inset: 0; pointer-events: none;
-        }
-        
-        .grid-overlay {
-          position: absolute; inset: 0;
-          background-image: 
-            linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
-          background-size: 4rem 4rem;
-          mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
-        }
-
-        .mesh-glow {
-          position: absolute;
-          top: -10%; left: 50%;
-          transform: translateX(-50%);
-          width: 80vw; height: 60vh;
-          background: radial-gradient(circle at center, rgba(56, 189, 248, 0.15), transparent 70%);
-          filter: blur(80px);
-          z-index: 0;
-        }
-
-        .hero-inner {
-          position: relative; z-index: 10;
-          display: grid; grid-template-columns: 1.3fr 0.7fr;
-          gap: 40px; align-items: center;
-        }
-
-        @media (max-width: 1024px) {
-          .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 60px; }
-          .hero-image-col { order: -1; display: flex; justify-content: center; }
-          .hero-desc { margin: 0 auto 40px; }
-          .hero-ctas { justify-content: center; }
-        }
-
-        /* SRE Status Badge */
-        .status-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 12px;
-          padding: 8px 16px;
-          background: rgba(15, 23, 42, 0.6);
-          border: 1px solid rgba(56, 189, 248, 0.2);
-          border-radius: 12px;
-          backdrop-filter: blur(10px);
-          margin-bottom: 32px;
-          animation: slideInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .status-dot {
-          width: 8px; height: 8px;
-          background: #22c55e;
-          border-radius: 50%;
-          box-shadow: 0 0 12px #22c55e;
+          color: #fff;
+          padding: 140px 0 100px;
           position: relative;
         }
-        .status-dot::after {
-          content: ""; position: absolute; inset: -4px;
-          border: 1px solid #22c55e; border-radius: 50%;
-          animation: ripple 2s linear infinite;
+
+        .hero-container {
+          max-width: 1300px;
+          margin: 0 auto;
+          padding: 0 24px;
         }
 
-        @keyframes ripple {
-          to { transform: scale(3); opacity: 0; }
-        }
-
-        .status-text {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.7rem; color: #94a3b8;
-          letter-spacing: 0.1em; text-transform: uppercase;
-        }
-
-        /* Typography */
+        /* Heading: Mimicking the Baldeep Reference */
         .hero-title {
-          font-size: clamp(3rem, 7vw, 5rem);
-          font-weight: 800; line-height: 0.95;
-          letter-spacing: -0.05em; color: #fff;
-          margin-bottom: 24px;
-        }
-        .hero-title span {
-          background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          font-size: clamp(3rem, 7vw, 5.2rem);
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          margin-bottom: 32px;
+          max-width: 1000px;
         }
 
-        .typewriter-box {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-          color: #38bdf8;
-          margin-bottom: 32px;
-          height: 1.6em;
-          display: flex; align-items: center;
+        .text-accent {
+          color: #a78bfa; /* Soft Purple from reference */
         }
 
         .hero-desc {
-          font-size: 1.15rem; color: #94a3b8;
-          line-height: 1.7; max-width: 600px;
+          font-size: 1.3rem;
+          color: #94a3b8;
+          line-height: 1.6;
+          max-width: 800px;
           margin-bottom: 48px;
         }
 
-        /* Premium Buttons */
-        .btn-glow {
-          position: relative;
-          padding: 16px 36px;
-          font-weight: 700;
-          font-size: 0.9rem;
-          color: #fff;
-          background: #0f172a;
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 14px;
-          overflow: hidden;
-          transition: 0.3s;
-          text-decoration: none;
-          display: inline-flex; align-items: center;
-        }
-        .btn-glow:hover {
-          border-color: #38bdf8;
-          box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
-          transform: translateY(-2px);
-        }
-        .btn-glow::before {
-          content: ""; position: absolute; top: -50%; left: -50%;
-          width: 200%; height: 200%;
-          background: radial-gradient(circle, rgba(56,189,248,0.1), transparent 70%);
-          transition: 0.5s;
+        .hero-layout-top {
+          display: grid;
+          grid-template-columns: 1.4fr 0.6fr;
+          align-items: center;
+          gap: 60px;
+          margin-bottom: 80px;
         }
 
-        /* Profile Image Container */
-        .image-radar-wrap {
+        /* Profile Image with Signature Glow */
+        .profile-wrap {
+          display: flex;
+          justify-content: flex-end;
           position: relative;
-          width: 380px; height: 380px;
-          display: flex; align-items: center; justify-content: center;
         }
 
-        .radar-circle {
-          position: absolute; inset: 0;
-          border: 1px solid rgba(56, 189, 248, 0.1);
+        .profile-frame {
+          width: 340px;
+          height: 340px;
           border-radius: 50%;
+          padding: 8px;
+          background: linear-gradient(135deg, rgba(167, 139, 250, 0.5), transparent);
+          box-shadow: 0 0 60px rgba(167, 139, 250, 0.15);
         }
-        .radar-circle:nth-child(2) { inset: 40px; opacity: 0.6; }
-        .radar-circle:nth-child(3) { inset: 80px; opacity: 0.3; }
 
-        .image-container {
-          position: relative;
-          width: 260px; height: 260px;
-          border-radius: 30px;
-          z-index: 5;
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+        .profile-img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
           background: #0f172a;
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .floating-tag {
-          position: absolute;
-          padding: 10px 18px;
-          background: rgba(15, 23, 42, 0.8);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(56, 189, 248, 0.3);
-          border-radius: 14px;
+        /* Bento Highlight Cards */
+        .bento-row {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+
+        .bento-card {
+          background: #0f172a;
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          padding: 32px;
+          border-radius: 20px;
+          transition: all 0.3s ease;
+        }
+
+        .bento-card:hover {
+          border-color: #a78bfa;
+          background: #141d33;
+          transform: translateY(-5px);
+        }
+
+        .card-tag {
           font-family: 'JetBrains Mono', monospace;
-          font-size: 0.75rem; color: #fff;
-          z-index: 10;
-          box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-          animation: float 6s ease-in-out infinite;
+          font-size: 0.7rem;
+          font-weight: 600;
+          color: #64748b;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 16px;
         }
 
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-15px) rotate(2deg); }
+        .card-tag span { color: #a78bfa; font-size: 1.1rem; }
+
+        .card-content {
+          font-size: 0.95rem;
+          color: #94a3b8;
+          line-height: 1.5;
         }
 
-        @keyframes slideInDown {
-          from { opacity: 0; transform: translateY(-20px); }
-          to { opacity: 1; transform: translateY(0); }
+        /* Action Buttons */
+        .action-btns {
+          display: flex;
+          gap: 20px;
+          margin-bottom: 80px;
+        }
+
+        .btn-filled {
+          background: #8b5cf6;
+          color: #fff;
+          padding: 18px 40px;
+          border-radius: 99px;
+          font-weight: 700;
+          font-size: 1rem;
+          text-decoration: none;
+          box-shadow: 0 15px 30px -10px rgba(139, 92, 246, 0.5);
+          transition: 0.3s;
+        }
+
+        .btn-outline {
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #fff;
+          padding: 18px 40px;
+          border-radius: 99px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: 0.3s;
+        }
+
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); }
+
+        @media (max-width: 1100px) {
+          .hero-layout-top { grid-template-columns: 1fr; text-align: center; }
+          .profile-wrap { justify-content: center; order: -1; }
+          .bento-row { grid-template-columns: 1fr; }
+          .hero-title, .hero-desc { margin-left: auto; margin-right: auto; }
+          .action-btns { justify-content: center; }
         }
       `}</style>
 
       <section className="hero-section">
-        <div className="hero-bg-layers">
-          <div className="grid-overlay" />
-          <div className="mesh-glow" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 w-full">
-          <div className="hero-inner">
-            <div className="hero-left">
-              <div className="status-badge">
-                <div className="status-dot" />
-                <span className="status-text">Production Systems: Operational</span>
-              </div>
-
+        <div className="hero-container">
+          <div className="hero-layout-top">
+            <div className="hero-content">
               <h1 className="hero-title">
-                Architecting <span>Reliability</span><br />
-                at Global Scale.
+                From systems to strategy—scaling <span className="text-accent">platforms</span> and possibility.
               </h1>
-
-              <div className="typewriter-box">
-                <span style={{ color: '#64748b', marginRight: '12px' }}>&gt;_</span>
-                <span>{displayed}</span>
-                <span style={{ 
-                  display: 'inline-block', width: '3px', height: '1.2em', 
-                  background: '#38bdf8', marginLeft: '4px',
-                  animation: 'blink 1s step-end infinite'
-                }} />
+              
+              <div style={{ fontFamily: 'JetBrains Mono', color: '#a78bfa', marginBottom: '24px', fontSize: '1.2rem' }}>
+                &gt; {displayed}<span className="animate-pulse">_</span>
               </div>
 
               <p className="hero-desc">
-                I’m <strong>Nishant Kamal</strong>. I build and scale the invisible 
-                infrastructure that powers modern enterprises. Specializing in 
-                <strong> Kubernetes hardening</strong> and cloud-native resilience.
+                I help future-ready organizations ship resilient platforms, modernize Cloud/DevOps muscle, and turn ambitious roadmaps into measurable value.
               </p>
 
-              <div className="hero-ctas flex gap-4">
-                <a href="#projects" className="btn-glow" style={{ background: '#fff', color: '#020617' }}>
-                  Analyze Projects
-                </a>
-                <a href="/resume.pdf" className="btn-glow">
-                  <span style={{ marginRight: '8px' }}>[</span> View Specs <span style={{ marginLeft: '8px' }}>]</span>
-                </a>
+              <div className="action-btns">
+                <a href="#projects" className="btn-filled">Plan a build</a>
+                <a href="/resume.pdf" className="btn-outline">Download resume</a>
               </div>
             </div>
 
-            <div className="hero-image-col">
-              <div className="image-radar-wrap">
-                <div className="radar-circle" />
-                <div className="radar-circle" />
-                <div className="radar-circle" />
-                
-                <div className="image-container">
-                  <img
-                    src="/profile.png"
-                    alt="Nishant Kamal"
-                    style={{ width: "100%", height: "100%", objectFit: "cover", filter: 'contrast(1.1)' }}
-                  />
-                </div>
-
-                <div className="floating-tag" style={{ top: '20%', left: '-20px', animationDelay: '0s' }}>
-                  <span style={{ color: '#38bdf8' }}>☸</span> k8s.cluster
-                </div>
-                <div className="floating-tag" style={{ bottom: '25%', right: '-30px', animationDelay: '1s' }}>
-                  <span style={{ color: '#a78bfa' }}>☁</span> aws.infra
-                </div>
-                <div className="floating-tag" style={{ top: '60%', left: '-40px', animationDelay: '2s' }}>
-                  <span style={{ color: '#34d399' }}>⚙</span> gitops.cd
-                </div>
+            <div className="profile-wrap">
+              <div className="profile-frame">
+                <img src="/profile.png" alt="Nishant Kamal" className="profile-img" />
               </div>
             </div>
+          </div>
+
+          <div className="bento-row">
+            {highlights.map((item, idx) => (
+              <div key={idx} className="bento-card">
+                <div className="card-tag">
+                  <span>{item.icon}</span> {item.title}
+                </div>
+                <div className="card-content">
+                  {item.desc}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
