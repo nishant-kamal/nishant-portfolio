@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar"
 import Hero from "../components/Hero"
 import Stats from "../components/Stats"
 import Skills from "../components/Skills"
@@ -7,50 +8,70 @@ import Contact from "../components/Contact"
 import About from "../components/About"
 
 export const metadata = {
-  title: "Nishant | Site Reliability Engineer",
+  title: "Nishant Kamal | Site Reliability Engineer",
   description:
-    "Portfolio of Nishant, a Site Reliability Engineer specializing in Kubernetes, Kafka, AWS, Terraform, and DevOps automation.",
+    "Portfolio of Nishant Kamal, a Site Reliability Engineer specializing in Kubernetes, Kafka, AWS, Terraform, and DevOps automation.",
 }
 
 export default function Home() {
   return (
-    <main className="max-w-6xl mx-auto px-6 py-16 space-y-32">
+    <>
+      <Navbar />
+      <main
+        style={{
+          background: "#050810",
+          minHeight: "100vh",
+        }}
+      >
+        {/* Hero — full width, no container */}
+        <div className="max-w-6xl mx-auto px-6">
+          <section id="home">
+            <Hero />
+          </section>
+        </div>
 
-      {/* Hero Section */}
-      <section id="home">
-        <Hero />
-      </section>
+        {/* Stats — contained */}
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <section id="stats">
+            <Stats />
+          </section>
+        </div>
 
-      {/* Stats */}
-      <section id="stats">
-        <Stats />
-      </section>
+        {/* Skills */}
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <section id="skills">
+            <Skills />
+          </section>
+        </div>
 
-      {/* Skills */}
-      <section id="skills">
-        <Skills />
-      </section>
+        {/* About */}
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <section id="about">
+            <About />
+          </section>
+        </div>
 
-      {/* About */}
-      <section id="about">
-        <About />
-      </section>
+        {/* Projects */}
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <section id="projects">
+            <Projects />
+          </section>
+        </div>
 
-      {/* Projects */}
-      <section id="projects">
-        <Projects />
-      </section>
+        {/* Education */}
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <section id="education">
+            <Education />
+          </section>
+        </div>
 
-      {/* Education */}
-      <section id="education">
-        <Education />
-      </section>
-
-      {/* Contact */}
-      <section id="contact">
-        <Contact />
-      </section>
-
-    </main>
+        {/* Contact */}
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <section id="contact">
+            <Contact />
+          </section>
+        </div>
+      </main>
+    </>
   )
 }
