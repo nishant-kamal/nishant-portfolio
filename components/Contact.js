@@ -154,7 +154,7 @@ export default function Contact() {
               onSubmit={handleSubmit}
             >
               <div className="input-group">
-                <label className="input-label">01 // Name</label>
+                <label className="input-label">Name</label>
                 <input
                   name="entry.2005620554"
                   placeholder="Your full name"
@@ -164,7 +164,7 @@ export default function Contact() {
               </div>
 
               <div className="input-group">
-                <label className="input-label">02 // Email Address</label>
+                <label className="input-label">Email Address</label>
                 <input
                   name="entry.1045781291"
                   type="email"
@@ -175,7 +175,7 @@ export default function Contact() {
               </div>
 
               <div className="input-group">
-                <label className="input-label">03 // Message</label>
+                <label className="input-label">Message</label>
                 <textarea
                   name="entry.839337160"
                   placeholder="How can I help you?"
