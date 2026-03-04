@@ -12,10 +12,13 @@ export default function Contact() {
 
       <div className="max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-xl p-8">
 
+        {/* hidden iframe */}
+        <iframe name="hidden_iframe" style={{ display: "none" }} />
+
         <form
           action="https://docs.google.com/forms/d/e/1FAIpQLSdFDvV17pSY1mYeHVLXUdo6su3l2jEhJTwNr4mtI-VBqMudhA/formResponse"
           method="POST"
-          target="_blank"
+          target="hidden_iframe"
           className="space-y-4"
         >
 
