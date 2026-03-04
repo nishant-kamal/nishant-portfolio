@@ -211,7 +211,7 @@ export default function Hero() {
               </p>
 
               <div className="action-btns">
-                <a href="#projects" className="btn-filled">Plan a build</a>
+                <a href="#projects" className="btn-filled">Project</a>
                 <a href="/resume.pdf" className="btn-outline">Download resume</a>
               </div>
             </div>
