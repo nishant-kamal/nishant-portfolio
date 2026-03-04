@@ -10,10 +10,13 @@ export default function Hero() {
         </h1>
 
         <p className="mt-6 text-gray-400 text-lg">
-          I’m Nishant Kamal, a Site Reliability Engineer with 6+ years of experience designing reliable cloud infrastructure and operating large scale Kubernetes environments.
+          I’m Nishant Kamal, a Site Reliability Engineer with 6+ years of experience
+          designing reliable cloud infrastructure and operating large scale
+          Kubernetes environments.
         </p>
 
-        <div className="mt-6 flex gap-4">
+        <div className="mt-6 flex gap-4 flex-wrap">
+
           <a
             href="#projects"
             className="bg-indigo-600 hover:bg-indigo-500 px-6 py-3 rounded-xl"
@@ -27,18 +30,37 @@ export default function Hero() {
           >
             Download Resume
           </a>
+
+          <a
+            href="https://github.com/nishant-kamal"
+            target="_blank"
+            className="border border-gray-600 hover:border-gray-400 px-6 py-3 rounded-xl"
+          >
+            GitHub
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/imnishant19"
+            target="_blank"
+            className="border border-gray-600 hover:border-gray-400 px-6 py-3 rounded-xl"
+          >
+            LinkedIn
+          </a>
+
         </div>
       </div>
-    <div className="flex justify-center">
-      <Image
-        src="/profile.png"
-        alt="Nishant Kamal"
-        width={400}
-        height={400}
-        unoptimized
-        className="w-80 h-80 rounded-full object-cover border border-gray-700"
-      />
-    </div>
+
+      <div className="flex justify-center">
+        <Image
+          src="/profile.png"
+          alt="Nishant Kamal"
+          width={400}
+          height={400}
+          unoptimized
+          className="w-80 h-80 rounded-full object-cover border border-gray-700"
+        />
+      </div>
+
     </section>
   )
 }
