@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
-const roles = ["Site Reliability Engineer", "Platform Engineer", "Infrastructure Engineer", "DevOps Engineer"];
-
-const highlights = [
-  { icon: "⚡", title: "PLATFORM", desc: "K8s orchestration & self-healing infra.", metric: "99.9% Uptime" },
-  { icon: "📈", title: "STRATEGY", desc: "Data-driven reliability at scale.", metric: "6+ Years" },
-  { icon: "🛡️", title: "SECURITY", desc: "Zero-trust & automated compliance.", metric: "35% Cost Cut" }
+const roles = [
+  "Site Reliability Engineer",
+  "Platform Engineer",
+  "Cloud Architect",
+  "DevOps Practitioner",
 ];
 
 export default function Hero() {
@@ -15,386 +14,288 @@ export default function Hero() {
   const [displayed, setDisplayed] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const heroRef = useRef(null);
-  const canvasRef = useRef(null);
 
-  useEffect(() => {
-    setMounted(true);
-    
-    // Mouse Parallax Logic
-    const handleMouseMove = (e) => {
-      if (!heroRef.current) return;
-      const { clientX, clientY } = e;
-      const { left, top, width, height } = heroRef.current.getBoundingClientRect();
-      setMousePos({
-        x: ((clientX - left) / width - 0.5) * 25,
-        y: ((clientY - top) / height - 0.5) * 25,
-      });
-    };
+  useEffect(() => { setMounted(true); }, []);
 
-    // Particle Canvas Logic
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    let animationFrameId;
-    let particles = [];
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    class Particle {
-      constructor() {
-        this.reset();
-      }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = Math.random() * 0.5 - 0.25;
-        this.speedY = Math.random() * 0.5 - 0.25;
-        this.opacity = Math.random() * 0.5 + 0.1;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x > canvas.width || this.x < 0 || this.y > canvas.height || this.y < 0) this.reset();
-      }
-      draw() {
-        ctx.fillStyle = `rgba(139, 92, 246, ${this.opacity})`;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    const init = () => {
-      resize();
-      particles = Array.from({ length: 80 }, () => new Particle());
-    };
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("resize", resize);
-    init();
-    animate();
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("resize", resize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
-  // Typewriter Logic
   useEffect(() => {
     if (!mounted) return;
     const current = roles[roleIndex];
-    let speed = deleting ? 40 : 80;
-    
-    const timeout = setTimeout(() => {
-      if (!deleting && displayed.length < current.length) {
+    let timeout;
+
+    if (!deleting && displayed.length < current.length) {
+      // Typing
+      timeout = setTimeout(() => {
         setDisplayed(current.slice(0, displayed.length + 1));
-      } else if (!deleting && displayed.length === current.length) {
-        setTimeout(() => setDeleting(true), 2500);
-      } else if (deleting && displayed.length > 0) {
+      }, 60);
+    } else if (!deleting && displayed.length === current.length) {
+      // Wait before deleting
+      timeout = setTimeout(() => setDeleting(true), 2200);
+    } else if (deleting && displayed.length > 0) {
+      // Deleting
+      timeout = setTimeout(() => {
         setDisplayed(displayed.slice(0, -1));
-      } else {
-        setDeleting(false);
-        setRoleIndex((prev) => (prev + 1) % roles.length);
-      }
-    }, speed);
-    
+      }, 30);
+    } else if (deleting && displayed.length === 0) {
+      // Switch to next role
+      setDeleting(false);
+      setRoleIndex((i) => (i + 1) % roles.length);
+    }
     return () => clearTimeout(timeout);
   }, [displayed, deleting, roleIndex, mounted]);
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
-
-        :root {
-          --accent: #8b5cf6;
-          --accent-glow: rgba(139, 92, 246, 0.4);
-          --bg: #020617;
-          --card-bg: rgba(15, 23, 42, 0.4);
-          --border: rgba(255, 255, 255, 0.05);
-          --text-main: #f8fafc;
-          --text-muted: #64748b;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
 
         .hero-section {
+          font-family: 'Syne', sans-serif;
           position: relative;
-          background: var(--bg);
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          color: var(--text-main);
-          overflow: hidden;
-          padding: 80px 24px;
-          min-height: 100vh;
-          display: flex;
+          min-height: 92vh;
+          display: flex; 
           align-items: center;
+          overflow: hidden;
+          padding: 80px 0 60px;
+          background: #020617; /* Matches Midnight Theme */
         }
 
-        canvas {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          z-index: 0;
+        .hero-grid-bg {
+          position: absolute; inset: 0; pointer-events: none; z-index: 0;
+          background-image:
+            linear-gradient(rgba(56,189,248,.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(56,189,248,.035) 1px, transparent 1px);
+          background-size: 52px 52px;
         }
 
-        .hero-mesh {
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05), transparent 70%);
-          z-index: 1;
+        .hero-blob {
+          position: absolute; border-radius: 50%;
+          filter: blur(110px); pointer-events: none; z-index: 0;
+        }
+        .hero-blob-1 {
+          width: 600px; height: 600px; top: -200px; left: -150px;
+          background: radial-gradient(circle, rgba(14,165,233,.12) 0%, transparent 70%);
+          animation: heroFloat 14s ease-in-out infinite alternate;
+        }
+        .hero-blob-2 {
+          width: 400px; height: 400px; bottom: -100px; right: -80px;
+          background: radial-gradient(circle, rgba(139,92,246,.1) 0%, transparent 70%);
+          animation: heroFloat 10s ease-in-out infinite alternate-reverse;
         }
 
-        .container {
+        @keyframes heroFloat {
+          from { transform: translate(0,0); }
+          to   { transform: translate(24px, 16px); }
+        }
+
+        .hero-inner {
+          position: relative; z-index: 1;
+          width: 100%;
+          display: grid; 
+          grid-template-columns: 1.2fr 0.8fr;
+          gap: 64px; 
+          align-items: center;
           max-width: 1200px;
           margin: 0 auto;
-          position: relative;
-          z-index: 10;
-        }
-
-        .hero-grid {
-          display: grid;
-          grid-template-columns: 1.1fr 0.9fr;
-          gap: 60px;
-          align-items: center;
-        }
-
-        .status-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          padding: 8px 16px;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid var(--border);
-          border-radius: 12px;
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 12px;
-          color: var(--accent);
-          backdrop-filter: blur(10px);
-          margin-bottom: 30px;
-        }
-
-        .title {
-          font-size: clamp(3rem, 6vw, 5.5rem);
-          font-weight: 800;
-          line-height: 1;
-          letter-spacing: -0.05em;
-          margin-bottom: 25px;
-        }
-
-        .gradient-text {
-          background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-
-        .typewriter {
-          font-family: 'JetBrains Mono', monospace;
-          background: rgba(139, 92, 246, 0.1);
-          color: var(--accent);
-          padding: 6px 12px;
-          border-radius: 6px;
-          font-size: 1.1rem;
-          display: inline-block;
-          margin-bottom: 30px;
-          border-left: 3px solid var(--accent);
-        }
-
-        .description {
-          font-size: 1.2rem;
-          color: var(--text-muted);
-          line-height: 1.7;
-          max-width: 500px;
-          margin-bottom: 40px;
-          font-weight: 300;
-        }
-
-        .btn-group { display: flex; gap: 15px; }
-
-        .btn {
-          padding: 16px 32px;
-          border-radius: 14px;
-          font-weight: 600;
-          transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-          text-decoration: none;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .btn-primary {
-          background: var(--accent);
-          color: white;
-          box-shadow: 0 15px 30px -10px var(--accent-glow);
-        }
-
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px var(--accent-glow); }
-
-        .btn-ghost {
-          background: transparent;
-          color: var(--text-main);
-          border: 1px solid var(--border);
-        }
-
-        .btn-ghost:hover { background: rgba(255, 255, 255, 0.05); }
-
-        .visual-box {
-          position: relative;
-          z-index: 5;
-        }
-
-        .morph-container {
-          width: 380px;
-          height: 380px;
-          position: relative;
-          background: linear-gradient(45deg, var(--accent), #6366f1);
-          border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-          animation: morphing 10s infinite alternate;
-          padding: 5px;
-        }
-
-        @keyframes morphing {
-          0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
-          100% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
-        }
-
-        .inner-img {
-          width: 100%;
-          height: 100%;
-          background: var(--bg);
-          border-radius: inherit;
-          overflow: hidden;
-        }
-
-        .inner-img img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          filter: contrast(1.1);
-        }
-
-        .bento-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-          margin-top: 80px;
-        }
-
-        .bento-card {
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          padding: 30px;
-          border-radius: 24px;
-          backdrop-filter: blur(20px);
-          transition: 0.5s;
-        }
-
-        .bento-card:hover {
-          border-color: var(--accent);
-          background: rgba(139, 92, 246, 0.05);
-          transform: translateY(-10px);
-        }
-
-        .metric {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: white;
-          margin-bottom: 10px;
-          display: block;
-        }
-
-        .label {
-          font-size: 0.8rem;
-          color: var(--accent);
-          font-weight: 700;
-          letter-spacing: 2px;
-          text-transform: uppercase;
+          padding: 0 24px;
         }
 
         @media (max-width: 1024px) {
-          .hero-grid { grid-template-columns: 1fr; text-align: center; }
-          .morph-container { width: 280px; height: 280px; margin: 0 auto; }
-          .description { margin: 0 auto 40px; }
-          .btn-group { justify-content: center; }
-          .bento-grid { grid-template-columns: 1fr; }
+          .hero-inner { grid-template-columns: 1fr; gap: 60px; text-align: center; }
+          .hero-left { display: flex; flex-direction: column; align-items: center; }
+          .hero-image-col { order: -1; display: flex; justify-content: center; }
+        }
+
+        .hero-badge {
+          font-family: 'DM Mono', monospace;
+          font-size: .78rem; letter-spacing: .15em; text-transform: uppercase;
+          color: #38bdf8;
+          background: rgba(56,189,248,.08);
+          border: 1px solid rgba(56,189,248,.2);
+          padding: 6px 16px; border-radius: 99px;
+          display: inline-flex; align-items: center; gap: 8px;
+          margin-bottom: 28px;
+        }
+
+        .hero-badge-dot {
+          width: 8px; height: 8px; border-radius: 50%;
+          background: #38bdf8;
+          box-shadow: 0 0 10px #38bdf8;
+          animation: blink 1.8s ease-in-out infinite;
+        }
+
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+        .hero-h1 {
+          font-size: clamp(2.5rem, 6vw, 4.5rem);
+          font-weight: 800; line-height: 1.05;
+          letter-spacing: -.03em; color: #f8fafc;
+          margin-bottom: 24px;
+        }
+        .hero-h1 em { font-style: normal; color: #38bdf8; }
+
+        .hero-typewriter {
+          font-family: 'DM Mono', monospace;
+          font-size: clamp(1rem, 2vw, 1.35rem);
+          color: #94a3b8; 
+          margin-bottom: 32px; 
+          min-height: 1.5em;
+          display: flex; align-items: center; justify-content: inherit;
+        }
+
+        .cursor {
+          display: inline-block; width: 2px; height: 1.2em;
+          background: #38bdf8; margin-left: 4px;
+          animation: blink 0.8s step-end infinite;
+        }
+
+        .hero-desc {
+          font-size: 1.1rem; color: #64748b; line-height: 1.8;
+          max-width: 580px; margin-bottom: 44px;
+        }
+        .hero-desc strong { color: #cbd5e1; font-weight: 600; }
+
+        .btn-primary {
+          font-family: 'DM Mono', monospace;
+          font-size: .85rem; letter-spacing: .1em; text-transform: uppercase;
+          color: #020617; background: #38bdf8;
+          padding: 14px 32px; border-radius: 12px;
+          text-decoration: none; font-weight: 700;
+          transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-primary:hover {
+          background: #7dd3fc;
+          box-shadow: 0 0 30px rgba(56,189,248,.4);
+          transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+          font-family: 'DM Mono', monospace;
+          font-size: .85rem; letter-spacing: .1em; text-transform: uppercase;
+          color: #94a3b8;
+          border: 1px solid rgba(255,255,255,.1);
+          background: rgba(255,255,255,.03);
+          padding: 14px 32px; border-radius: 12px;
+          text-decoration: none; transition: 0.3s;
+        }
+        .btn-secondary:hover {
+          border-color: #38bdf8; color: #38bdf8;
+          background: rgba(56,189,248,.05);
+        }
+
+        .hero-img-wrap {
+          position: relative; width: 320px; height: 320px;
+        }
+        @media (max-width: 768px) { .hero-img-wrap { width: 260px; height: 260px; } }
+
+        .hero-img-ring {
+          position: absolute; inset: -12px; border-radius: 50%;
+          background: conic-gradient(from 0deg, #38bdf8, #8b5cf6, #38bdf8);
+          animation: spin 10s linear infinite;
+          opacity: 0.6;
+        }
+        .hero-img-ring-mask {
+          position: absolute; inset: 4px; border-radius: 50%;
+          background: #020617;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .hero-img {
+          position: absolute; inset: 6px; border-radius: 50%;
+          overflow: hidden; z-index: 1; border: 4px solid #020617;
+        }
+
+        .float-tag {
+          position: absolute; z-index: 5;
+          font-family: 'DM Mono', monospace; font-size: .7rem;
+          color: #38bdf8;
+          background: rgba(2, 6, 23, 0.8);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(56,189,248,.3);
+          padding: 6px 12px; border-radius: 10px;
+          animation: tagFloat 4s ease-in-out infinite alternate;
+        }
+        .ft-1 { top: 10%; right: -20px; animation-delay: 0s; }
+        .ft-2 { bottom: 25%; right: -35px; animation-delay: -1.5s; color: #a78bfa; border-color: rgba(167,139,250,.3); }
+        .ft-3 { bottom: 10%; left: -10px; animation-delay: -3s; color: #34d399; border-color: rgba(52,211,153,.3); }
+
+        @keyframes tagFloat {
+          from { transform: translateY(0) rotate(-2deg); }
+          to   { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .scroll-hint {
+          position: absolute; bottom: 40px; left: 50%;
+          transform: translateX(-50%);
+          display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+        .scroll-line {
+          width: 1px; height: 60px;
+          background: linear-gradient(to bottom, #38bdf8, transparent);
+          animation: scrollLine 2s ease-in-out infinite;
+        }
+        @keyframes scrollLine {
+          0% { transform: scaleY(0); transform-origin: top; }
+          50% { transform: scaleY(1); transform-origin: top; }
+          51% { transform: scaleY(1); transform-origin: bottom; }
+          100% { transform: scaleY(0); transform-origin: bottom; }
         }
       `}</style>
 
-      <section className="hero-section" ref={heroRef}>
-        <canvas ref={canvasRef} />
-        <div className="hero-mesh" />
+      <section className="hero-section">
+        <div className="hero-grid-bg" />
+        <div className="hero-blob hero-blob-1" />
+        <div className="hero-blob hero-blob-2" />
 
-        <div className="container">
-          <div className="hero-grid">
-            <div className="text-content">
-              <div className="status-badge">
-                <span className="pulse" style={{ width: 8, height: 8, background: '#10b981', borderRadius: '50%' }} />
-                SYSTEMS ONLINE // NEW DELHI
-              </div>
-
-              <h1 className="title">
-                Engineering <br />
-                <span className="gradient-text">Resilient</span> Platforms.
-              </h1>
-
-              <div className="typewriter">
-                {displayed}<span className="blink">_</span>
-              </div>
-
-              <p className="description">
-                Lead DevOps Engineer specializing in Kubernetes, AWS, and Cloud Native Architectures. 
-                I turn manual workflows into automated, self-healing pipelines.
-              </p>
-
-              <div className="btn-group">
-                {/* Fixed: Link set to #projects to match standard section IDs */}
-                <a href="#projects" className="btn btn-primary">View Projects</a>
-                
-                {/* Fixed: Link set to /resume.pdf and added download attribute */}
-                <a href="/resume.pdf" download="Nishant_Kamal_Resume.pdf" className="btn btn-ghost">
-                  Download Resume
-                </a>
-              </div>
+        <div className="hero-inner">
+          <div className="hero-left">
+            <div className="hero-badge">
+              <span className="hero-badge-dot" />
+              SLO_STATUS: COMPLIANT // UPTIME: 99.9%
             </div>
 
-            <div className="visual-box">
-              <div 
-                className="morph-container"
-                style={{
-                  transform: `translate(${mousePos.x}px, ${mousePos.y}px)`,
-                  transition: 'transform 0.1s ease-out'
-                }}
-              >
-                <div className="inner-img">
-                  <img src="/profile.png" alt="Nishant Kamal" />
-                </div>
-              </div>
+            <h1 className="hero-h1">
+              Engineering systems <br />
+              that <em>never sleep.</em>
+            </h1>
+
+            <div className="hero-typewriter">
+              <span>{displayed}</span>
+              <span className="cursor" />
+            </div>
+
+            <p className="hero-desc">
+              I’m <strong>Nishant Kamal</strong>, a Lead DevOps Engineer with <strong>6+ years</strong> experience. 
+              Currently specializing in <strong>Cloud Computing at BITS Pilani</strong>, I build resilient architectures 
+              and automated self-healing platforms.
+            </p>
+
+            <div className="hero-ctas">
+              <a href="#projects" className="btn-primary">View Projects</a>
+              <a href="/resume.pdf" download className="btn-secondary">Download Resume ↗</a>
             </div>
           </div>
 
-          <div className="bento-grid">
-            {highlights.map((h, i) => (
-              <div key={i} className="bento-card">
-                <span className="label">{h.title}</span>
-                <span className="metric">{h.metric}</span>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '10px' }}>{h.desc}</p>
+          <div className="hero-image-col">
+            <div className="hero-img-wrap">
+              <div className="hero-img-ring">
+                <div className="hero-img-ring-mask" />
               </div>
-            ))}
+              <div className="hero-img">
+                <img
+                  src="/profile.png"
+                  alt="Nishant Kamal"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </div>
+              <span className="float-tag ft-1">Kubernetes ☸</span>
+              <span className="float-tag ft-2">AWS ⬡</span>
+              <span className="float-tag ft-3">Terraform △</span>
+            </div>
           </div>
+        </div>
+
+        <div className="scroll-hint">
+          <div className="scroll-line" />
         </div>
       </section>
     </>
