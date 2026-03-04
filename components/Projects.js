@@ -15,6 +15,11 @@ export default function Projects() {
       title: "Alerting Standardization",
       description:
         "Built Helm based centralized alerting system improving monitoring consistency and MTTR."
+    },
+    {
+      title: "OCI Infrastructure with Crossplane",
+      description:
+        "Provisioned Oracle Cloud infrastructure using Crossplane and Kubernetes CRDs, deployed microservices, and collaborated with QA teams for sanity testing and issue resolution."
     }
   ]
 
@@ -23,7 +28,7 @@ export default function Projects() {
 
       <h2 className="text-3xl font-bold mb-10">Projects</h2>
 
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 
         {projects.map((project) => (
           <div
@@ -35,7 +40,6 @@ export default function Projects() {
               {project.title}
             </h3>
 
-            {/* hidden until hover */}
             <p className="text-gray-400 mt-3 max-h-0 overflow-hidden group-hover:max-h-40 transition-all duration-500">
               {project.description}
             </p>
