@@ -14,7 +14,7 @@ export default function Home() {
       <Stats />
 
       <Skills />
-
+      <About />
       <Projects />
 
       <Education />
