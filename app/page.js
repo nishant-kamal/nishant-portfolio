@@ -1,12 +1,10 @@
 import Hero from "../components/Hero"
 import About from "../components/About"
-import Stats from "../components/Stats"
 import Skills from "../components/Skills"
+import Stats from "../components/Stats"
 import Projects from "../components/Projects"
 import Education from "../components/Education"
 import Contact from "../components/Contact"
-
-
 export const metadata = {
   title: "Nishant Kamal | Site Reliability Engineer",
   description:
@@ -34,17 +32,16 @@ export default function Home() {
             <About />
           </section>
         </div>
-        {/* Stats — contained */}
-        <div className="max-w-6xl mx-auto px-6 py-16">
-          <section id="stats">
-            <Stats />
-          </section>
-        </div>
-
         {/* Skills */}
         <div className="max-w-6xl mx-auto px-6 py-16">
           <section id="skills">
             <Skills />
+          </section>
+        </div>
+        {/* Stats — contained */}
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <section id="stats">
+            <Stats />
           </section>
         </div>
 
