@@ -8,7 +8,7 @@ export default function Contact() {
   const handleSubmit = () => {
     setTimeout(() => {
       setSubmitted(true)
-    }, 800)
+    }, 500)
   }
 
   return (
@@ -27,10 +27,10 @@ export default function Contact() {
         <iframe name="hidden_iframe" style={{ display: "none" }} />
 
         <form
-          onSubmit={handleSubmit}
-          action="https://docs.google.com/forms/d/e/1FAIpQLSdFDvV17pSY1mYeHVLXUdo6su3l2jEhJTwNr4mtI-VBqMudhA/formResponse"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSdFDvV17pSY1mYeHVLXUdo6su3l2jEhJTwNr4mtI-VBqMudhA/formResponse?usp=pp_url"
           method="POST"
           target="hidden_iframe"
+          onSubmit={handleSubmit}
           className="space-y-4"
         >
 
