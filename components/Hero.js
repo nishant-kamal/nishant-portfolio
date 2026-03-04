@@ -302,9 +302,9 @@ export default function Hero() {
             </div>
 
             <p className="hero-desc">
-              I'm <strong>Nishant Kamal</strong>, a <strong>site reliability engineering</strong> with{" "}
-              <strong>6+ years</strong> of experience designing resilient cloud platforms.
-              I specialize in <strong>Kubernetes, AWS infrastructure, and Cloud Native architectures</strong>,
+              I m Nishant Kamal a site reliability engineering with
+              6+ years of experience designing resilient cloud platforms.
+              I specialize in <strong>Kubernetes, AWS infrastructure, and Cloud Native architectures,
               transforming manual workflows into automated, self-healing systems.
             </p>
 
