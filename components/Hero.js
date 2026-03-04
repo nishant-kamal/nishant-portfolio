@@ -326,9 +326,6 @@ export default function Hero() {
                   alt="Nishant Kamal"
                 />
               </div>
-              <span className="float-tag ft-1">Kubernetes ☸</span>
-              <span className="float-tag ft-2">AWS ⬡</span>
-              <span className="float-tag ft-3">Terraform △</span>
             </div>
           </div>
         </div>
