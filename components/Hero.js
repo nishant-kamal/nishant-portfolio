@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 
-const roles = ["Site Reliability Engineer", "Platform Architect", "Infrastructure Lead"];
+const roles = ["Site Reliability Engineer", "Platform Engineer", "Infrastructure Engineer", "DevOps Engineer"];
 
 const highlights = [
   { icon: "⚡", title: "PLATFORM", desc: "K8s orchestration & self-healing infra.", metric: "99.9% Uptime" },
@@ -362,8 +362,8 @@ export default function Hero() {
               </p>
 
               <div className="btn-group">
-                <a href="#work" className="btn btn-primary">Browse Systems</a>
-                <a href="/cv.pdf" className="btn btn-ghost">Download Manifest</a>
+                <a href="#work" className="btn btn-primary">Project</a>
+                <a href="/cv.pdf" className="btn btn-ghost">Download Resume</a>
               </div>
             </div>
 
