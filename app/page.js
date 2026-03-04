@@ -1,10 +1,11 @@
 import Hero from "../components/Hero"
+import About from "../components/About"
 import Stats from "../components/Stats"
 import Skills from "../components/Skills"
 import Projects from "../components/Projects"
 import Education from "../components/Education"
 import Contact from "../components/Contact"
-import About from "../components/About"
+
 
 export const metadata = {
   title: "Nishant Kamal | Site Reliability Engineer",
