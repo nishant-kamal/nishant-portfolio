@@ -93,11 +93,11 @@ export default function Hero() {
 
         .hero-badge {
           font-family: 'DM Mono', monospace;
-          font-size: .68rem; letter-spacing: .18em; text-transform: uppercase;
+          font-size: .78rem; letter-spacing: .15em; text-transform: uppercase;
           color: #38bdf8;
           background: rgba(56,189,248,.08);
           border: 1px solid rgba(56,189,248,.2);
-          padding: 5px 14px; border-radius: 99px;
+          padding: 6px 16px; border-radius: 99px;
           display: inline-flex; align-items: center; gap: 8px;
           margin-bottom: 28px;
           animation: fadeUp .6s ease both;
@@ -120,9 +120,9 @@ export default function Hero() {
 
         .hero-typewriter {
           font-family: 'DM Mono', monospace;
-          font-size: clamp(.9rem, 2vw, 1.1rem);
+          font-size: clamp(1rem, 2vw, 1.25rem);
           color: #64748b; letter-spacing: .04em;
-          margin-bottom: 28px; height: 28px;
+          margin-bottom: 28px; height: 34px;
           display: flex; align-items: center; gap: 2px;
           animation: fadeUp .7s ease .2s both;
         }
@@ -134,7 +134,7 @@ export default function Hero() {
         }
 
         .hero-desc {
-          font-size: .95rem; color: #64748b; line-height: 1.8;
+          font-size: 1.05rem; color: #64748b; line-height: 1.8;
           max-width: 560px; margin-bottom: 40px;
           animation: fadeUp .7s ease .3s both;
         }
@@ -146,9 +146,9 @@ export default function Hero() {
         }
         .btn-primary {
           font-family: 'DM Mono', monospace;
-          font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
+          font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
           color: #050810; background: #38bdf8;
-          padding: 12px 28px; border-radius: 10px;
+          padding: 13px 30px; border-radius: 10px;
           text-decoration: none;
           transition: background .2s, box-shadow .2s, transform .15s;
           font-weight: 500;
@@ -160,11 +160,11 @@ export default function Hero() {
         }
         .btn-secondary {
           font-family: 'DM Mono', monospace;
-          font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
+          font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
           color: #94a3b8;
           border: 1px solid rgba(255,255,255,.1);
           background: rgba(255,255,255,.03);
-          padding: 12px 28px; border-radius: 10px;
+          padding: 13px 30px; border-radius: 10px;
           text-decoration: none;
           transition: border-color .2s, color .2s, transform .15s;
         }
@@ -175,18 +175,18 @@ export default function Hero() {
 
         /* social links */
         .hero-socials {
-          display: flex; gap: 16px; margin-top: 36px;
+          display: flex; gap: 20px; margin-top: 36px;
           animation: fadeUp .7s ease .5s both;
         }
         .social-link {
-          font-family: 'DM Mono', monospace; font-size: .65rem;
+          font-family: 'DM Mono', monospace; font-size: .76rem;
           letter-spacing: .1em; text-transform: uppercase;
-          color: #334155; text-decoration: none;
-          display: flex; align-items: center; gap: 6px;
+          color: #475569; text-decoration: none;
+          display: flex; align-items: center; gap: 7px;
           transition: color .2s;
         }
         .social-link:hover { color: #38bdf8; }
-        .social-link svg { width: 14px; height: 14px; }
+        .social-link svg { width: 15px; height: 15px; }
 
         /* image col */
         .hero-image-col { position: relative; }
