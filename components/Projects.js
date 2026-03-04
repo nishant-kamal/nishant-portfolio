@@ -52,18 +52,10 @@ export default function Projects() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&display=swap');
 
-        .projects-section { font-family: 'Syne', sans-serif; }
+        .projects-section { font-family: 'Syne', sans-serif; padding: 60px 0; }
 
-        .proj-eyebrow {
-          font-family: 'DM Mono', monospace; font-size: .7rem;
-          letter-spacing: .2em; text-transform: uppercase;
-          color: #38bdf8; background: rgba(56,189,248,.08);
-          border: 1px solid rgba(56,189,248,.2);
-          padding: 4px 12px; border-radius: 4px;
-          display: inline-block; margin-bottom: 20px;
-        }
         .proj-heading {
-          font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+          font-size: clamp(2.5rem, 6vw, 3.75rem); font-weight: 800;
           letter-spacing: -.02em; color: #f8fafc;
           margin-bottom: 48px; line-height: 1.1;
         }
@@ -72,6 +64,7 @@ export default function Projects() {
         .proj-list { display: flex; flex-direction: column; gap: 16px; }
 
         .proj-card {
+          position: relative;
           border-radius: 16px;
           border: 1px solid rgba(255,255,255,.06);
           background: rgba(15,20,35,.7);
@@ -100,14 +93,13 @@ export default function Projects() {
           transition: box-shadow .3s;
         }
 
-        .proj-title-col { }
         .proj-index {
           font-family: 'DM Mono', monospace; font-size: .6rem;
           letter-spacing: .14em; color: #334155;
           text-transform: uppercase; margin-bottom: 4px;
         }
         .proj-title {
-          font-size: 1.05rem; font-weight: 700; color: #f1f5f9;
+          font-size: 1.15rem; font-weight: 700; color: #f1f5f9;
           line-height: 1.3; margin-bottom: 4px;
         }
         .proj-subtitle {
@@ -122,26 +114,25 @@ export default function Projects() {
         }
         .proj-card.open .proj-chevron { transform: rotate(180deg); }
 
-        /* expandable body */
         .proj-body {
           max-height: 0; overflow: hidden;
           transition: max-height .45s cubic-bezier(.4,0,.2,1);
         }
-        .proj-card.open .proj-body { max-height: 320px; }
+        .proj-card.open .proj-body { max-height: 400px; }
 
         .proj-body-inner {
-          padding: 0 28px 28px; padding-top: 0;
+          padding: 0 28px 28px;
           border-top: 1px solid rgba(255,255,255,.05);
           padding-top: 24px;
         }
 
         .proj-desc {
-          font-size: .88rem; color: #94a3b8;
-          line-height: 1.78; margin-bottom: 20px;
+          font-size: .95rem; color: #94a3b8;
+          line-height: 1.78; margin-bottom: 24px;
         }
 
         .proj-metrics {
-          display: flex; gap: 20px; margin-bottom: 20px;
+          display: flex; gap: 20px; margin-bottom: 24px;
           flex-wrap: wrap;
         }
         .proj-metric {
@@ -149,7 +140,7 @@ export default function Projects() {
           border: 1px solid;
         }
         .metric-val {
-          font-size: 1.1rem; font-weight: 800;
+          font-size: 1.2rem; font-weight: 800;
           line-height: 1; margin-bottom: 4px;
         }
         .metric-lbl {
@@ -168,7 +159,6 @@ export default function Projects() {
       `}</style>
 
       <section id="projects" className="projects-section">
-        <span className="proj-eyebrow">04 — Projects</span>
         <h2 className="proj-heading">
           Work that<br />
           <em>moves the needle.</em>
@@ -187,7 +177,6 @@ export default function Projects() {
                 }}
                 onClick={() => setActive(isOpen ? null : p.id)}
               >
-                {/* top accent */}
                 <div style={{
                   position: "absolute", top: 0, left: 0, right: 0, height: "2px",
                   background: `linear-gradient(90deg, ${p.color}, transparent)`,
