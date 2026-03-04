@@ -1,6 +1,0 @@
-<Image
-  src="/profile.png"
-  alt="Nishant Kamal"
-  width={250}
-  height={250}
-/>
