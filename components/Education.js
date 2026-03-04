@@ -23,7 +23,7 @@ const education = [
     field: "Electrical & Electronics Engineering",
     institution: "VIT University, Vellore",
     type: "Undergraduate",
-    year: "2014 – 2018",
+    year: "2015 – 2019",
     color: "#a78bfa",
     glow: "rgba(167,139,250,0.15)",
     icon: "⬡",
