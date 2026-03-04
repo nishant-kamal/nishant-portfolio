@@ -6,28 +6,35 @@ export default function Education() {
       <div className="grid md:grid-cols-3 gap-8">
 
         {/* M.Tech */}
+        <div className="group bg-slate-900 border border-slate-800 rounded-xl p-6 transition transform hover:-translate-y-1 hover:border-indigo-500">
 
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
           <h3 className="font-semibold text-lg">
             M.Tech – Cloud Computing
           </h3>
 
           <p className="text-gray-400 mt-2">
-            Bits pilani
-          </p>
-          <p className="text-gray-400 mt-2">
-            Focus on distributed systems, cloud infrastructure,
-            and scalable platform architectures.
+            BITS Pilani
           </p>
 
-          <p className="text-gray-500 text-sm mt-2">
-            Postgraduate Specialization
-          </p>
+          {/* Hidden content */}
+          <div className="max-h-0 overflow-hidden group-hover:max-h-40 transition-all duration-500">
+
+            <p className="text-gray-400 mt-3">
+              Focus on distributed systems, cloud infrastructure,
+              and scalable platform architectures.
+            </p>
+
+            <p className="text-gray-500 text-sm mt-2">
+              Postgraduate Specialization
+            </p>
+
+          </div>
+
         </div>
 
         {/* B.Tech */}
+        <div className="group bg-slate-900 border border-slate-800 rounded-xl p-6 transition transform hover:-translate-y-1 hover:border-indigo-500">
 
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
           <h3 className="font-semibold text-lg">
             B.Tech – Electrical & Electronics Engineering
           </h3>
@@ -36,21 +43,33 @@ export default function Education() {
             VIT University, Vellore
           </p>
 
-          <p className="text-gray-500 text-sm mt-2">
-            Strong foundation in systems engineering and computing fundamentals.
-          </p>
+          {/* Hidden content */}
+          <div className="max-h-0 overflow-hidden group-hover:max-h-32 transition-all duration-500">
+
+            <p className="text-gray-500 text-sm mt-3">
+              Strong foundation in systems engineering and computing fundamentals.
+            </p>
+
+          </div>
+
         </div>
 
         {/* Certifications */}
+        <div className="group bg-slate-900 border border-slate-800 rounded-xl p-6 transition transform hover:-translate-y-1 hover:border-indigo-500">
 
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
           <h3 className="font-semibold text-lg">
             Certifications & Learning
           </h3>
 
-          <p className="text-gray-400 mt-2">
-            Kubernetes • AWS • DevOps • Cloud Architecture • Distributed Systems
-          </p>
+          {/* Hidden content */}
+          <div className="max-h-0 overflow-hidden group-hover:max-h-32 transition-all duration-500">
+
+            <p className="text-gray-400 mt-3">
+              Kubernetes • AWS • DevOps • Cloud Architecture • Distributed Systems
+            </p>
+
+          </div>
+
         </div>
 
       </div>
