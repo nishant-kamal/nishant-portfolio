@@ -1,4 +1,16 @@
+"use client"
+import { useState } from "react"
+
 export default function Contact() {
+
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleSubmit = () => {
+    setTimeout(() => {
+      setSubmitted(true)
+    }, 800)
+  }
+
   return (
     <section id="contact" className="max-w-6xl mx-auto px-6 py-24 text-center">
 
@@ -12,10 +24,10 @@ export default function Contact() {
 
       <div className="max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-xl p-8">
 
-        {/* hidden iframe to avoid redirect */}
         <iframe name="hidden_iframe" style={{ display: "none" }} />
 
         <form
+          onSubmit={handleSubmit}
           action="https://docs.google.com/forms/d/e/1FAIpQLSdFDvV17pSY1mYeHVLXUdo6su3l2jEhJTwNr4mtI-VBqMudhA/formResponse"
           method="POST"
           target="hidden_iframe"
@@ -53,6 +65,12 @@ export default function Contact() {
           </button>
 
         </form>
+
+        {submitted && (
+          <p className="text-green-400 mt-6">
+            ✅ Message sent successfully
+          </p>
+        )}
 
       </div>
 
