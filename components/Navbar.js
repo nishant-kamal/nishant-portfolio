@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 const navItems = [
-  { name: "About",      link: "#about" },
+  { name: "About",     link: "#about" },
   { name: "Tech Stack", link: "#skills" },
   { name: "Projects",   link: "#projects" },
   { name: "Education",  link: "#education" },
@@ -23,7 +23,7 @@ export default function Navbar() {
 
   // Highlight active section based on scroll
   useEffect(() => {
-    const ids = navItems.map((n) => n.link.slice(1));
+    const ids = navItems.map((n) => n.link.slice(1)).concat(["home"]);
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -64,10 +64,9 @@ export default function Navbar() {
           display: flex; align-items: center; justify-content: space-between;
         }
 
-        /* Logo Area */
         .nav-logo {
           display: flex; align-items: center; gap: 12px;
-          text-decoration: none; group;
+          text-decoration: none;
         }
         .logo-mark {
           width: 36px; height: 36px; border-radius: 10px;
@@ -87,7 +86,6 @@ export default function Navbar() {
           letter-spacing: 0.1em; text-transform: uppercase;
         }
 
-        /* Desktop Nav */
         .nav-links { display: flex; align-items: center; gap: 8px; }
         @media (max-width: 850px) { .nav-links { display: none; } }
 
@@ -97,7 +95,6 @@ export default function Navbar() {
           text-transform: uppercase; color: #94a3b8;
           text-decoration: none; padding: 8px 16px;
           border-radius: 8px; transition: all 0.2s;
-          position: relative;
         }
         .nav-link:hover { color: #f8fafc; background: rgba(255, 255, 255, 0.04); }
         .nav-link.active { color: #38bdf8; background: rgba(56, 189, 248, 0.05); }
@@ -115,7 +112,6 @@ export default function Navbar() {
           box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
         }
 
-        /* Mobile Controls */
         .nav-burger {
           display: none; background: none; border: none;
           color: #94a3b8; padding: 8px; cursor: pointer;
@@ -127,18 +123,17 @@ export default function Navbar() {
           background: currentColor; margin: 4px 0;
           transition: 0.3s; border-radius: 2px;
         }
-        .open .l1 { transform: translateY(6px) rotate(45deg); }
-        .open .l2 { opacity: 0; }
-        .open .l3 { transform: translateY(-6px) rotate(-45deg); }
+        .nav-burger.open .l1 { transform: translateY(6px) rotate(45deg); }
+        .nav-burger.open .l2 { opacity: 0; }
+        .nav-burger.open .l3 { transform: translateY(-6px) rotate(-45deg); }
 
-        /* Mobile Drawer */
         .mobile-drawer {
           position: absolute; top: 100%; left: 0; right: 0;
           background: #020617; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
           overflow: hidden; transition: all 0.4s ease;
           max-height: 0; opacity: 0;
         }
-        .mobile-drawer.open { max-height: 400px; opacity: 1; padding: 20px 0; }
+        .mobile-drawer.open { max-height: 450px; opacity: 1; padding: 20px 0; }
 
         .drawer-inner { display: flex; flex-direction: column; padding: 0 24px; gap: 8px; }
         .mobile-link {
@@ -149,7 +144,6 @@ export default function Navbar() {
         }
         .mobile-link.active { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.2); }
 
-        /* Progress Bar */
         .scroll-progress {
           position: absolute; bottom: 0; left: 0;
           height: 2px; background: linear-gradient(90deg, #38bdf8, #818cf8);
@@ -160,7 +154,6 @@ export default function Navbar() {
 
       <nav className={`nav-root ${scrolled ? "scrolled" : ""}`}>
         <div className="nav-inner">
-          {/* Logo */}
           <a href="#home" className="nav-logo">
             <div className="logo-mark">NK</div>
             <div className="logo-text-wrap">
@@ -169,7 +162,6 @@ export default function Navbar() {
             </div>
           </a>
 
-          {/* Desktop Nav */}
           <div className="nav-links">
             {navItems.map((item) => (
               <a
@@ -180,12 +172,11 @@ export default function Navbar() {
                 {item.name}
               </a>
             ))}
-            <a href="/resume.pdf" target="_blank" className="nav-resume">
+            <a href="/resume.pdf" download className="nav-resume">
               Resume ↗
             </a>
           </div>
 
-          {/* Mobile Burger */}
           <button className={`nav-burger ${open ? "open" : ""}`} onClick={() => setOpen(!open)}>
             <span className="burger-line l1"></span>
             <span className="burger-line l2"></span>
@@ -193,7 +184,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Drawer */}
         <div className={`mobile-drawer ${open ? "open" : ""}`}>
           <div className="drawer-inner">
             {navItems.map((item) => (
@@ -206,7 +196,7 @@ export default function Navbar() {
                 {item.name}
               </a>
             ))}
-            <a href="/resume.pdf" target="_blank" className="nav-resume" style={{ textAlign: 'center', marginLeft: 0, marginTop: '10px' }}>
+            <a href="/resume.pdf" download className="nav-resume" style={{ textAlign: 'center', marginLeft: 0, marginTop: '10px' }}>
               Resume ↗
             </a>
           </div>
@@ -224,7 +214,7 @@ function ScrollIndicator() {
     const handle = () => {
       const win = window.scrollY;
       const doc = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      setPrg((win / doc) * 100);
+      setPrg(doc > 0 ? (win / doc) * 100 : 0);
     };
     window.addEventListener("scroll", handle);
     return () => window.removeEventListener("scroll", handle);
