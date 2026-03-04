@@ -1,21 +1,25 @@
 export default function Contact() {
   return (
-    <section style={{ marginBottom: "60px" }}>
-      <h2>Contact</h2>
+    <section id="contact" className="mt-24 text-center">
 
-      <p>Email: nishant.kamal2015@gmail.com</p>
+      <h2 className="text-3xl font-bold">Contact</h2>
 
-      <p>
-        GitHub:
-        <a
-          href="https://github.com/imnishantdevops"
-          target="_blank"
-        >
-          github.com/imnishantdevops
-        </a>
+      <p className="mt-4 text-gray-400">
+        nishant.kamal2015@gmail.com
       </p>
 
-      <p>Location: New Delhi, India</p>
+      <a
+        href="https://github.com/imnishantdevops"
+        target="_blank"
+        className="block mt-2 text-indigo-400 hover:text-indigo-300"
+      >
+        github.com/imnishantdevops
+      </a>
+
+      <p className="text-gray-400 mt-2">
+        New Delhi, India
+      </p>
+
     </section>
-  );
+  )
 }
