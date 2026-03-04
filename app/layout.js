@@ -17,34 +17,43 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata = {
   metadataBase: new URL("https://nishantkamal.com"),
   title: {
-    default: "Nishant Kamal | Site Reliability Engineer",
+    default: "Nishant Kamal | Site Reliability & Platform Engineer",
     template: "%s | Nishant Kamal",
   },
   description:
-    "Expert Site Reliability Engineer with 6+ years specializing in Kubernetes, AWS, and Platform Engineering. Building resilient, scalable systems that never sleep.",
+    "Expert Site Reliability Engineer with 6+ years experience and M.Tech in Cloud (BITS Pilani). Specializing in Kubernetes, AWS, and GitOps to build resilient, self-healing platforms.",
   keywords: [
     "Nishant Kamal",
     "Site Reliability Engineer",
-    "SRE Portfolio",
+    "Platform Engineer",
     "Kubernetes Expert",
-    "AWS Infrastructure",
-    "Terraform",
+    "AWS Architect",
+    "FinOps",
     "GitOps",
-    "Platform Engineering",
+    "BITS Pilani Cloud M.Tech",
   ],
   authors: [{ name: "Nishant Kamal" }],
   openGraph: {
     title: "Nishant Kamal | SRE & Platform Architect",
-    description: "Designing resilient infrastructure and scalable cloud platforms. Explore the tech stack and production tools.",
+    description: "Engineering resilient cloud infrastructure and scalable platforms. Explore my technical stack and projects.",
     url: "https://nishantkamal.com",
     siteName: "Nishant Kamal Portfolio",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png", // Ensure you create a 1200x630px preview image
+        width: 1200,
+        height: 630,
+        alt: "Nishant Kamal Portfolio Preview",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nishant Kamal | SRE",
-    description: "Production-ready systems and cloud-native architecture.",
+    title: "Nishant Kamal | Site Reliability Engineer",
+    description: "Production-ready systems and cloud-native architecture expert.",
+    creator: "@imnishant19", // Updated with your likely handle
   },
   robots: {
     index: true,
@@ -59,17 +68,15 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Updated theme color for Midnight Theme */}
         <meta name="theme-color" content="#020617" />
         <meta name="color-scheme" content="dark" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className={inter.className} style={{ background: '#020617' }}>
+      <body className={inter.className} style={{ background: '#020617', margin: 0 }}>
 
         {/* ── Background Noise Texture ── */}
         <div className="layout-noise" aria-hidden="true" />
 
-        {/* ── Top-left Cyan Glow ── */}
+        {/* ── Top-left Cyan/Purple Glow ── */}
         <div className="layout-glow-tl" aria-hidden="true" />
 
         {/* ── Navbar ── */}
@@ -104,7 +111,7 @@ export default function RootLayout({ children }) {
             z-index: 1;
           }
 
-          /* Subtle digital noise */
+          /* Subtle digital noise to add "DevOps" texture */
           .layout-noise {
             position: fixed;
             inset: 0;
@@ -115,12 +122,11 @@ export default function RootLayout({ children }) {
             mix-blend-mode: overlay;
           }
 
-          /* Updated Glow: Cyan/Purple Tint */
           .layout-glow-tl {
             position: fixed;
             top: 0; left: 0;
             width: 50vw; height: 50vh;
-            background: radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+            background: radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
             pointer-events: none;
             z-index: 0;
           }
@@ -130,7 +136,7 @@ export default function RootLayout({ children }) {
             z-index: 10;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             background: #020617;
-            padding: 2rem;
+            padding: 3rem 2rem;
           }
 
           .layout-footer-inner {
@@ -156,8 +162,8 @@ export default function RootLayout({ children }) {
           .footer-dot {
             width: 6px; height: 6px;
             border-radius: 50%;
-            background: #38bdf8;
-            box-shadow: 0 0 10px #38bdf8;
+            background: #8b5cf6;
+            box-shadow: 0 0 10px #8b5cf6;
           }
 
           .footer-copy {
@@ -167,7 +173,7 @@ export default function RootLayout({ children }) {
           }
 
           @media (max-width: 768px) {
-            .layout-footer-inner { flex-direction: column; text-align: center; }
+            .layout-footer-inner { flex-direction: column; text-align: center; gap: 1.5rem; }
             .footer-stack { display: none; }
           }
         `}</style>
