@@ -6,7 +6,7 @@ const categories = [
   {
     label: "Orchestration",
     color: "#38bdf8",
-    glow: "rgba(56,189,248,.12)",
+    glow: "rgba(56,189,248,.15)",
     skills: [
       { name: "Kubernetes", level: 95, icon: "☸" },
       { name: "Docker",     level: 92, icon: "⬡" },
@@ -17,9 +17,9 @@ const categories = [
   {
     label: "Cloud & Infra",
     color: "#fb923c",
-    glow: "rgba(251,146,60,.12)",
+    glow: "rgba(251,146,60,.15)",
     skills: [
-      { name: "AWS",       level: 90, icon: "⬢" },
+      { name: "AWS",        level: 90, icon: "⬢" },
       { name: "Terraform", level: 88, icon: "◇" },
       { name: "Karpenter", level: 78, icon: "↑" },
       { name: "EC2 / EKS", level: 90, icon: "⬡" },
@@ -28,7 +28,7 @@ const categories = [
   {
     label: "Observability",
     color: "#a78bfa",
-    glow: "rgba(167,139,250,.12)",
+    glow: "rgba(167,139,250,.15)",
     skills: [
       { name: "Prometheus", level: 92, icon: "◉" },
       { name: "Grafana",    level: 88, icon: "▦" },
@@ -39,7 +39,7 @@ const categories = [
   {
     label: "Data & Streaming",
     color: "#34d399",
-    glow: "rgba(52,211,153,.12)",
+    glow: "rgba(52,211,153,.15)",
     skills: [
       { name: "Kafka",    level: 85, icon: "⇌" },
       { name: "Debezium", level: 78, icon: "◈" },
@@ -51,172 +51,266 @@ const categories = [
 
 export default function Skills() {
   const [activeCategory, setActiveCategory] = useState(0);
-
   const cat = categories[activeCategory];
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-        .skills-section { font-family: 'Syne', sans-serif; }
+        .skills-container {
+          font-family: 'Inter', -apple-system, sans-serif;
+          color: #f8fafc;
+          max-width: 1100px;
+          margin: 60px auto;
+          padding: 0 24px;
+        }
 
         .skills-eyebrow {
-          font-family: 'DM Mono', monospace; font-size: .7rem;
-          letter-spacing: .2em; text-transform: uppercase;
-          color: #38bdf8; background: rgba(56,189,248,.08);
-          border: 1px solid rgba(56,189,248,.2);
-          padding: 4px 12px; border-radius: 4px;
-          display: inline-block; margin-bottom: 20px;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.75rem;
+          font-weight: 500;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: #94a3b8;
+          margin-bottom: 16px;
+          display: block;
         }
+
         .skills-heading {
-          font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
-          letter-spacing: -.02em; color: #f8fafc;
-          margin-bottom: 48px; line-height: 1.1;
+          font-size: clamp(2.5rem, 6vw, 3.75rem);
+          font-weight: 800;
+          line-height: 1.1;
+          letter-spacing: -0.03em;
+          margin-bottom: 48px;
         }
-        .skills-heading em { font-style: normal; color: #38bdf8; }
 
-        /* tab row */
-        .skills-tabs {
-          display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px;
+        .skills-heading span {
+          background: linear-gradient(to right, #38bdf8, #818cf8);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
-        .skills-tab {
-          font-family: 'DM Mono', monospace; font-size: .68rem;
-          letter-spacing: .1em; text-transform: uppercase;
-          padding: 8px 18px; border-radius: 8px;
-          border: 1px solid rgba(255,255,255,.07);
-          background: rgba(255,255,255,.03);
-          color: #475569; cursor: pointer;
-          transition: all .2s;
-        }
-        .skills-tab:hover { color: #94a3b8; border-color: rgba(255,255,255,.12); }
-        .skills-tab.active { color: var(--tab-color); border-color: var(--tab-color-30); background: var(--tab-color-10); }
 
-        /* skill grid */
+        /* Nav Tabs */
+        .tabs-nav {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          margin-bottom: 40px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          padding-bottom: 20px;
+        }
+
+        .tab-btn {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.85rem;
+          padding: 10px 20px;
+          border-radius: 99px;
+          border: 1px solid transparent;
+          background: rgba(255, 255, 255, 0.03);
+          color: #64748b;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn:hover {
+          color: #f8fafc;
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .tab-btn.active {
+          background: var(--bg);
+          color: var(--clr);
+          border-color: var(--border);
+          box-shadow: 0 4px 20px var(--glow);
+        }
+
+        /* Skills Grid */
         .skills-grid {
-          display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+          gap: 24px;
         }
-        @media (max-width: 640px) { .skills-grid { grid-template-columns: 1fr; } }
 
-        .skill-row {
-          background: rgba(15,20,35,.7);
-          border: 1px solid rgba(255,255,255,.06);
-          border-radius: 14px; padding: 20px 22px;
-          backdrop-filter: blur(10px);
-          transition: border-color .25s, box-shadow .25s, transform .2s;
+        @media (max-width: 640px) {
+          .skills-grid { grid-template-columns: 1fr; }
         }
-        .skill-row:hover { transform: translateX(4px); }
 
-        .skill-top {
-          display: flex; justify-content: space-between;
-          align-items: center; margin-bottom: 12px;
+        .skill-card {
+          background: rgba(30, 41, 59, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 20px;
+          padding: 28px;
+          transition: all 0.4s ease;
+          position: relative;
+          overflow: hidden;
         }
+
+        .skill-card:hover {
+          transform: translateY(-5px);
+          border-color: rgba(255, 255, 255, 0.1);
+          background: rgba(30, 41, 59, 0.6);
+        }
+
+        .skill-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+
+        .skill-info {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+        }
+
+        .icon-box {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 12px;
+          font-size: 1.2rem;
+          background: var(--glow);
+          color: var(--clr);
+          border: 1px solid var(--border);
+        }
+
         .skill-name {
-          display: flex; align-items: center; gap: 10px;
-          font-size: .88rem; font-weight: 600; color: #e2e8f0;
-        }
-        .skill-icon {
-          font-size: .75rem; width: 26px; height: 26px;
-          border-radius: 7px; display: flex; align-items: center; justify-content: center;
-          border: 1px solid; font-family: monospace;
-        }
-        .skill-pct {
-          font-family: 'DM Mono', monospace; font-size: .65rem;
-          letter-spacing: .06em; color: #475569;
+          font-size: 1.15rem;
+          font-weight: 600;
+          color: #f1f5f9;
         }
 
-        .skill-track {
-          height: 3px; background: rgba(255,255,255,.05);
-          border-radius: 3px; overflow: hidden;
-        }
-        .skill-fill {
-          height: 100%; border-radius: 3px;
-          transition: width 1s cubic-bezier(.4,0,.2,1);
+        .skill-val {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.9rem;
+          color: #94a3b8;
         }
 
-        /* all-skills tag cloud at bottom */
-        .all-skills-label {
-          font-family: 'DM Mono', monospace; font-size: .65rem;
-          letter-spacing: .14em; text-transform: uppercase;
-          color: #1e293b; margin-top: 40px; margin-bottom: 16px;
+        /* Progress Bar */
+        .bar-container {
+          height: 6px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 10px;
+          width: 100%;
         }
-        .all-skills-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
-        .all-tag {
-          font-family: 'DM Mono', monospace; font-size: .65rem;
-          letter-spacing: .06em;
-          padding: 5px 12px; border-radius: 6px;
-          border: 1px solid rgba(255,255,255,.06);
-          background: rgba(255,255,255,.02);
-          color: #334155;
-          transition: color .2s, border-color .2s;
+
+        .bar-fill {
+          height: 100%;
+          border-radius: 10px;
+          position: relative;
+          transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+          background: linear-gradient(90deg, var(--clr), var(--clr-alt));
+          box-shadow: 0 0 15px var(--glow);
         }
-        .all-tag:hover { color: #64748b; border-color: rgba(255,255,255,.1); }
+
+        /* Footer Tag Cloud */
+        .footer-cloud {
+          margin-top: 64px;
+          padding-top: 32px;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cloud-title {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: #475569;
+          margin-bottom: 20px;
+          display: block;
+        }
+
+        .tags-wrap {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .tech-tag {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.75rem;
+          padding: 6px 14px;
+          background: rgba(15, 23, 42, 0.6);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 6px;
+          color: #94a3b8;
+          transition: all 0.2s ease;
+        }
+
+        .tech-tag:hover {
+          border-color: #38bdf8;
+          color: #38bdf8;
+          transform: scale(1.05);
+        }
       `}</style>
 
-      <section id="skills" className="skills-section">
-        <span className="skills-eyebrow">03 — Tech Stack</span>
+      <section className="skills-container">
+        <span className="skills-eyebrow">Expertise // 03</span>
         <h2 className="skills-heading">
-          Tools I trust<br />
-          <em>in production.</em>
+          Technical <span>Stack</span><br />
+          & Ecosystem.
         </h2>
 
-        {/* category tabs */}
-        <div className="skills-tabs">
+        <nav className="tabs-nav">
           {categories.map((c, i) => (
             <button
               key={c.label}
-              className={`skills-tab ${activeCategory === i ? "active" : ""}`}
+              className={`tab-btn ${activeCategory === i ? "active" : ""}`}
               style={{
-                "--tab-color": c.color,
-                "--tab-color-30": c.color + "40",
-                "--tab-color-10": c.color + "14",
+                "--clr": c.color,
+                "--bg": c.color + "15",
+                "--border": c.color + "40",
+                "--glow": c.glow,
               }}
               onClick={() => setActiveCategory(i)}
             >
               {c.label}
             </button>
           ))}
-        </div>
+        </nav>
 
-        {/* skill rows */}
         <div className="skills-grid">
           {cat.skills.map((s) => (
             <div
               key={s.name}
-              className="skill-row"
-              style={{ borderColor: cat.color + "25", boxShadow: `0 4px 24px ${cat.glow}` }}
+              className="skill-card"
+              style={{ 
+                "--clr": cat.color, 
+                "--clr-alt": cat.color + "99",
+                "--glow": cat.glow,
+                "--border": cat.color + "30" 
+              }}
             >
-              <div className="skill-top">
-                <div className="skill-name">
-                  <span
-                    className="skill-icon"
-                    style={{ color: cat.color, borderColor: cat.color + "40", background: cat.color + "12" }}
-                  >
-                    {s.icon}
-                  </span>
-                  {s.name}
+              <div className="skill-header">
+                <div className="skill-info">
+                  <div className="icon-box">{s.icon}</div>
+                  <span className="skill-name">{s.name}</span>
                 </div>
-                <span className="skill-pct">{s.level}%</span>
+                <span className="skill-val">{s.level}%</span>
               </div>
-              <div className="skill-track">
-                <div
-                  className="skill-fill"
-                  style={{
-                    width: `${s.level}%`,
-                    background: `linear-gradient(90deg, ${cat.color}, ${cat.color}88)`,
-                  }}
+              <div className="bar-container">
+                <div 
+                  className="bar-fill" 
+                  style={{ width: `${s.level}%` }}
                 />
               </div>
             </div>
           ))}
         </div>
 
-        {/* tag cloud */}
-        <div className="all-skills-label">All technologies</div>
-        <div className="all-skills-wrap">
-          {categories.flatMap((c) => c.skills.map((s) => s.name))
-            .concat(["SLOs/SLIs", "CI/CD", "Observability", "Service Mesh", "GitOps", "M.Tech Cloud"])
-            .map((t) => <span key={t} className="all-tag">{t}</span>)}
+        <div className="footer-cloud">
+          <span className="cloud-title">Extended Toolset</span>
+          <div className="tags-wrap">
+            {categories.flatMap((c) => c.skills.map((s) => s.name))
+              .concat(["SLOs", "CI/CD", "Service Mesh", "GitOps", "OpenTelemetry", "Linux Kernel"])
+              .map((tag) => (
+                <span key={tag} className="tech-tag">{tag}</span>
+              ))}
+          </div>
         </div>
       </section>
     </>
