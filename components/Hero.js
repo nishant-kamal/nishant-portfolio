@@ -1,23 +1,17 @@
 "use client";
-
 import { useEffect, useState } from "react";
-
-const roles = ["Site Reliability Engineer", "Platform Engineering", "Devops Engineer"];
-
+const roles = ["Site Reliability Engineer", "Platform Architect", "Control Plane Engineer"];
 const bentoHighlights = [
   { icon: "☸️", title: "K8S ECOSYSTEM", desc: "Scaling production-grade clusters with zero-downtime and high availability." },
   { icon: "☁️", title: "AWS ARCHITECTURE", desc: "Designing secure, multi-region cloud infrastructure optimized for cost." },
   { icon: "✈️", title: "CROSSPLANE & GITOPS", desc: "Building K8s-native control planes to manage cloud resources." }
 ];
-
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [mounted, setMounted] = useState(false);
-
   useEffect(() => { setMounted(true); }, []);
-
   useEffect(() => {
     if (!mounted) return;
     const current = roles[roleIndex];
@@ -38,10 +32,28 @@ export default function Hero() {
   return (
     <section className="relative text-white">
       <style>{`
-        .hero-headline { font-size: clamp(3rem, 7vw, 5rem); font-weight: 800; line-height: 1; letter-spacing: -0.05em; }
+        .hero-headline { 
+          font-size: clamp(3rem, 7vw, 5rem); 
+          font-weight: 800; 
+          line-height: 1; 
+          letter-spacing: -0.05em; 
+        }
         .text-purple { color: #a78bfa; }
-        .profile-frame { width: 340px; height: 340px; border-radius: 50%; padding: 8px; background: linear-gradient(135deg, rgba(167, 139, 250, 0.4), transparent); box-shadow: 0 0 60px rgba(167, 139, 250, 0.1); }
-        .bento-card { background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.05); padding: 28px; border-radius: 20px; transition: all 0.3s ease; }
+        .profile-frame { 
+          width: 340px; 
+          height: 340px; 
+          border-radius: 50%; 
+          padding: 8px; 
+          background: linear-gradient(135deg, rgba(167, 139, 250, 0.4), transparent); 
+          box-shadow: 0 0 60px rgba(167, 139, 250, 0.1); 
+        }
+        .bento-card { 
+          background: #0f172a; 
+          border: 1px solid rgba(255, 255, 255, 0.05); 
+          padding: 28px; 
+          border-radius: 20px; 
+          transition: all 0.3s ease; 
+        }
       `}</style>
       
       <div className="grid items-center gap-12 lg:grid-cols-[1.3fr_0.7fr] mb-20">
@@ -59,9 +71,9 @@ export default function Hero() {
             &gt; {displayed}<span className="animate-pulse">_</span>
           </div>
 
+          {/* Cleaned Text - Citation markers removed */}
           <p className="mb-10 max-w-2xl text-xl leading-relaxed text-slate-400">
-            I’m <strong>Nishant Kamal</strong>, an SRE with <strong>6+ years</strong> of experience building 
-            [cite_start]reliable platforms on Kubernetes and AWS[cite: 56, 139].
+            [cite_start]I’m <strong>Nishant Kamal</strong>, an SRE with <strong>6+ years</strong> of experience [cite: 56] [cite_start]building reliable platforms on Kubernetes and AWS[cite: 52, 53].
           </p>
 
           <div className="flex flex-wrap gap-5">
@@ -77,7 +89,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Highlights fill the gap between Hero and Stats */}
       <div className="grid gap-6 md:grid-cols-3">
         {bentoHighlights.map((item, idx) => (
           <div key={idx} className="bento-card hover:border-[#a78bfa]/40 transition-colors">
