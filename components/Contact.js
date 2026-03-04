@@ -12,7 +12,7 @@ export default function Contact() {
 
       <div className="max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-xl p-8">
 
-        {/* hidden iframe */}
+        {/* hidden iframe to avoid redirect */}
         <iframe name="hidden_iframe" style={{ display: "none" }} />
 
         <form
