@@ -29,17 +29,16 @@ export default function Hero() {
           </a>
         </div>
       </div>
-
-      <div className="flex justify-center">
-        <Image
-          src="/nishant-portfolio/profile.png"
-          alt="Nishant Kamal"
-          width={400}
-          height={400}
-          className="w-80 h-80 rounded-full object-cover border border-gray-700"
-        />
-      </div>
-
+    <div className="flex justify-center">
+      <Image
+        src="/nishant-portfolio/profile.png"
+        alt="Nishant Kamal"
+        width={400}
+        height={400}
+        unoptimized
+        className="w-80 h-80 rounded-full object-cover border border-gray-700"
+      />
+    </div>
     </section>
   )
 }
