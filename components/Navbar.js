@@ -18,25 +18,30 @@ export default function Navbar() {
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-6 text-sm text-gray-300 items-center">
 
-          <a href="#skills" className="hover:text-white">
+          <a href="#about" className="hover:text-white transition">
+            About
+          </a>
+
+          <a href="#skills" className="hover:text-white transition">
             Tech Stack
           </a>
 
-          <a href="#projects" className="hover:text-white">
+          <a href="#projects" className="hover:text-white transition">
             Projects
           </a>
 
-          <a href="#education" className="hover:text-white">
+          <a href="#education" className="hover:text-white transition">
             Education
           </a>
 
-          <a href="#contact" className="hover:text-white">
+          <a href="#contact" className="hover:text-white transition">
             Contact
           </a>
 
           <a
             href="/resume.pdf"
-            className="border border-slate-600 px-3 py-1 rounded-lg hover:border-white"
+            target="_blank"
+            className="border border-slate-600 px-3 py-1 rounded-lg hover:border-white transition"
           >
             Resume
           </a>
@@ -45,7 +50,7 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-gray-300"
+          className="md:hidden text-gray-300 text-xl"
           onClick={() => setOpen(!open)}
         >
           ☰
@@ -56,6 +61,10 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {open && (
         <div className="md:hidden px-6 pb-4 flex flex-col gap-4 text-gray-300">
+
+          <a href="#about" onClick={() => setOpen(false)}>
+            About
+          </a>
 
           <a href="#skills" onClick={() => setOpen(false)}>
             Tech Stack
@@ -75,6 +84,7 @@ export default function Navbar() {
 
           <a
             href="/resume.pdf"
+            target="_blank"
             className="border border-slate-600 px-3 py-1 rounded-lg w-fit"
           >
             Resume
