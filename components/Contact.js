@@ -1,44 +1,55 @@
-import { FaGithub, FaLinkedin } from "react-icons/fa"
-
 export default function Contact() {
   return (
     <section id="contact" className="max-w-6xl mx-auto px-6 py-24 text-center">
 
-      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+      <h2 className="text-3xl md:text-4xl font-bold mb-6">
         Let’s Connect
       </h2>
 
       <p className="text-gray-400 mb-12 max-w-xl mx-auto">
-        Let’s connect to build reliable and scalable infrastructure.
+        Interested in building reliable and scalable infrastructure.
       </p>
 
       <div className="max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-xl p-8">
 
-        <div className="flex justify-center gap-8 text-3xl">
+        <form
+          action="https://docs.google.com/forms/d/e/1FAIpQLSdFDvV17pSY1mYeHVLXUdo6su3l2jEhJTwNr4mtI-VBqMudhA/formResponse"
+          method="POST"
+          target="_blank"
+          className="space-y-4"
+        >
 
-          {/* GitHub */}
-          <a
-            href="https://github.com/nishant-kamal"
-            target="_blank"
-            className="text-gray-300 hover:text-white transition"
+          <input
+            name="entry.2005620554"
+            placeholder="Name"
+            className="w-full p-3 bg-slate-800 border border-slate-700 rounded"
+            required
+          />
+
+          <input
+            name="entry.1045781291"
+            type="email"
+            placeholder="Email"
+            className="w-full p-3 bg-slate-800 border border-slate-700 rounded"
+            required
+          />
+
+          <textarea
+            name="entry.1065046570"
+            placeholder="Message"
+            rows="4"
+            className="w-full p-3 bg-slate-800 border border-slate-700 rounded"
+            required
+          />
+
+          <button
+            type="submit"
+            className="bg-indigo-600 hover:bg-indigo-500 px-6 py-3 rounded-lg w-full"
           >
-            <FaGithub />
-          </a>
+            Send Message
+          </button>
 
-          {/* LinkedIn */}
-          <a
-            href="https://www.linkedin.com/in/imnishant19"
-            target="_blank"
-            className="text-gray-300 hover:text-white transition"
-          >
-            <FaLinkedin />
-          </a>
-
-        </div>
-
-        <p className="text-gray-400 mt-8">
-          New Delhi, India
-        </p>
+        </form>
 
       </div>
 
