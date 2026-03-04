@@ -1,71 +1,64 @@
 import Hero from "../components/Hero"
 import About from "../components/About"
-import Skills from "../components/Skills"
 import Stats from "../components/Stats"
+import Skills from "../components/Skills"
 import Projects from "../components/Projects"
 import Education from "../components/Education"
 import Contact from "../components/Contact"
-export const metadata = {
-  title: "Nishant Kamal | Site Reliability Engineer",
-  description:
-    "Portfolio of Nishant Kamal, a Site Reliability Engineer specializing in Kubernetes, Kafka, AWS, Terraform, and DevOps automation.",
-}
 
 export default function Home() {
   return (
-    <>
-      <main
-        style={{
-          background: "#050810",
-          minHeight: "100vh",
-        }}
-      >
-        {/* Hero — full width, no container */}
+    <main className="bg-[#020617] min-h-screen selection:bg-cyan-500/30 selection:text-cyan-200">
+      
+      {/* SECTION 0: HERO (The Hook) */}
+      <section id="home" className="min-h-[90vh] flex items-center justify-center border-b border-white/5">
+        <div className="max-w-6xl mx-auto px-6 w-full">
+          <Hero />
+        </div>
+      </section>
+
+      {/* SECTION 1: ABOUT (The Story) */}
+      <section id="about" className="py-24 border-b border-white/5 relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-6">
-          <section id="home">
-            <Hero />
-          </section>
+          <About />
         </div>
-        {/* About */}
-        <div className="max-w-6xl mx-auto px-6 py-16">
-          <section id="about">
-            <About />
-          </section>
-        </div>
-        {/* Skills */}
-        <div className="max-w-6xl mx-auto px-6 py-16">
-          <section id="skills">
-            <Skills />
-          </section>
-        </div>
-        {/* Stats — contained */}
-        <div className="max-w-6xl mx-auto px-6 py-16">
-          <section id="stats">
-            <Stats />
-          </section>
-        </div>
+      </section>
 
-        {/* Projects */}
-        <div className="max-w-6xl mx-auto px-6 py-16">
-          <section id="projects">
-            <Projects />
-          </section>
+      {/* SECTION 2: STATS (The Proof) */}
+      <section id="stats" className="py-20 bg-slate-950/30">
+        <div className="max-w-6xl mx-auto px-6">
+          <Stats />
         </div>
+      </section>
 
-        {/* Education */}
-        <div className="max-w-6xl mx-auto px-6 py-16">
-          <section id="education">
-            <Education />
-          </section>
+      {/* SECTION 3: SKILLS (The Toolkit) */}
+      <section id="skills" className="py-24 border-b border-white/5">
+        <div className="max-w-6xl mx-auto px-6">
+          <Skills />
         </div>
+      </section>
 
-        {/* Contact */}
-        <div className="max-w-6xl mx-auto px-6 py-16">
-          <section id="contact">
-            <Contact />
-          </section>
+      {/* SECTION 4: PROJECTS (The Evidence) */}
+      <section id="projects" className="py-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <Projects />
         </div>
-      </main>
-    </>
+      </section>
+
+      {/* SECTION 5: EDUCATION */}
+      <section id="education" className="py-24 bg-slate-950/20">
+        <div className="max-w-6xl mx-auto px-6">
+          <Education />
+        </div>
+      </section>
+
+      {/* SECTION 6: CONTACT (The CTA) */}
+      <section id="contact" className="py-32">
+        <div className="max-w-4xl mx-auto px-6">
+          <Contact />
+        </div>
+      </section>
+
+    </main>
   )
 }
