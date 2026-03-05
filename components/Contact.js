@@ -2,202 +2,241 @@
 
 import { useState } from "react";
 
+// FIX 1: Removed @import Google Fonts — loaded via next/font in layout.js
+
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = () => {
-    // Smooth transition to success state
+  // FIX 2: handleSubmit now receives the event so we can call
+  // preventDefault and show a loading state before success
+  const handleSubmit = (e) => {
+    // We do NOT preventDefault here — the form submits to Google Forms
+    // via the hidden iframe target. We just track the UI state.
+    setSubmitting(true);
     setTimeout(() => {
+      setSubmitting(false);
       setSubmitted(true);
-    }, 500);
+    }, 800);
   };
 
   return (
-    <>
+    // FIX 3: Removed duplicate <section id="contact"> and redundant
+    // background + padding — set by page.js wrapper. Padding reduced.
+    <div className="contact-root">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap');
-
         .contact-root {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          padding: 120px 24px;
-          background: #020617;
+          font-family: var(--font-sans);
+          padding: 20px 0 60px;
           position: relative;
         }
-
         .contact-container {
-          max-width: 800px;
+          max-width: 720px;
           margin: 0 auto;
           text-align: center;
         }
-
         .contact-headline {
           font-size: clamp(2.5rem, 6vw, 4rem);
           font-weight: 800;
           letter-spacing: -0.04em;
           color: #f8fafc;
-          margin-bottom: 24px;
+          margin: 0 0 20px;
+          line-height: 1.1;
         }
-
-        .contact-headline em {
-          font-style: normal;
-          color: #8b5cf6;
-        }
+        .contact-headline em { font-style: normal; color: #8b5cf6; }
 
         .contact-sub {
-          color: #94a3b8;
-          font-size: 1.1rem;
-          margin-bottom: 60px;
-          max-width: 500px;
-          margin-left: auto;
-          margin-right: auto;
+          color: #64748b;
+          font-size: 1rem;
+          line-height: 1.7;
+          margin: 0 auto 48px;
+          max-width: 480px;
         }
 
         .form-card {
-          background: rgba(15, 23, 42, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(12px);
-          border-radius: 32px;
-          padding: 48px;
+          background: rgba(15, 23, 42, 0.45);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border-radius: 28px;
+          padding: 40px;
           text-align: left;
           position: relative;
           overflow: hidden;
         }
-
+        /* Purple top accent line */
         .form-card::before {
           content: "";
           position: absolute;
           top: 0; left: 0; right: 0; height: 2px;
           background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+          pointer-events: none;
         }
 
-        .input-group {
-          margin-bottom: 24px;
-        }
+        .input-group { margin-bottom: 20px; }
 
         .input-label {
           display: block;
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.7rem;
+          font-family: var(--font-mono);
+          font-size: 0.68rem;
           text-transform: uppercase;
+          letter-spacing: 0.12em;
           color: #475569;
           margin-bottom: 8px;
-          letter-spacing: 0.1em;
         }
 
         .field-style {
           width: 100%;
-          background: rgba(2, 6, 23, 0.6);
+          background: rgba(2, 6, 23, 0.55);
           border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 12px;
-          padding: 14px 18px;
+          border-radius: 10px;
+          padding: 13px 16px;
           color: #f8fafc;
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          transition: all 0.3s ease;
+          font-family: var(--font-sans);
+          font-size: 0.95rem;
+          transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+          /* FIX 4: Added missing font-size to prevent iOS auto-zoom on focus
+             (must be >= 16px on mobile; 0.95rem ≈ 15.2px so we clamp it) */
+          font-size: max(0.95rem, 16px);
         }
-
+        .field-style::placeholder { color: #334155; }
         .field-style:focus {
           outline: none;
           border-color: #8b5cf6;
           background: rgba(139, 92, 246, 0.05);
-          box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+          box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
         }
+
+        /* FIX 5: textarea resize:vertical already set globally in globals.css,
+           but explicitly set here too for safety */
+        textarea.field-style {
+          resize: vertical;
+          min-height: 120px;
+        }
+
+        /* FIX 6: Added htmlFor/id linking between label and input —
+           done in JSX below; the CSS here just adds visual clarity */
 
         .submit-btn {
           width: 100%;
-          padding: 16px;
-          border-radius: 12px;
+          padding: 14px;
+          border-radius: 10px;
           background: #8b5cf6;
-          color: white;
+          color: #fff;
           font-weight: 700;
+          font-family: var(--font-mono);
+          font-size: 0.9rem;
           border: none;
           cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 10px 20px -10px rgba(139, 92, 246, 0.5);
+          transition: background 0.25s, transform 0.2s, box-shadow 0.25s, opacity 0.2s;
+          box-shadow: 0 8px 20px -8px rgba(139, 92, 246, 0.5);
+          letter-spacing: 0.03em;
         }
-
-        .submit-btn:hover {
+        .submit-btn:hover:not(:disabled) {
           background: #7c3aed;
           transform: translateY(-2px);
-          box-shadow: 0 15px 30px -10px rgba(139, 92, 246, 0.6);
+          box-shadow: 0 12px 28px -8px rgba(139, 92, 246, 0.6);
         }
+        .submit-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+        .submit-btn:focus-visible { outline: 2px solid #a78bfa; outline-offset: 3px; }
 
         .success-msg {
-          margin-top: 24px;
-          padding: 16px;
-          background: rgba(34, 197, 94, 0.1);
+          margin-top: 20px;
+          padding: 14px 18px;
+          background: rgba(34, 197, 94, 0.08);
           border: 1px solid rgba(34, 197, 94, 0.2);
-          border-radius: 12px;
+          border-radius: 10px;
           color: #4ade80;
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.85rem;
+          font-family: var(--font-mono);
+          font-size: 0.82rem;
           text-align: center;
+          letter-spacing: 0.02em;
+        }
+
+        @media (max-width: 600px) {
+          .form-card { padding: 28px 22px; }
         }
       `}</style>
 
-      <section id="contact" className="contact-root">
-        <div className="contact-container">
-          <h2 className="contact-headline">
-            Let’s <em>Connect.</em>
-          </h2>
-          <p className="contact-sub">
-            Interested in building reliable, scalable infrastructure or discussing 
-            cloud-native architectures? Drop a message.
-          </p>
+      <div className="contact-container">
+        <h2 className="contact-headline">
+          Let&apos;s <em>Connect.</em>
+        </h2>
+        <p className="contact-sub">
+          Interested in building reliable, scalable infrastructure or discussing
+          cloud-native architectures? Drop a message.
+        </p>
 
-          <div className="form-card">
-            <iframe name="hidden_iframe" style={{ display: "none" }} />
+        <div className="form-card">
+          {/* Hidden iframe for Google Forms silent POST */}
+          <iframe name="hidden_iframe" style={{ display: "none" }} aria-hidden="true" />
 
+          {!submitted ? (
             <form
               action="https://docs.google.com/forms/d/e/1FAIpQLSeOfYCnQBiw8tp8xF3jBA16_EGd4BItPuAavMXxGqmsFjnpMA/formResponse"
               method="POST"
               target="hidden_iframe"
               onSubmit={handleSubmit}
             >
+              {/* FIX 6: Added htmlFor + id to link label → input for accessibility */}
               <div className="input-group">
-                <label className="input-label">Name</label>
+                <label htmlFor="contact-name" className="input-label">Name</label>
                 <input
+                  id="contact-name"
                   name="entry.2005620554"
                   placeholder="Your full name"
                   className="field-style"
+                  autoComplete="name"
                   required
                 />
               </div>
 
               <div className="input-group">
-                <label className="input-label">Email Address</label>
+                <label htmlFor="contact-email" className="input-label">Email Address</label>
                 <input
+                  id="contact-email"
                   name="entry.1045781291"
                   type="email"
                   placeholder="name@company.com"
                   className="field-style"
+                  autoComplete="email"
                   required
                 />
               </div>
 
               <div className="input-group">
-                <label className="input-label">Message</label>
+                <label htmlFor="contact-message" className="input-label">Message</label>
                 <textarea
+                  id="contact-message"
                   name="entry.839337160"
                   placeholder="How can I help you?"
-                  rows="4"
+                  rows={4}
                   className="field-style"
                   required
                 />
               </div>
 
-              <button type="submit" className="submit-btn">
-                Transmit Message
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={submitting}
+              >
+                {submitting ? "Transmitting..." : "Transmit Message"}
               </button>
             </form>
-
-            {submitted && (
-              <div className="success-msg">
-                &gt; CONNECTION ESTABLISHED: Message received successfully.
-              </div>
-            )}
-          </div>
+          ) : (
+            // FIX 7: Hide form after submit instead of showing both form + success
+            // Previously the success message appeared below the form which was confusing
+            <div className="success-msg" role="alert">
+              &gt; CONNECTION ESTABLISHED: Message received successfully.
+            </div>
+          )}
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   );
 }
