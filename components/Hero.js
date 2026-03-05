@@ -238,7 +238,7 @@ export default function Hero() {
         }
         .hero-img-wrap {
           position: relative;
-          width: clamp(240px, 32vw, 360px);
+          width: clamp(260px, 34vw, 400px);
           aspect-ratio: 1 / 1;
         }
         .hero-img-circle {
@@ -375,6 +375,7 @@ export default function Hero() {
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
+                      objectPosition: "top center",
                       display: "block",
                     }}
                     onError={() => setImgError(true)}
