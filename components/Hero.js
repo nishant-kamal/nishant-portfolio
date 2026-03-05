@@ -63,11 +63,13 @@ export default function Hero() {
           align-items: center;
           overflow-x: hidden;
           /*
-            Navbar is fixed at 72px tall.
-            padding-top pushes content clear of it.
-            padding-bottom balances visual centering.
+            Navbar is 72px tall and fixed. To visually center content
+            in the remaining viewport (100vh - 72px), we use padding-top
+            equal to the navbar height. This shifts the flex centering
+            anchor down so content appears centered in the visible area,
+            not behind the navbar.
           */
-          padding: 72px 0 60px;
+          padding-top: 72px;
         }
 
         .hero-inner {
