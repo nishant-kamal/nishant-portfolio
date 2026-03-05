@@ -2,6 +2,7 @@ import "./globals.css"
 import Navbar from "../components/Navbar"
 import { Inter, JetBrains_Mono } from "next/font/google"
 
+// 1. Optimized Font Loading: Display swap is already set
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -42,7 +43,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.png", // Ensure you create a 1200x630px preview image
+        url: "/og-image.png", 
         width: 1200,
         height: 630,
         alt: "Nishant Kamal Portfolio Preview",
@@ -53,7 +54,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Nishant Kamal | Site Reliability Engineer",
     description: "Production-ready systems and cloud-native architecture expert.",
-    creator: "@imnishant19", // Updated with your likely handle
+    creator: "@imnishant19",
   },
   robots: {
     index: true,
@@ -65,21 +66,18 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+        {/* Removed preconnect links as Next.js fonts handles this automatically */}
         <meta name="theme-color" content="#020617" />
         <meta name="color-scheme" content="dark" />
       </head>
-      <body className={inter.className} style={{ background: '#020617', margin: 0 }}>
+      {/* 2. Fix: Removed inline styles to rely on Tailwind/Global CSS */}
+      <body className={`${inter.className} bg-[#020617] antialiased`}>
 
-        {/* ── Background Noise Texture ── */}
+        {/* ── Background Effects ── */}
         <div className="layout-noise" aria-hidden="true" />
-
-        {/* ── Top-left Cyan/Purple Glow ── */}
         <div className="layout-glow-tl" aria-hidden="true" />
 
-        {/* ── Navbar ── */}
+        {/* ── Navigation ── */}
         <Navbar />
 
         {/* ── Main Content ── */}
@@ -87,31 +85,31 @@ export default function RootLayout({ children }) {
           {children}
         </main>
 
-        {/* ── Footer ── */}
+        {/* ── Consolidated Footer ── */}
         <footer className="layout-footer" role="contentinfo">
           <div className="layout-footer-inner">
             <span className="footer-mono">
-              <span className="footer-dot" />
+              <span className="footer-dot" aria-hidden="true" />
               nishantkamal.com
             </span>
             <span className="footer-copy">
+              {/* Dynamic Year for Reliability */}
               © {new Date().getFullYear()} — Engineering Reliability
             </span>
-            <span className="footer-mono footer-stack">
+            <span className="footer-mono footer-stack text-[#94a3b8]">
               Next.js · Tailwind · JetBrains Mono
             </span>
           </div>
         </footer>
 
         {/* ── Critical Layout Styles ── */}
-        <style>{`
+        <style jsx global>{`
           .layout-main {
             min-height: 100vh;
             position: relative;
             z-index: 1;
           }
 
-          /* Subtle digital noise to add "DevOps" texture */
           .layout-noise {
             position: fixed;
             inset: 0;
@@ -152,7 +150,7 @@ export default function RootLayout({ children }) {
             font-family: var(--font-mono);
             font-size: 0.7rem;
             letter-spacing: 0.1em;
-            color: #475569;
+            color: #94a3b8; /* Fix: Increased contrast for accessibility */
             text-transform: uppercase;
             display: flex;
             align-items: center;
@@ -169,7 +167,7 @@ export default function RootLayout({ children }) {
           .footer-copy {
             font-family: var(--font-mono);
             font-size: 0.7rem;
-            color: #64748b;
+            color: #94a3b8; /* Fix: Increased contrast */
           }
 
           @media (max-width: 768px) {
