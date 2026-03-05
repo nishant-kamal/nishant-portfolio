@@ -56,7 +56,18 @@ const categories = [
 // full-width by the time the transition could run.
 function SkillBar({ level, color, glow }) {
   const [width, setWidth] = useState(0);
+  // FIX: Read matchMedia inside useEffect (client-only) to avoid
+  // "window is not defined" during Next.js SSR / static page generation.
+  const [reducedMotion, setReducedMotion] = useState(false);
   const ref = useRef(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const handler = (e) => setReducedMotion(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -84,15 +95,9 @@ function SkillBar({ level, color, glow }) {
           height: "100%",
           borderRadius: "10px",
           width: `${width}%`,
-          transition: "width 1.4s cubic-bezier(0.22, 1, 0.36, 1)",
-          // FIX 3: --clr-alt used "color + 99" which appended alpha to hex string.
-          // Using rgba with explicit opacity instead for proper cross-browser support.
+          transition: reducedMotion ? "none" : "width 1.4s cubic-bezier(0.22, 1, 0.36, 1)",
           background: `linear-gradient(90deg, ${color}, ${color}99)`,
           boxShadow: `0 0 12px ${glow}`,
-          // FIX: Respect reduced motion — transition only if user hasn't opted out
-          ...(window.matchMedia("(prefers-reduced-motion: reduce)").matches
-            ? { transition: "none" }
-            : {}),
         }}
       />
     </div>
