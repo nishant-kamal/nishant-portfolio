@@ -58,18 +58,21 @@ export default function Hero() {
       <style>{`
         .hero-section {
           position: relative;
-          min-height: 100vh;
+          /*
+            ROOT FIX for the top gap:
+            Instead of min-height:100vh + padding-top:72px (which causes
+            align-items:center to center within the full 100vh including
+            the padded area, pushing content visually low), we:
+            1. Set height to calc(100vh - 72px) — the actual visible area
+               below the fixed navbar
+            2. Use margin-top:72px to push the section below the navbar
+            3. align-items:center now centers correctly in the visible space
+          */
+          height: calc(100vh - 72px);
+          margin-top: 72px;
           display: flex;
           align-items: center;
           overflow-x: hidden;
-          /*
-            Navbar is 72px tall and fixed. To visually center content
-            in the remaining viewport (100vh - 72px), we use padding-top
-            equal to the navbar height. This shifts the flex centering
-            anchor down so content appears centered in the visible area,
-            not behind the navbar.
-          */
-          padding-top: 72px;
         }
 
         .hero-inner {
