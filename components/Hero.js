@@ -58,20 +58,21 @@ export default function Hero() {
       <style>{`
         .hero-section {
           position: relative;
+          min-height: 100vh;
+          min-height: 100dvh;
+          box-sizing: border-box;
           /*
-            ROOT FIX for the top gap:
-            Instead of min-height:100vh + padding-top:72px (which causes
-            align-items:center to center within the full 100vh including
-            the padded area, pushing content visually low), we:
-            1. Set height to calc(100vh - 72px) — the actual visible area
-               below the fixed navbar
-            2. Use margin-top:72px to push the section below the navbar
-            3. align-items:center now centers correctly in the visible space
+            No align-items:center — that creates asymmetric visual space
+            when combined with padding-top (content appears low).
+            Instead: padding-top pushes content below navbar (72px),
+            content starts ~160px from top for breathing room.
+            This puts the heading at ~25-30% from top — the "sweet spot"
+            for hero sections visually.
           */
-          height: calc(100vh - 72px);
-          margin-top: 72px;
+          padding-top: 160px;
+          padding-bottom: 80px;
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           overflow-x: hidden;
         }
 
