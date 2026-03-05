@@ -10,18 +10,12 @@ const statsData = [
 ];
 
 function Counter({ target, suffix, color, cardRef }) {
-  // Initial value matches decimal targets to prevent layout shift
   const [val, setVal] = useState(target % 1 !== 0 ? "0.0" : 0);
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    // FIX 5: Observer is now attached to the parent card (block element)
-    // passed via cardRef prop, instead of an inline <span>.
-    // This prevents inconsistent IntersectionObserver firing on inline elements.
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) setStarted(true); },
-      // FIX 3 (original): threshold 0.3 — 0.5 caused cards to never fire
-      // on shorter/mobile viewports
       { threshold: 0.3 }
     );
     const el = cardRef?.current;
@@ -43,7 +37,6 @@ function Counter({ target, suffix, color, cardRef }) {
       if (progress < 1) rafId = requestAnimationFrame(step);
     };
     rafId = requestAnimationFrame(step);
-    // Cancel animation frame on unmount to prevent setState on unmounted component
     return () => cancelAnimationFrame(rafId);
   }, [started, target]);
 
@@ -55,7 +48,6 @@ function Counter({ target, suffix, color, cardRef }) {
 }
 
 function StatCard({ s }) {
-  // FIX 5: ref lives on the card div (block element) and is passed to Counter
   const cardRef = useRef(null);
   return (
     <div ref={cardRef} className="stat-card">
@@ -69,26 +61,24 @@ function StatCard({ s }) {
       <div className="stat-value">
         <Counter target={s.value} suffix={s.suffix} color={s.color} cardRef={cardRef} />
       </div>
-      <div className="stat-label">{s.label}</div>
+      {/* Screen reader gets the full label + value together */}
+      <div className="stat-label" aria-label={`${s.label}: ${s.value}${s.suffix}`}>
+        {s.label}
+      </div>
     </div>
   );
 }
 
 export default function Stats() {
   return (
-    // Already a <div> — avoids nested <section> if page.js wraps in <section id="stats">
     <div className="stats-wrap">
       <style>{`
         .stats-wrap {
           background: #020617;
-          /* FIX 6: Added horizontal padding so content doesn't touch
-             viewport edges on mobile */
-          padding: 80px 24px;
+          padding: 48px 24px 80px;
           position: relative;
           overflow: hidden;
         }
-
-        /* Top decorative line */
         .stats-wrap::before {
           content: '';
           position: absolute;
@@ -97,15 +87,11 @@ export default function Stats() {
           background: linear-gradient(to right, transparent, rgba(139,92,246,0.4), transparent);
           pointer-events: none;
         }
-
-        /* FIX 3: Inner content wrapper with max-width and auto margins
-           prevents the grid from stretching edge-to-edge on wide screens */
         .stats-inner {
           max-width: 1200px;
           margin: 0 auto;
           padding: 0 16px;
         }
-
         .stats-header {
           display: flex;
           flex-direction: column;
@@ -113,7 +99,6 @@ export default function Stats() {
           text-align: center;
           margin-bottom: 56px;
         }
-
         .stats-badge {
           display: inline-flex;
           align-items: center;
@@ -145,14 +130,12 @@ export default function Stats() {
           75%, 100% { transform: scale(2); opacity: 0; }
         }
         .stats-badge-text {
-          /* FIX 2: Font fallback added to all var(--font-mono) usages */
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.65rem;
           letter-spacing: 0.15em;
           text-transform: uppercase;
           color: #94a3b8;
         }
-
         .stats-title {
           font-size: clamp(1.6rem, 4vw, 2.4rem);
           font-weight: 700;
@@ -174,8 +157,6 @@ export default function Stats() {
           line-height: 1.6;
           margin: 0;
         }
-
-        /* Grid */
         .stats-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -199,14 +180,12 @@ export default function Stats() {
           border-color: rgba(255, 255, 255, 0.12);
           background: rgba(30, 41, 59, 0.6);
         }
-        /* Hover glow overlay */
         .stat-card-glow {
           position: absolute; inset: 0; border-radius: 20px;
           background: linear-gradient(135deg, rgba(255,255,255,0.04), transparent);
           opacity: 0; transition: opacity 0.3s; pointer-events: none;
         }
         .stat-card:hover .stat-card-glow { opacity: 1; }
-
         .stat-card-top {
           display: flex;
           justify-content: space-between;
@@ -222,7 +201,6 @@ export default function Stats() {
           font-size: 1.1rem;
         }
         .stat-status {
-          /* FIX 2: Font fallback added */
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.6rem;
           color: #334155;
@@ -230,7 +208,6 @@ export default function Stats() {
           transition: color 0.3s;
         }
         .stat-card:hover .stat-status { color: #475569; }
-
         .stat-value {
           font-size: clamp(2.4rem, 4vw, 3rem);
           font-weight: 800;
@@ -239,7 +216,6 @@ export default function Stats() {
           margin-bottom: 10px;
         }
         .stat-label {
-          /* FIX 2: Font fallback added */
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.65rem;
           letter-spacing: 0.18em;
@@ -249,11 +225,8 @@ export default function Stats() {
         }
       `}</style>
 
-      {/* FIX 3: All content now inside .stats-inner for max-width capping */}
       <div className="stats-inner">
         <div className="stats-header">
-          {/* FIX 1: Removed aria-hidden="true", added role="status" so
-              "LIVE METRICS" is announced by screen readers */}
           <div className="stats-badge" role="status">
             <span className="stats-badge-dot" aria-hidden="true">
               <span className="stats-badge-dot-ping" />
@@ -261,7 +234,8 @@ export default function Stats() {
             </span>
             <span className="stats-badge-text">Live Metrics</span>
           </div>
-          <h2 className="stats-title">
+          {/* id="stats-title" links to aria-labelledby on the section in page.js */}
+          <h2 id="stats-title" className="stats-title">
             Reliability by the{" "}
             <span className="stats-title-accent">Numbers</span>
           </h2>
@@ -272,9 +246,6 @@ export default function Stats() {
         </div>
 
         <div className="stats-grid">
-          {/* FIX 5: StatCard component owns the ref (block element),
-              passes it down to Counter so IntersectionObserver is
-              reliable across all browsers */}
           {statsData.map((s) => (
             <StatCard key={s.label} s={s} />
           ))}
