@@ -196,6 +196,25 @@ p {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+   BUTTON RESET — strips browser UA button styles globally.
+   Linux/Firefox applies system accent color to <button> overriding
+   background declarations (renders as bright magenta/purple).
+   -webkit-appearance: none + appearance: none prevents this.
+   Each component re-applies its own button styling on top.
+   ───────────────────────────────────────────────────────────────────────── */
+button {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
    FORM ELEMENTS — global baseline so Contact.js inputs are consistent
    ───────────────────────────────────────────────────────────────────────── */
 textarea {
