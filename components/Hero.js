@@ -144,9 +144,8 @@ export default function Hero() {
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 1rem;
           color: #64748b;
-          /* ── FIX 3: Increased height to 28px to prevent layout shift
-             when typewriter text wraps or changes between roles ── */
-          height: 28px;
+          /* FIX: Use min-height instead of fixed height to prevent clipping on long roles */
+          min-height: 28px;
           display: flex;
           align-items: center;
           gap: 0;
@@ -207,6 +206,12 @@ export default function Hero() {
           background: #7dd3fc;
           transform: translateY(-2px);
           box-shadow: 0 8px 24px rgba(56, 189, 248, 0.28);
+        }
+        /* FIX: Add active/pressed state for mobile tap feedback */
+        .btn-primary:active {
+          transform: translateY(0);
+          box-shadow: none;
+          background: #0ea5e9;
         }
         .btn-primary:focus-visible { outline: 2px solid #38bdf8; outline-offset: 3px; }
 
@@ -293,6 +298,14 @@ export default function Hero() {
           from { transform: rotate(0deg); }
           to   { transform: rotate(360deg); }
         }
+        /* FIX: Respect reduced-motion preference */
+        @media (prefers-reduced-motion: reduce) {
+          .hero-ring,
+          .hero-ring-outer { animation: none; }
+          .badge-dot        { animation: none; }
+          .hero-cursor      { animation: none; opacity: 1; }
+          .btn-primary      { transition: none; }
+        }
       `}</style>
 
       <section className="hero-section" aria-label="Introduction">
@@ -300,9 +313,9 @@ export default function Hero() {
 
           {/* LEFT */}
           <div className="hero-left">
-            {/* ── FIX 6: Removed aria-hidden="true" from badge and added
-                role="status" so screen readers announce the uptime info ── */}
-            <div className="hero-badge" role="status">
+            {/* FIX: role="img" + aria-label for decorative badge; role="status" was
+                announcing on every render which is disruptive for screen readers */}
+            <div className="hero-badge" role="img" aria-label="System status: Uptime 99.9%, SLO compliant">
               <span className="badge-dot" aria-hidden="true" />
               UPTIME: 99.9% // SLO: COMPLIANT
             </div>
