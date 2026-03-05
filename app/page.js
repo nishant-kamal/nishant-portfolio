@@ -21,7 +21,8 @@ export default function Home() {
     <div className="min-h-screen text-white relative">
 
       {/* 1. HERO — the hook */}
-      <section id="home" className="pt-32 pb-16 border-b border-white/5 relative z-10">
+      {/* pt-0: Hero component owns its own vertical rhythm to avoid double-padding gap */}
+      <section id="home" className="pt-0 border-b border-white/5 relative z-10">
         <div className="max-w-[1300px] mx-auto px-6">
           <Hero />
         </div>
