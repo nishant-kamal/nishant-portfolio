@@ -2,15 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* FIX: Removed @import for Google Fonts. 
-   Next.js layout.js handles this via --font-sans and --font-mono.
+/*
+  NOTE: Google Fonts are intentionally NOT imported here via @import.
+  They are loaded via next/font (Inter + JetBrains Mono) in layout.js,
+  which is the correct Next.js way — avoids duplicate requests and
+  enables font-display: swap automatically.
+  
+  All other per-component @import url(...) calls in Hero.js, Skills.js,
+  Projects.js, Education.js, Contact.js, About.js, Navbar.js should
+  be REMOVED. This file is the single source of truth for fonts.
 */
 
+/* ─────────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS (SRE Midnight Theme)
+   ───────────────────────────────────────────────────────────────────────── */
 :root {
   /* Backgrounds */
-  --bg: #020617;          
-  --bg-surface: #0f172a;  
-  --bg-card: rgba(30, 41, 59, 0.4); 
+  --bg: #020617;                        /* Slate 950 */
+  --bg-surface: #0f172a;                /* Slate 900 */
+  --bg-card: rgba(30, 41, 59, 0.4);
   --bg-card-hi: rgba(30, 41, 59, 0.7);
 
   /* Borders */
@@ -18,51 +28,111 @@
   --border-hi: rgba(255, 255, 255, 0.12);
   --border-lit: rgba(56, 189, 248, 0.3);
 
-  /* Text Colors (Standardized for WCAG AA Contrast) */
-  --text: #f1f5f9;        
-  --text-muted: #94a3b8;  
-  --text-dim: #64748b;    /* Improved contrast from #475569 */
+  /* Text */
+  --text: #f1f5f9;                      /* Slate 100 */
+  --text-muted: #94a3b8;                /* Slate 400 */
+  --text-dim: #475569;                  /* Slate 600 */
 
   /* Accents */
   --cyan: #38bdf8;
   --cyan-glow: rgba(56, 189, 248, 0.25);
   --purple: #a78bfa;
   --purple-glow: rgba(167, 139, 250, 0.2);
+  --green: #34d399;
+  --orange: #fb923c;
 
-  /* Transitions & Radii */
+  /* Typography — variables reference next/font CSS vars set in layout.js */
+  --font-sans: var(--font-sans, 'Inter', system-ui, -apple-system, sans-serif);
+  --font-mono: var(--font-mono, 'JetBrains Mono', 'Space Mono', monospace);
+
+  /* Easing & Radius */
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
   --radius-lg: 16px;
   --radius-xl: 24px;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   BASE STYLES
+   BASE RESET
    ───────────────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
-  /* Use the CSS variables defined in layout.js */
-  font-family: var(--font-sans); 
+  /* Prevent scroll-behavior from fighting with JS-driven smooth scroll */
+  scroll-padding-top: 80px; /* offset for fixed navbar height */
 }
 
 body {
   background: var(--bg);
   color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   TYPOGRAPHY
+   ───────────────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #fff;
+  /* Remove global max-width so headings don't inherit p's 70ch */
+  max-width: none;
+}
+
+h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); }
+h2 { font-size: clamp(2rem, 5vw, 3rem); }
+
+p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 70ch;
+}
+
+/* Gradient text utility */
+.text-gradient {
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;             /* Standard property alongside webkit */
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
    REUSABLE COMPONENTS
    ───────────────────────────────────────────────────────────────────────── */
 
-/* Premium Card (Glassmorphism) */
+/* Section label badge — e.g. "01 — PROFILE" */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  background: rgba(56, 189, 248, 0.1);
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+/* Glassmorphism card */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 2rem;
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  -webkit-backdrop-filter: blur(12px);  /* Safari */
   transition: all 0.4s var(--ease);
 }
 
@@ -73,7 +143,7 @@ body {
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
 }
 
-/* Tech Tags using Mono font variable */
+/* Tech tag pill */
 .tag {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -82,4 +152,130 @@ body {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
   color: var(--text-muted);
+  transition: all 0.3s var(--ease);
+  cursor: default;
+  user-select: none;
+}
+
+.tag:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(56, 189, 248, 0.08);
+  transform: scale(1.05);
+}
+
+/* Primary CTA button */
+.btn-premium {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.8rem 1.8rem;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--bg);
+  cursor: pointer;
+  border: none;                       /* Prevent browser default button border */
+  text-decoration: none;
+  transition: all 0.3s var(--ease);
+}
+
+.btn-premium:hover {
+  background: var(--cyan);
+  transform: scale(1.02);
+  box-shadow: 0 0 20px var(--cyan-glow);
+}
+
+.btn-premium:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FORM ELEMENTS — global baseline so Contact.js inputs are consistent
+   ───────────────────────────────────────────────────────────────────────── */
+textarea {
+  resize: vertical;                   /* Prevent horizontal resize breaking layout */
+  min-height: 120px;
+}
+
+input, textarea {
+  font-family: var(--font-sans);      /* Prevent browser defaulting to serif */
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SCROLLBAR
+   ───────────────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--text-dim);
+  border-radius: 10px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SELECTION
+   ───────────────────────────────────────────────────────────────────────── */
+::selection {
+  background: var(--cyan);
+  color: var(--bg);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FOCUS ACCESSIBILITY — visible ring for keyboard navigation
+   ───────────────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ANIMATIONS
+   ───────────────────────────────────────────────────────────────────────── */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.8s var(--ease) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Staggered fade-in delays — use with .fade-in class */
+.fade-in-delay-1 { animation-delay: 0.1s; }
+.fade-in-delay-2 { animation-delay: 0.2s; }
+.fade-in-delay-3 { animation-delay: 0.3s; }
+.fade-in-delay-4 { animation-delay: 0.4s; }
+
+/* Pulse dot (used in Stats, About status badges) */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   REDUCED MOTION — respect user OS preference
+   ───────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
