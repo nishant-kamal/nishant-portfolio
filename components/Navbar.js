@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+// Removed unused `useCallback` import
+import { useState, useEffect } from "react";
 
 const navItems = [
   { name: "About",      link: "#about" },
@@ -15,10 +16,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive]     = useState("");
 
-  // FIX 1: Removed @import Google Fonts — already loaded via next/font in layout.js
-
-  // FIX 2: Throttle scroll handler with requestAnimationFrame to prevent
-  // dozens of synchronous re-renders per scroll event
+  // rAF-throttled scroll handler — prevents excessive re-renders
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -50,20 +48,26 @@ export default function Navbar() {
     return () => obs.disconnect();
   }, []);
 
-  // FIX 3: Close drawer on Escape key
+  // Close mobile drawer on Escape key
   useEffect(() => {
     const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   return (
     <>
       <style>{`
         .nav-root {
           position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-          font-family: var(--font-sans);
-          transition: background 0.4s ease, border-color 0.4s ease, padding 0.4s ease;
+          font-family: var(--font-sans, Inter, sans-serif);
+          transition: background 0.4s ease, border-color 0.4s ease;
           border-bottom: 1px solid transparent;
         }
         .nav-root.scrolled {
@@ -79,8 +83,7 @@ export default function Navbar() {
         }
         .nav-logo {
           display: flex; align-items: center; gap: 12px;
-          text-decoration: none;
-          flex-shrink: 0;
+          text-decoration: none; flex-shrink: 0;
         }
         .logo-mark {
           width: 36px; height: 36px; border-radius: 10px;
@@ -96,7 +99,7 @@ export default function Navbar() {
           letter-spacing: -0.02em; line-height: 1.2;
         }
         .logo-sub {
-          font-family: var(--font-mono);
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.6rem; color: #64748b;
           letter-spacing: 0.1em; text-transform: uppercase;
         }
@@ -104,7 +107,7 @@ export default function Navbar() {
         @media (max-width: 850px) { .nav-links { display: none; } }
 
         .nav-link {
-          font-family: var(--font-mono);
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.72rem; letter-spacing: 0.06em;
           text-transform: uppercase; color: #94a3b8;
           text-decoration: none; padding: 8px 14px;
@@ -116,12 +119,11 @@ export default function Navbar() {
         .nav-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 
         .nav-resume {
-          font-family: var(--font-mono);
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.72rem; font-weight: 600;
           color: #38bdf8; text-decoration: none;
           border: 1px solid rgba(56, 189, 248, 0.35);
-          padding: 7px 18px; border-radius: 8px;
-          margin-left: 8px;
+          padding: 7px 18px; border-radius: 8px; margin-left: 8px;
           transition: background 0.25s, color 0.25s, box-shadow 0.25s;
           white-space: nowrap;
         }
@@ -165,7 +167,7 @@ export default function Navbar() {
 
         .drawer-inner { display: flex; flex-direction: column; padding: 0 20px; gap: 4px; }
         .mobile-link {
-          font-family: var(--font-mono);
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.8rem; color: #94a3b8;
           text-decoration: none; padding: 12px 16px;
           border-radius: 10px; border: 1px solid transparent;
@@ -180,9 +182,8 @@ export default function Navbar() {
         .mobile-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 
         .mobile-resume {
-          display: block; text-align: center;
-          margin: 12px 0 0;
-          font-family: var(--font-mono);
+          display: block; text-align: center; margin: 12px 0 0;
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.8rem; font-weight: 600;
           color: #38bdf8; text-decoration: none;
           border: 1px solid rgba(56, 189, 248, 0.3);
@@ -191,13 +192,12 @@ export default function Navbar() {
         }
         .mobile-resume:hover { background: #38bdf8; color: #020617; }
 
-        /* Scroll progress bar */
+        /* Scroll progress bar — GPU composited via will-change */
         .scroll-progress {
           position: absolute; bottom: 0; left: 0;
           height: 2px;
           background: linear-gradient(90deg, #38bdf8, #818cf8);
           box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
-          /* FIX 4: Use will-change for GPU compositing — avoids layout recalc on width change */
           will-change: width;
           transition: width 0.08s linear;
         }
@@ -218,19 +218,18 @@ export default function Navbar() {
           </a>
 
           {/* Desktop links */}
-          <div className="nav-links">
+          <div className="nav-links" role="list">
             {navItems.map((item) => (
               <a
                 key={item.name}
                 href={item.link}
+                role="listitem"
                 className={`nav-link ${active === item.link.slice(1) ? "active" : ""}`}
-                aria-current={active === item.link.slice(1) ? "true" : undefined}
+                aria-current={active === item.link.slice(1) ? "page" : undefined}
               >
                 {item.name}
               </a>
             ))}
-            {/* FIX 5: resume link opens in new tab — downloading a PDF directly
-                is better UX than forcing a download on click */}
             <a
               href="/resume.pdf"
               target="_blank"
@@ -270,6 +269,7 @@ export default function Navbar() {
                 className={`mobile-link ${active === item.link.slice(1) ? "active" : ""}`}
                 onClick={() => setOpen(false)}
                 tabIndex={open ? 0 : -1}
+                aria-current={active === item.link.slice(1) ? "page" : undefined}
               >
                 {item.name}
               </a>
@@ -280,6 +280,7 @@ export default function Navbar() {
               rel="noopener noreferrer"
               className="mobile-resume"
               tabIndex={open ? 0 : -1}
+              aria-label="View resume (opens PDF in new tab)"
             >
               Resume ↗
             </a>
@@ -296,8 +297,6 @@ function ScrollIndicator() {
   const [prg, setPrg] = useState(0);
 
   useEffect(() => {
-    // FIX 6: rAF-throttled scroll handler — was firing setState on every
-    // pixel of scroll, causing excessive re-renders
     let ticking = false;
     const handle = () => {
       if (!ticking) {
