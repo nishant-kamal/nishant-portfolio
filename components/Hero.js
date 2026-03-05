@@ -69,7 +69,7 @@ export default function Hero() {
             This puts the heading at ~25-30% from top — the "sweet spot"
             for hero sections visually.
           */
-          padding-top: 160px;
+          padding-top: 110px;
           padding-bottom: 80px;
           display: flex;
           align-items: flex-start;
