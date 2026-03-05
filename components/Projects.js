@@ -16,6 +16,9 @@ const projects = [
     color: "#38bdf8",
     glow: "rgba(56,189,248,.12)",
     icon: "☸",
+    // FIX: Added links for project CTAs
+    githubUrl: "https://github.com/nishant-kamal",
+    demoUrl: null,
     metrics: [
       { label: "Deployment Time", val: "-70%" },
       { label: "Drift Incidents", val: "0" },
@@ -32,6 +35,8 @@ const projects = [
     color: "#34d399",
     glow: "rgba(52,211,153,.12)",
     icon: "↓",
+    githubUrl: "https://github.com/nishant-kamal",
+    demoUrl: null,
     metrics: [
       { label: "Cost Reduction", val: "35%" },
       { label: "Provisioning Speed", val: "3×" },
@@ -48,6 +53,8 @@ const projects = [
     color: "#a78bfa",
     glow: "rgba(167,139,250,.12)",
     icon: "△",
+    githubUrl: "https://github.com/nishant-kamal",
+    demoUrl: null,
     metrics: [
       { label: "Alerts Standardized", val: "50+" },
       { label: "MTTR", val: "-40%" },
@@ -194,6 +201,39 @@ export default function Projects() {
           border-radius: 6px;
           border: 1px solid rgba(255,255,255,0.07);
         }
+
+        /* FIX: Project action links */
+        .proj-actions {
+          display: flex;
+          gap: 10px;
+          margin-top: 20px;
+          flex-wrap: wrap;
+        }
+        .proj-action-link {
+          font-family: var(--font-mono);
+          font-size: 0.7rem;
+          letter-spacing: 0.06em;
+          padding: 7px 16px;
+          border-radius: 8px;
+          border: 1px solid;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          transition: background 0.2s, color 0.2s;
+        }
+        .proj-action-link:hover { opacity: 0.85; }
+        .proj-action-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
+
+        /* FIX: min-width on metrics so they don't collapse awkwardly on narrow screens */
+        .proj-metric { padding: 10px 16px; border-radius: 10px; border: 1px solid; min-width: 100px; }
+
+        /* FIX: Respect reduced motion on accordion */
+        @media (prefers-reduced-motion: reduce) {
+          .proj-body { transition: none; }
+          .proj-chevron { transition: none; }
+          .proj-card { transition: none; }
+        }
       `}</style>
 
       <h2 id="projects-title" className="proj-heading">
@@ -291,6 +331,36 @@ export default function Projects() {
                         {t}
                       </span>
                     ))}
+                  </div>
+
+                  {/* FIX: Action links — give users somewhere to go after reading */}
+                  <div className="proj-actions">
+                    {p.githubUrl && (
+                      <a
+                        href={p.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="proj-action-link"
+                        style={{ color: p.color, borderColor: p.color + "40", background: p.color + "0d" }}
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label={`View ${p.title} on GitHub (opens in new tab)`}
+                      >
+                        ↗ GitHub
+                      </a>
+                    )}
+                    {p.demoUrl && (
+                      <a
+                        href={p.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="proj-action-link"
+                        style={{ color: p.color, borderColor: p.color + "40", background: p.color + "0d" }}
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label={`View live demo of ${p.title} (opens in new tab)`}
+                      >
+                        ↗ Live Demo
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
