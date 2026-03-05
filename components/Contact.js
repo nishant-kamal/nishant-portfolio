@@ -121,16 +121,23 @@ export default function Contact() {
           width: 100%;
           padding: 14px;
           border-radius: 10px;
-          background: #8b5cf6;
-          color: #fff;
+          /* Force color with !important to override any browser UA stylesheet */
+          background: #8b5cf6 !important;
+          background-color: #8b5cf6 !important;
+          color: #ffffff !important;
           font-weight: 700;
           font-family: var(--font-mono);
           font-size: 0.9rem;
-          border: none;
+          border: none !important;
+          outline: none;
           cursor: pointer;
           transition: background 0.25s, transform 0.2s, box-shadow 0.25s, opacity 0.2s;
           box-shadow: 0 8px 20px -8px rgba(139, 92, 246, 0.5);
           letter-spacing: 0.03em;
+          display: block;
+          /* Prevent system appearance overriding our styles */
+          -webkit-appearance: none;
+          appearance: none;
         }
         .submit-btn:hover:not(:disabled) {
           background: #7c3aed;
