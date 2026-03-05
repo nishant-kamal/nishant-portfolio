@@ -224,6 +224,7 @@ export default function Contact() {
                 type="submit"
                 className="submit-btn"
                 disabled={submitting}
+                style={{ background: submitting ? "#6d28d9" : "#8b5cf6" }}
               >
                 {submitting ? "Transmitting..." : "Transmit Message"}
               </button>
