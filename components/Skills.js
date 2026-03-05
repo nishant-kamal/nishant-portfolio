@@ -233,7 +233,7 @@ export default function Skills() {
         }
       `}</style>
 
-      <h2 className="skills-heading">
+      <h2 id="skills-title" className="skills-heading">
         Technical <span className="skills-heading-accent">Stack</span><br />
         &amp; Ecosystem.
       </h2>
