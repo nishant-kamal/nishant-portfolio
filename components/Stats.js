@@ -2,8 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 
-// FIX 1: Removed @import Google Fonts — loaded via next/font in layout.js
-
 const statsData = [
   { value: 6,    suffix: "+", label: "Years Experience",   color: "#38bdf8", icon: "◈" },
   { value: 35,   suffix: "%", label: "Cloud Cost Saved",   color: "#34d399", icon: "↓" },
@@ -11,25 +9,25 @@ const statsData = [
   { value: 50,   suffix: "+", label: "Global Deployments", color: "#fb923c", icon: "△" },
 ];
 
-function Counter({ target, suffix, color }) {
-  // FIX 2: Initial value set to "0.0" for decimal targets to prevent layout
-  // shift — previously started at integer 0 then jumped to "0.0" mid-animation
+function Counter({ target, suffix, color, cardRef }) {
+  // Initial value matches decimal targets to prevent layout shift
   const [val, setVal] = useState(target % 1 !== 0 ? "0.0" : 0);
   const [started, setStarted] = useState(false);
-  const ref = useRef(null);
 
   useEffect(() => {
-    // FIX 3: Observer threshold lowered to 0.3 — 0.5 meant the card had to be
-    // 50% visible before counting started, which caused it to never fire on
-    // shorter viewport heights (mobile)
+    // FIX 5: Observer is now attached to the parent card (block element)
+    // passed via cardRef prop, instead of an inline <span>.
+    // This prevents inconsistent IntersectionObserver firing on inline elements.
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) setStarted(true); },
+      // FIX 3 (original): threshold 0.3 — 0.5 caused cards to never fire
+      // on shorter/mobile viewports
       { threshold: 0.3 }
     );
-    const el = ref.current;
+    const el = cardRef?.current;
     if (el) obs.observe(el);
     return () => { if (el) obs.unobserve(el); obs.disconnect(); };
-  }, []);
+  }, [cardRef]);
 
   useEffect(() => {
     if (!started) return;
@@ -45,28 +43,47 @@ function Counter({ target, suffix, color }) {
       if (progress < 1) rafId = requestAnimationFrame(step);
     };
     rafId = requestAnimationFrame(step);
-    // FIX 4: Cancel animation frame on unmount to prevent setState on
-    // unmounted component (memory leak)
+    // Cancel animation frame on unmount to prevent setState on unmounted component
     return () => cancelAnimationFrame(rafId);
   }, [started, target]);
 
   return (
-    <span ref={ref} style={{ color, fontVariantNumeric: "tabular-nums" }}>
+    <span style={{ color, fontVariantNumeric: "tabular-nums" }}>
       {val}{suffix}
     </span>
   );
 }
 
+function StatCard({ s }) {
+  // FIX 5: ref lives on the card div (block element) and is passed to Counter
+  const cardRef = useRef(null);
+  return (
+    <div ref={cardRef} className="stat-card">
+      <div className="stat-card-glow" aria-hidden="true" />
+      <div className="stat-card-top">
+        <div className="stat-icon-box" style={{ color: s.color }} aria-hidden="true">
+          {s.icon}
+        </div>
+        <span className="stat-status" aria-hidden="true">DATA_PULL::OK</span>
+      </div>
+      <div className="stat-value">
+        <Counter target={s.value} suffix={s.suffix} color={s.color} cardRef={cardRef} />
+      </div>
+      <div className="stat-label">{s.label}</div>
+    </div>
+  );
+}
+
 export default function Stats() {
   return (
-    // FIX 5: Removed duplicate <section> — this component is already
-    // rendered inside a <section id="stats"> in page.js.
-    // Changed to <div> to avoid nested sections.
+    // Already a <div> — avoids nested <section> if page.js wraps in <section id="stats">
     <div className="stats-wrap">
       <style>{`
         .stats-wrap {
           background: #020617;
-          padding: 80px 0;
+          /* FIX 6: Added horizontal padding so content doesn't touch
+             viewport edges on mobile */
+          padding: 80px 24px;
           position: relative;
           overflow: hidden;
         }
@@ -79,6 +96,14 @@ export default function Stats() {
           width: 100%; height: 1px;
           background: linear-gradient(to right, transparent, rgba(139,92,246,0.4), transparent);
           pointer-events: none;
+        }
+
+        /* FIX 3: Inner content wrapper with max-width and auto margins
+           prevents the grid from stretching edge-to-edge on wide screens */
+        .stats-inner {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 16px;
         }
 
         .stats-header {
@@ -120,7 +145,8 @@ export default function Stats() {
           75%, 100% { transform: scale(2); opacity: 0; }
         }
         .stats-badge-text {
-          font-family: var(--font-mono);
+          /* FIX 2: Font fallback added to all var(--font-mono) usages */
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.65rem;
           letter-spacing: 0.15em;
           text-transform: uppercase;
@@ -196,7 +222,8 @@ export default function Stats() {
           font-size: 1.1rem;
         }
         .stat-status {
-          font-family: var(--font-mono);
+          /* FIX 2: Font fallback added */
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.6rem;
           color: #334155;
           letter-spacing: 0.05em;
@@ -212,7 +239,8 @@ export default function Stats() {
           margin-bottom: 10px;
         }
         .stat-label {
-          font-family: var(--font-mono);
+          /* FIX 2: Font fallback added */
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.65rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
@@ -221,40 +249,36 @@ export default function Stats() {
         }
       `}</style>
 
-      <div className="stats-header">
-        <div className="stats-badge" aria-hidden="true">
-          <span className="stats-badge-dot">
-            <span className="stats-badge-dot-ping" />
-            <span className="stats-badge-dot-solid" />
-          </span>
-          <span className="stats-badge-text">Live Metrics</span>
-        </div>
-        <h2 className="stats-title">
-          Reliability by the{" "}
-          <span className="stats-title-accent">Numbers</span>
-        </h2>
-        <p className="stats-subtitle">
-          Quantifiable impact on infrastructure performance, security compliance,
-          and operational efficiency.
-        </p>
-      </div>
-
-      <div className="stats-grid">
-        {statsData.map((s) => (
-          <div key={s.label} className="stat-card">
-            <div className="stat-card-glow" aria-hidden="true" />
-            <div className="stat-card-top">
-              <div className="stat-icon-box" style={{ color: s.color }} aria-hidden="true">
-                {s.icon}
-              </div>
-              <span className="stat-status" aria-hidden="true">DATA_PULL::OK</span>
-            </div>
-            <div className="stat-value">
-              <Counter target={s.value} suffix={s.suffix} color={s.color} />
-            </div>
-            <div className="stat-label">{s.label}</div>
+      {/* FIX 3: All content now inside .stats-inner for max-width capping */}
+      <div className="stats-inner">
+        <div className="stats-header">
+          {/* FIX 1: Removed aria-hidden="true", added role="status" so
+              "LIVE METRICS" is announced by screen readers */}
+          <div className="stats-badge" role="status">
+            <span className="stats-badge-dot" aria-hidden="true">
+              <span className="stats-badge-dot-ping" />
+              <span className="stats-badge-dot-solid" />
+            </span>
+            <span className="stats-badge-text">Live Metrics</span>
           </div>
-        ))}
+          <h2 className="stats-title">
+            Reliability by the{" "}
+            <span className="stats-title-accent">Numbers</span>
+          </h2>
+          <p className="stats-subtitle">
+            Quantifiable impact on infrastructure performance, security compliance,
+            and operational efficiency.
+          </p>
+        </div>
+
+        <div className="stats-grid">
+          {/* FIX 5: StatCard component owns the ref (block element),
+              passes it down to Counter so IntersectionObserver is
+              reliable across all browsers */}
+          {statsData.map((s) => (
+            <StatCard key={s.label} s={s} />
+          ))}
+        </div>
       </div>
     </div>
   );
