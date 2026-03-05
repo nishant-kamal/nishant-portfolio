@@ -15,14 +15,19 @@ export default function Navbar() {
   const [open, setOpen]         = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive]     = useState("");
+  // FIX: Lift scroll progress into Navbar to share ONE rAF scroll listener
+  const [prg, setPrg]           = useState(0);
 
-  // rAF-throttled scroll handler — prevents excessive re-renders
+  // FIX: Single rAF-throttled scroll handler for both scrolled state + progress
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 20);
+          const sy    = window.scrollY;
+          const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          setScrolled(sy > 20);
+          setPrg(total > 0 ? (sy / total) * 100 : 0);
           ticking = false;
         });
         ticking = true;
@@ -33,13 +38,15 @@ export default function Navbar() {
   }, []);
 
   // Active section highlight via IntersectionObserver
+  // FIX: rootMargin was "-40% 0px -55% 0px" = only 5% detection window.
+  // Widened to "-20% 0px -60% 0px" = 20% window, much more reliable.
   useEffect(() => {
     const ids = navItems.map((n) => n.link.slice(1)).concat(["home"]);
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
       },
-      { rootMargin: "-40% 0px -55% 0px" }
+      { rootMargin: "-20% 0px -60% 0px" }
     );
     ids.forEach((id) => {
       const el = document.getElementById(id);
@@ -64,6 +71,23 @@ export default function Navbar() {
   return (
     <>
       <style>{`
+        /* FIX: Skip to content link for keyboard/screen-reader users */
+        .skip-link {
+          position: absolute;
+          top: -100%;
+          left: 16px;
+          z-index: 200;
+          background: #38bdf8;
+          color: #020617;
+          font-weight: 700;
+          font-size: 0.85rem;
+          padding: 10px 18px;
+          border-radius: 0 0 10px 10px;
+          text-decoration: none;
+          transition: top 0.2s;
+        }
+        .skip-link:focus { top: 0; }
+
         .nav-root {
           position: fixed; top: 0; left: 0; right: 0; z-index: 100;
           font-family: var(--font-sans, Inter, sans-serif);
@@ -163,7 +187,8 @@ export default function Navbar() {
           max-height: 0; opacity: 0;
           transition: max-height 0.4s ease, opacity 0.3s ease;
         }
-        .mobile-drawer.open { max-height: 480px; opacity: 1; padding: 16px 0 24px; }
+        /* FIX: Increased max-height from 480px to 640px so additional nav items won't be clipped */
+        .mobile-drawer.open { max-height: 640px; opacity: 1; padding: 16px 0 24px; }
 
         .drawer-inner { display: flex; flex-direction: column; padding: 0 20px; gap: 4px; }
         .mobile-link {
@@ -202,6 +227,9 @@ export default function Navbar() {
           transition: width 0.08s linear;
         }
       `}</style>
+
+      {/* FIX: Skip to main content for keyboard/screen reader users */}
+      <a href="#about" className="skip-link">Skip to content</a>
 
       <nav
         className={`nav-root ${scrolled ? "scrolled" : ""}`}
@@ -287,31 +315,14 @@ export default function Navbar() {
           </div>
         </div>
 
-        <ScrollIndicator />
+        <ScrollIndicator prg={prg} />
       </nav>
     </>
   );
 }
 
-function ScrollIndicator() {
-  const [prg, setPrg] = useState(0);
-
-  useEffect(() => {
-    let ticking = false;
-    const handle = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrolled = window.scrollY;
-          const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          setPrg(total > 0 ? (scrolled / total) * 100 : 0);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener("scroll", handle, { passive: true });
-    return () => window.removeEventListener("scroll", handle);
-  }, []);
+// FIX: ScrollIndicator now receives prg as prop — no duplicate scroll listener
+function ScrollIndicator({ prg }) {
 
   return <div className="scroll-progress" style={{ width: `${prg}%` }} aria-hidden="true" />;
 }
