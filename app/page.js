@@ -21,11 +21,9 @@ export default function Home() {
     <div className="min-h-screen text-white relative">
 
       {/* 1. HERO — the hook */}
-      {/* pt-0: Hero component owns its own vertical rhythm to avoid double-padding gap */}
-      <section id="home" className="pt-0 border-b border-white/5 relative z-10">
-        <div className="max-w-[1300px] mx-auto px-6">
-          <Hero />
-        </div>
+      {/* No wrapper div — Hero owns its own max-width, padding, and navbar offset internally */}
+      <section id="home" className="border-b border-white/5 relative z-10">
+        <Hero />
       </section>
 
       {/* 2. STATS — immediate proof */}
