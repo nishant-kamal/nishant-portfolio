@@ -196,7 +196,7 @@ export default function Projects() {
         }
       `}</style>
 
-      <h2 className="proj-heading">
+      <h2 id="projects-title" className="proj-heading">
         Work that<br />
         <em>moves the needle.</em>
       </h2>
