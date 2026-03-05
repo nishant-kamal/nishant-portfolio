@@ -11,63 +11,61 @@ export default function Home() {
     <div className="min-h-screen text-white relative">
 
       {/* 1. HERO
-          No wrapper div — Hero owns its own max-width + padding.
-          Hero uses min-height:100vh + padding:72px 0 60px internally,
-          so the section itself needs no extra padding.
+          Hero owns its own max-width (1200px) + padding (100px 0 40px).
+          No extra wrapper needed — section just provides the id anchor
+          and bottom border separator.
       */}
-      <section id="home" className="border-b border-white/5 relative z-10">
+      <section id="home" aria-label="Introduction" className="border-b border-white/5 relative z-10">
         <Hero />
       </section>
 
       {/* 2. STATS
-          VISUAL FIX: Removed bg-slate-900/40 background from section AND
-          removed the max-width wrapper div. Stats.js renders its own
-          .stats-wrap with internal padding. The section wrapper was creating
-          a visible "card within a card" double-border effect.
-          py-0 because Stats.js owns its own padding (80px top/bottom).
+          Stats.js renders its own .stats-wrap with internal padding and
+          max-width: 1200px via .stats-inner. No wrapper div needed here.
+          Keeping max-width consistent with Navbar (both 1200px).
       */}
-      <section id="stats" className="border-b border-white/5 relative z-10">
+      <section id="stats" aria-labelledby="stats-title" className="border-b border-white/5 relative z-10">
         <Stats />
       </section>
 
       {/* 3. ABOUT
-          py-0 — About.js owns padding: 20px 0 60px internally.
-          The max-width and px-6 are handled inside About.js's .about-inner.
+          About.js owns padding: 20px 0 60px internally.
+          max-width aligned to 1200px to match Hero/Stats/Navbar.
       */}
-      <section id="about" className="border-b border-white/5">
-        <div className="max-w-[1300px] mx-auto px-6">
+      <section id="about" aria-labelledby="about-title" className="border-b border-white/5">
+        <div className="max-w-[1200px] mx-auto px-6">
           <About />
         </div>
       </section>
 
-      {/* 4. SKILLS */}
-      <section id="skills" className="border-b border-white/5 bg-slate-900/20">
-        <div className="max-w-[1300px] mx-auto px-6 py-16">
+      {/* 4. SKILLS
+          max-width aligned to 1200px. bg-slate-900/20 kept for
+          visual section separation.
+      */}
+      <section id="skills" aria-labelledby="skills-title" className="border-b border-white/5 bg-slate-900/20">
+        <div className="max-w-[1200px] mx-auto px-6 py-16">
           <Skills />
         </div>
       </section>
 
-      {/* 5. PROJECTS
-          VISUAL FIX: Reduced py-24 (96px) → py-16 (64px).
-          py-24 was causing a large visible gap above the heading.
-      */}
-      <section id="projects" className="border-b border-white/5">
-        <div className="max-w-[1300px] mx-auto px-6 py-16">
+      {/* 5. PROJECTS */}
+      <section id="projects" aria-labelledby="projects-title" className="border-b border-white/5">
+        <div className="max-w-[1200px] mx-auto px-6 py-16">
           <Projects />
         </div>
       </section>
 
       {/* 6. EDUCATION */}
-      <section id="education" className="bg-slate-900/30">
-        <div className="max-w-[1300px] mx-auto px-6 py-16">
+      <section id="education" aria-labelledby="education-title" className="bg-slate-900/30">
+        <div className="max-w-[1200px] mx-auto px-6 py-16">
           <Education />
         </div>
       </section>
 
       {/* 7. CONTACT
-          py-24 reduced from py-32 — no need for 128px of padding.
+          Narrower max-width intentional for contact form readability.
       */}
-      <section id="contact" className="py-24 relative z-10">
+      <section id="contact" aria-labelledby="contact-title" className="py-24 relative z-10">
         <div className="max-w-4xl mx-auto px-6">
           <Contact />
         </div>
