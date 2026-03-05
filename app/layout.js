@@ -1,18 +1,17 @@
-import "./globals.css"
-import Navbar from "../components/Navbar"
-import { Inter, JetBrains_Mono } from "next/font/google"
+import "./globals.css";
+import Navbar from "../components/Navbar";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-})
+/*
+  REMOVED: next/font/google (Inter, JetBrains_Mono)
+  
+  next/font does NOT work with output: "export" (static export mode).
+  This project deploys to GitHub Pages which requires static export.
+  
+  Fonts are now loaded via <link> preconnect + stylesheet in <head>,
+  and CSS variables --font-sans / --font-mono are set in globals.css.
+  All components that use var(--font-sans) and var(--font-mono) continue
+  to work exactly as before — only the loading mechanism changes.
+*/
 
 export const metadata = {
   metadataBase: new URL("https://nishantkamal.com"),
@@ -60,42 +59,40 @@ export const metadata = {
     index: true,
     follow: true,
   },
-}
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en">
       <head>
-        {/* next/font handles preconnect to fonts.googleapis.com automatically */}
         <meta name="theme-color" content="#020617" />
         <meta name="color-scheme" content="dark" />
-      </head>
-
-      <body className={`${inter.className} antialiased`}>
-
-        {/* Background noise texture */}
-        <div className="layout-noise" aria-hidden="true" />
-
-        {/* Top-left purple ambient glow */}
-        <div className="layout-glow-tl" aria-hidden="true" />
-
-        {/* Navigation */}
-        <Navbar />
 
         {/*
-          FIX: This is the ONE <main> for the page. page.js previously also
-          wrapped everything in <main>, which is invalid HTML — there must be
-          only one <main> per document. page.js now renders a <div> instead.
+          Font loading via Google Fonts CDN.
+          Two preconnect hints tell the browser to open the connection
+          early — this recovers most of the performance difference vs next/font.
+          The stylesheet then loads Inter + JetBrains Mono with display=swap.
         */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+
+      <body className="antialiased">
+
+        <div className="layout-noise" aria-hidden="true" />
+        <div className="layout-glow-tl" aria-hidden="true" />
+
+        <Navbar />
+
         <main id="top" className="layout-main">
           {children}
         </main>
 
-        {/*
-          FIX: Footer.js was a dead file — it was never imported and layout.js
-          already defined the footer inline. That dead file can be deleted.
-          The year uses new Date().getFullYear() so it never needs manual updates.
-        */}
         <footer className="layout-footer" role="contentinfo">
           <div className="layout-footer-inner">
             <span className="footer-mono">
@@ -113,5 +110,5 @@ export default function RootLayout({ children }) {
 
       </body>
     </html>
-  )
+  );
 }
