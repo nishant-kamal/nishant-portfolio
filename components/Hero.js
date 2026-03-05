@@ -33,6 +33,7 @@ export default function Hero() {
   const [displayed, setDisplayed] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -56,23 +57,22 @@ export default function Hero() {
   return (
     <>
       <style>{`
-        /*
-          FIX 1: Removed @import for Google Fonts.
-          Syne and DM Mono are not loaded by next/font in layout.js.
-          Either add them there, or accept that Inter/JetBrains Mono
-          (already loaded) will apply as the fallback here.
-          Do NOT @import inside component <style> tags — causes a
-          separate render-blocking request on every page load.
-        */
-
         .hero-section {
           position: relative;
           min-height: 100vh;
           display: flex;
           align-items: center;
           overflow-x: hidden;
-          padding: 100px 0 60px;
-          /* FIX 2: Removed background: #020617 — already set on body in globals.css */
+          /*
+            ROOT CAUSE OF EMPTY GAP:
+            page.js had pt-32 (128px) on the parent <section>,
+            AND this component also had padding-top: 100px.
+            Combined = ~228px dead space above content.
+            Fix: remove padding here entirely — page.js section
+            now uses pt-0, and the navbar height (72px) is handled
+            by scroll-padding-top in globals.css.
+          */
+          padding: 0 0 60px;
         }
 
         .hero-inner {
@@ -81,191 +81,233 @@ export default function Hero() {
           width: 100%;
           max-width: 1200px;
           margin: 0 auto;
-          padding: 0 24px;
+          padding: 0 40px;
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 40px;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 60px;
           align-items: center;
         }
 
         @media (max-width: 1024px) {
-          .hero-section { padding-top: 120px; }
           .hero-inner {
             grid-template-columns: 1fr;
             text-align: center;
-            gap: 60px;
+            gap: 48px;
+            padding: 0 24px;
           }
-          .hero-left { order: 2; display: flex; flex-direction: column; align-items: center; }
-          .hero-image-col { order: 1; display: flex; justify-content: center; }
-          .hero-h1 { margin-inline: auto; }
-          .hero-desc { margin-inline: auto; }
-          /* FIX 3: social-dock needs centering on mobile too */
-          .social-dock { justify-content: center; }
+          .hero-left       { order: 2; display: flex; flex-direction: column; align-items: center; }
+          .hero-image-col  { order: 1; display: flex; justify-content: center; }
+          .hero-desc       { margin-inline: auto; }
+          .hero-ctas       { justify-content: center; }
+          .social-dock     { justify-content: center; }
         }
 
+        /* Badge */
         .hero-badge {
           font-family: var(--font-mono);
-          font-size: clamp(0.65rem, 2vw, 0.78rem);
+          font-size: 0.7rem;
           color: #38bdf8;
-          background: rgba(56, 189, 248, 0.08);
+          background: rgba(56, 189, 248, 0.07);
           border: 1px solid rgba(56, 189, 248, 0.2);
-          padding: 6px 16px;
+          padding: 5px 14px;
           border-radius: 99px;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
           white-space: nowrap;
-          display: inline-block;
+          letter-spacing: 0.05em;
+        }
+        .badge-dot {
+          width: 6px; height: 6px;
+          background: #38bdf8;
+          border-radius: 50%;
+          box-shadow: 0 0 6px #38bdf8;
+          flex-shrink: 0;
+          animation: badge-pulse 2s ease-in-out infinite;
+        }
+        @keyframes badge-pulse {
+          0%, 100% { opacity: 1; }
+          50%       { opacity: 0.25; }
         }
 
+        /* Heading */
         .hero-h1 {
-          font-size: clamp(2.2rem, 8vw, 4.5rem);
+          font-size: clamp(2.8rem, 6vw, 5rem);
           font-weight: 800;
-          line-height: 1.1;
+          line-height: 1.07;
+          letter-spacing: -0.03em;
           color: #f8fafc;
-          margin-bottom: 20px;
+          margin: 0 0 22px 0;
         }
+        .hero-h1 .accent { color: #38bdf8; }
 
+        /* Typewriter */
         .hero-typewriter {
           font-family: var(--font-mono);
-          font-size: clamp(0.9rem, 3vw, 1.2rem);
-          color: #94a3b8;
-          /* FIX 4: min-height set to line-height × font-size to prevent layout
-             shift as text types in and out */
-          min-height: calc(clamp(0.9rem, 3vw, 1.2rem) * 1.5);
+          font-size: 1rem;
+          color: #64748b;
+          height: 26px;
+          display: flex;
+          align-items: center;
+          gap: 0;
           margin-bottom: 24px;
+          overflow: hidden;
         }
-
-        /* FIX 5: Blinking cursor animation */
+        .tw-prompt { color: #334155; margin-right: 8px; user-select: none; }
+        .tw-text   { color: #94a3b8; }
         .hero-cursor {
           display: inline-block;
           width: 2px;
-          height: 1em;
+          height: 0.9em;
           background: #38bdf8;
           margin-left: 2px;
-          vertical-align: text-bottom;
+          flex-shrink: 0;
           animation: blink 1s step-end infinite;
         }
         @keyframes blink {
           0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
+          50%       { opacity: 0; }
         }
 
+        /* Description */
         .hero-desc {
-          font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+          font-size: 1.05rem;
           color: #64748b;
-          line-height: 1.6;
-          max-width: 500px;
-          margin-bottom: 32px;
+          line-height: 1.75;
+          max-width: 460px;
+          margin: 0 0 36px 0;
         }
+        .hero-desc strong { color: #cbd5e1; font-weight: 600; }
 
-        .hero-img-wrap {
-          position: relative;
-          width: clamp(260px, 40vw, 380px);
-          aspect-ratio: 1 / 1;
-        }
-
-        .hero-img {
-          position: absolute;
-          inset: 8px;
-          border-radius: 50%;
-          overflow: hidden;
-          z-index: 2;
-          border: 2px solid rgba(56, 189, 248, 0.2);
-        }
-
-        /* FIX 6: Spinning ring — use a standard CSS animation instead of
-           Tailwind's animate-[spin_20s_linear_infinite] arbitrary class,
-           which requires JIT/content scanning to be configured and silently
-           does nothing if Tailwind doesn't pick it up. */
-        .hero-ring {
-          position: absolute;
-          inset: 0;
-          border-radius: 50%;
-          border: 1px dashed rgba(56, 189, 248, 0.3);
-          animation: spin-slow 20s linear infinite;
-        }
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
-        }
-
-        .social-dock {
-          display: flex;
-          gap: 12px;
-          margin-top: 30px;
-        }
-
-        .social-link {
-          width: 40px;
-          height: 40px;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: border-color 0.3s, transform 0.3s;
-          /* FIX 7: Added aria-label support target — see JSX below */
-        }
-        .social-link:hover { border-color: #38bdf8; transform: translateY(-3px); }
-        .social-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 3px; }
-        .social-link svg { width: 18px; fill: #64748b; transition: fill 0.3s; }
-        .social-link:hover svg { fill: #38bdf8; }
-
+        /* CTAs */
         .hero-ctas {
           display: flex;
-          gap: 12px;
-          flex-wrap: wrap;
-          /* FIX 8: justify-content: inherit was inheriting 'center' from parent
-             on desktop, pushing the CTA button to center. Using flex-start instead. */
-          justify-content: flex-start;
           align-items: center;
+          gap: 16px;
+          flex-wrap: wrap;
+          justify-content: flex-start;
         }
-        @media (max-width: 1024px) {
-          .hero-ctas { justify-content: center; }
-        }
-
         .btn-primary {
-          background: #38bdf8;
-          color: #020617;
-          padding: 12px 24px;
-          border-radius: 8px;
-          font-weight: 700;
-          text-decoration: none;
-          font-size: 0.9rem;
-          transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          gap: 8px;
+          background: #38bdf8;
+          color: #020617;
+          padding: 11px 24px;
+          border-radius: 10px;
+          font-weight: 700;
+          font-size: 0.875rem;
+          font-family: var(--font-mono);
+          text-decoration: none;
+          white-space: nowrap;
+          transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
         }
         .btn-primary:hover {
           background: #7dd3fc;
           transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+          box-shadow: 0 8px 24px rgba(56, 189, 248, 0.28);
         }
-        .btn-primary:focus-visible {
-          outline: 2px solid #38bdf8;
-          outline-offset: 3px;
+        .btn-primary:focus-visible { outline: 2px solid #38bdf8; outline-offset: 3px; }
+
+        /* Social */
+        .social-dock { display: flex; gap: 10px; }
+        .social-link {
+          width: 40px; height: 40px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 10px;
+          display: flex; align-items: center; justify-content: center;
+          transition: border-color 0.25s, transform 0.25s, background 0.25s;
+        }
+        .social-link:hover {
+          border-color: rgba(56, 189, 248, 0.4);
+          background: rgba(56, 189, 248, 0.06);
+          transform: translateY(-3px);
+        }
+        .social-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 3px; }
+        .social-link svg { width: 16px; fill: #475569; transition: fill 0.25s; }
+        .social-link:hover svg { fill: #38bdf8; }
+
+        /* Image column */
+        .hero-image-col {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .hero-img-wrap {
+          position: relative;
+          width: clamp(240px, 32vw, 360px);
+          aspect-ratio: 1 / 1;
+        }
+        .hero-img-circle {
+          position: absolute;
+          inset: 10px;
+          border-radius: 50%;
+          overflow: hidden;
+          z-index: 2;
+          border: 2px solid rgba(56, 189, 248, 0.2);
+          background: rgba(15, 23, 42, 0.9);
+        }
+        /* Fallback only renders when imgError=true — no z-index fighting */
+        .hero-img-fallback {
+          width: 100%; height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(167,139,250,0.08));
+          color: #38bdf8;
+          font-size: 3.5rem;
+          font-weight: 800;
+          font-family: var(--font-mono);
+          letter-spacing: -0.04em;
+        }
+        .hero-ring {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          border: 1px dashed rgba(56, 189, 248, 0.18);
+          animation: spin-slow 25s linear infinite;
+          pointer-events: none;
+          z-index: 1;
+        }
+        .hero-ring-outer {
+          position: absolute;
+          inset: -14px;
+          border-radius: 50%;
+          border: 1px solid rgba(167, 139, 250, 0.07);
+          animation: spin-slow 45s linear infinite reverse;
+          pointer-events: none;
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
         }
       `}</style>
 
       <section className="hero-section" aria-label="Introduction">
         <div className="hero-inner">
 
-          {/* LEFT: Text content */}
+          {/* LEFT */}
           <div className="hero-left">
             <div className="hero-badge" aria-hidden="true">
+              <span className="badge-dot" />
               UPTIME: 99.9% // SLO: COMPLIANT
             </div>
 
             <h1 className="hero-h1">
-              Engineering <br />
-              systems that <br />
-              <span style={{ color: "#38bdf8" }}>never sleep.</span>
+              Engineering<br />
+              systems that<br />
+              <span className="accent">never sleep.</span>
             </h1>
 
-            {/* FIX 9: Added aria-live so screen readers announce role changes */}
-            <div className="hero-typewriter" aria-live="polite" aria-label={`Role: ${displayed}`}>
-              &gt; {displayed}
+            <div
+              className="hero-typewriter"
+              aria-live="polite"
+              aria-label={mounted ? `Role: ${displayed}` : ""}
+            >
+              <span className="tw-prompt">&gt;</span>
+              <span className="tw-text">{mounted ? displayed : roles[0]}</span>
               <span className="hero-cursor" aria-hidden="true" />
             </div>
 
@@ -278,10 +320,8 @@ export default function Hero() {
               <a href="#projects" className="btn-primary">
                 View Projects →
               </a>
-
               <div className="social-dock">
                 {socials.map((s) => (
-                  // FIX 7: Added aria-label and rel attributes
                   <a
                     key={s.name}
                     href={s.url}
@@ -299,52 +339,26 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* RIGHT: Profile image */}
+          {/* RIGHT */}
           <div className="hero-image-col">
             <div className="hero-img-wrap">
-              <div className="hero-img">
-                {/*
-                  FIX 10: Replaced <img> with Next.js <Image>.
-                  - priority: true because this is above-the-fold (improves LCP score)
-                  - fill: true to respect the parent container's sizing
-                  - Descriptive alt text for screen readers
-                  - onError fallback renders initials if /profile.png is missing
-                */}
-                <Image
-                  src="/profile.png"
-                  alt="Nishant Kamal, Site Reliability Engineer based in Delhi"
-                  fill
-                  sizes="(max-width: 1024px) 260px, 380px"
-                  priority
-                  style={{ objectFit: "cover" }}
-                  onError={(e) => {
-                    // If image fails to load, hide it — the initials fallback below shows
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-                {/* Initials fallback if profile.png is missing */}
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: "rgba(56,189,248,0.08)",
-                    color: "#38bdf8",
-                    fontSize: "3rem",
-                    fontWeight: 800,
-                    fontFamily: "var(--font-mono)",
-                    zIndex: -1,
-                  }}
-                >
-                  NK
-                </div>
+              <div className="hero-img-circle">
+                {imgError ? (
+                  <div className="hero-img-fallback" aria-hidden="true">NK</div>
+                ) : (
+                  <Image
+                    src="/profile.png"
+                    alt="Nishant Kamal, Site Reliability Engineer"
+                    fill
+                    sizes="(max-width: 1024px) 240px, 360px"
+                    priority
+                    style={{ objectFit: "cover" }}
+                    onError={() => setImgError(true)}
+                  />
+                )}
               </div>
-
-              {/* FIX 6: Standard CSS animation — no Tailwind JIT arbitrary class */}
               <div className="hero-ring" aria-hidden="true" />
+              <div className="hero-ring-outer" aria-hidden="true" />
             </div>
           </div>
 
