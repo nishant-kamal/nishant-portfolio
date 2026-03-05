@@ -3,14 +3,15 @@
 @tailwind utilities;
 
 /*
-  NOTE: Google Fonts are intentionally NOT imported here via @import.
-  They are loaded via next/font (Inter + JetBrains Mono) in layout.js,
-  which is the correct Next.js way — avoids duplicate requests and
-  enables font-display: swap automatically.
-  
-  All other per-component @import url(...) calls in Hero.js, Skills.js,
-  Projects.js, Education.js, Contact.js, About.js, Navbar.js should
-  be REMOVED. This file is the single source of truth for fonts.
+  NOTE: Google Fonts are loaded via <link> preconnect + stylesheet in layout.js.
+  next/font is NOT used because this project uses output: "export" (GitHub Pages),
+  which is incompatible with next/font.
+
+  CSS variables --font-sans and --font-mono are defined in :root below.
+  All components that reference var(--font-sans) / var(--font-mono) work as normal.
+
+  Per-component @import url(...) calls in all component files have been removed.
+  This file + layout.js <link> is the single source of truth for fonts.
 */
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -42,8 +43,9 @@
   --orange: #fb923c;
 
   /* Typography — variables reference next/font CSS vars set in layout.js */
-  --font-sans: var(--font-sans, 'Inter', system-ui, -apple-system, sans-serif);
-  --font-mono: var(--font-mono, 'JetBrains Mono', 'Space Mono', monospace);
+  /* Font stack — loaded via <link> in layout.js (next/font removed for static export compat) */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Easing & Radius */
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
