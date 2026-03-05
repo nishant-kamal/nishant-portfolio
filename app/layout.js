@@ -2,7 +2,6 @@ import "./globals.css"
 import Navbar from "../components/Navbar"
 import { Inter, JetBrains_Mono } from "next/font/google"
 
-// 1. Optimized Font Loading: Display swap is already set
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -36,14 +35,15 @@ export const metadata = {
   authors: [{ name: "Nishant Kamal" }],
   openGraph: {
     title: "Nishant Kamal | SRE & Platform Architect",
-    description: "Engineering resilient cloud infrastructure and scalable platforms. Explore my technical stack and projects.",
+    description:
+      "Engineering resilient cloud infrastructure and scalable platforms. Explore my technical stack and projects.",
     url: "https://nishantkamal.com",
     siteName: "Nishant Kamal Portfolio",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/og-image.png", 
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Nishant Kamal Portfolio Preview",
@@ -66,26 +66,36 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
-        {/* Removed preconnect links as Next.js fonts handles this automatically */}
+        {/* next/font handles preconnect to fonts.googleapis.com automatically */}
         <meta name="theme-color" content="#020617" />
         <meta name="color-scheme" content="dark" />
       </head>
-      {/* 2. Fix: Removed inline styles to rely on Tailwind/Global CSS */}
-      <body className={`${inter.className} bg-[#020617] antialiased`}>
 
-        {/* ── Background Effects ── */}
+      <body className={`${inter.className} antialiased`}>
+
+        {/* Background noise texture */}
         <div className="layout-noise" aria-hidden="true" />
+
+        {/* Top-left purple ambient glow */}
         <div className="layout-glow-tl" aria-hidden="true" />
 
-        {/* ── Navigation ── */}
+        {/* Navigation */}
         <Navbar />
 
-        {/* ── Main Content ── */}
-        <main className="layout-main">
+        {/*
+          FIX: This is the ONE <main> for the page. page.js previously also
+          wrapped everything in <main>, which is invalid HTML — there must be
+          only one <main> per document. page.js now renders a <div> instead.
+        */}
+        <main id="top" className="layout-main">
           {children}
         </main>
 
-        {/* ── Consolidated Footer ── */}
+        {/*
+          FIX: Footer.js was a dead file — it was never imported and layout.js
+          already defined the footer inline. That dead file can be deleted.
+          The year uses new Date().getFullYear() so it never needs manual updates.
+        */}
         <footer className="layout-footer" role="contentinfo">
           <div className="layout-footer-inner">
             <span className="footer-mono">
@@ -93,88 +103,14 @@ export default function RootLayout({ children }) {
               nishantkamal.com
             </span>
             <span className="footer-copy">
-              {/* Dynamic Year for Reliability */}
               © {new Date().getFullYear()} — Engineering Reliability
             </span>
-            <span className="footer-mono footer-stack text-[#94a3b8]">
+            <span className="footer-mono footer-stack">
               Next.js · Tailwind · JetBrains Mono
             </span>
           </div>
         </footer>
 
-        {/* ── Critical Layout Styles ── */}
-        <style jsx global>{`
-          .layout-main {
-            min-height: 100vh;
-            position: relative;
-            z-index: 1;
-          }
-
-          .layout-noise {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.015;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            mix-blend-mode: overlay;
-          }
-
-          .layout-glow-tl {
-            position: fixed;
-            top: 0; left: 0;
-            width: 50vw; height: 50vh;
-            background: radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-          }
-
-          .layout-footer {
-            position: relative;
-            z-index: 10;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            background: #020617;
-            padding: 3rem 2rem;
-          }
-
-          .layout-footer-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-          }
-
-          .footer-mono {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            letter-spacing: 0.1em;
-            color: #94a3b8; /* Fix: Increased contrast for accessibility */
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-          }
-
-          .footer-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: #8b5cf6;
-            box-shadow: 0 0 10px #8b5cf6;
-          }
-
-          .footer-copy {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            color: #94a3b8; /* Fix: Increased contrast */
-          }
-
-          @media (max-width: 768px) {
-            .layout-footer-inner { flex-direction: column; text-align: center; gap: 1.5rem; }
-            .footer-stack { display: none; }
-          }
-        `}</style>
       </body>
     </html>
   )
