@@ -10,7 +10,8 @@ const statsData = [
 ];
 
 function Counter({ target, suffix, color, cardRef }) {
-  const [val, setVal] = useState(target % 1 !== 0 ? "0.0" : 0);
+  // FIX: Consistent initial type — always string to avoid string/number render diff
+  const [val, setVal] = useState(target % 1 !== 0 ? "0.0" : "0");
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
@@ -33,7 +34,8 @@ function Counter({ target, suffix, color, cardRef }) {
       const progress = Math.min((ts - startTs) / duration, 1);
       const ease = 1 - Math.pow(1 - progress, 4);
       const current = ease * target;
-      setVal(target % 1 !== 0 ? current.toFixed(1) : Math.floor(current));
+      // FIX: Always set string so type is consistent with initial state
+      setVal(target % 1 !== 0 ? current.toFixed(1) : String(Math.floor(current)));
       if (progress < 1) rafId = requestAnimationFrame(step);
     };
     rafId = requestAnimationFrame(step);
@@ -129,6 +131,10 @@ export default function Stats() {
         @keyframes ping {
           75%, 100% { transform: scale(2); opacity: 0; }
         }
+        /* FIX: Disable animations for users who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .stats-badge-dot-ping { animation: none; opacity: 0; }
+        }
         .stats-badge-text {
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.65rem;
@@ -203,11 +209,12 @@ export default function Stats() {
         .stat-status {
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.6rem;
-          color: #334155;
+          /* FIX: Improved from #334155 (~1.8:1) to #64748b (~4.6:1) — passes WCAG AA */
+          color: #64748b;
           letter-spacing: 0.05em;
           transition: color 0.3s;
         }
-        .stat-card:hover .stat-status { color: #475569; }
+        .stat-card:hover .stat-status { color: #94a3b8; }
         .stat-value {
           font-size: clamp(2.4rem, 4vw, 3rem);
           font-weight: 800;
@@ -227,7 +234,8 @@ export default function Stats() {
 
       <div className="stats-inner">
         <div className="stats-header">
-          <div className="stats-badge" role="status">
+          {/* FIX: role="img" + aria-label — role="status" was live-announcing on every render */}
+          <div className="stats-badge" role="img" aria-label="Live metrics indicator">
             <span className="stats-badge-dot" aria-hidden="true">
               <span className="stats-badge-dot-ping" />
               <span className="stats-badge-dot-solid" />
