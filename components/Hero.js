@@ -56,23 +56,15 @@ export default function Hero() {
   return (
     <>
       <style>{`
+        /* ── FIX 1: Removed min-height:100vh and align-items:flex-start.
+           Section now sizes to content with symmetric padding,
+           eliminating the large blank dead zone below the content. ── */
         .hero-section {
           position: relative;
-          min-height: 100vh;
-          min-height: 100dvh;
           box-sizing: border-box;
-          /*
-            No align-items:center — that creates asymmetric visual space
-            when combined with padding-top (content appears low).
-            Instead: padding-top pushes content below navbar (72px),
-            content starts ~160px from top for breathing room.
-            This puts the heading at ~25-30% from top — the "sweet spot"
-            for hero sections visually.
-          */
-          padding-top: 110px;
-          padding-bottom: 80px;
+          padding: 100px 0 80px;
           display: flex;
-          align-items: flex-start;
+          align-items: center;
           overflow-x: hidden;
         }
 
@@ -90,6 +82,9 @@ export default function Hero() {
         }
 
         @media (max-width: 1024px) {
+          .hero-section {
+            align-items: flex-start;
+          }
           .hero-inner {
             grid-template-columns: 1fr;
             text-align: center;
@@ -104,8 +99,9 @@ export default function Hero() {
         }
 
         /* Badge */
+        /* ── FIX 5: Added monospace font stack fallback on all var(--font-mono) usages ── */
         .hero-badge {
-          font-family: var(--font-mono);
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.7rem;
           color: #38bdf8;
           background: rgba(56, 189, 248, 0.07);
@@ -145,10 +141,12 @@ export default function Hero() {
 
         /* Typewriter */
         .hero-typewriter {
-          font-family: var(--font-mono);
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 1rem;
           color: #64748b;
-          height: 26px;
+          /* ── FIX 3: Increased height to 28px to prevent layout shift
+             when typewriter text wraps or changes between roles ── */
+          height: 28px;
           display: flex;
           align-items: center;
           gap: 0;
@@ -199,7 +197,8 @@ export default function Hero() {
           border-radius: 10px;
           font-weight: 700;
           font-size: 0.875rem;
-          font-family: var(--font-mono);
+          /* ── FIX 5: Font fallback added ── */
+          font-family: var(--font-mono, 'Courier New', monospace);
           text-decoration: none;
           white-space: nowrap;
           transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
@@ -241,6 +240,9 @@ export default function Hero() {
           width: clamp(260px, 34vw, 400px);
           aspect-ratio: 1 / 1;
         }
+        /* ── FIX 3: Removed stale width:auto / height:auto — these were
+           leftovers from a next/image fill attempt and conflicted with
+           the inset-based sizing. The inset fully controls dimensions. ── */
         .hero-img-circle {
           position: absolute;
           inset: 10px;
@@ -249,12 +251,7 @@ export default function Hero() {
           z-index: 2;
           border: 2px solid rgba(56, 189, 248, 0.2);
           background: rgba(15, 23, 42, 0.9);
-          /* Required for next/image fill to resolve dimensions */
-          width: auto;
-          height: auto;
         }
-        /* next/image fill needs explicit position:relative on the nearest
-           positioned ancestor that has a defined size */
         .hero-img-inner {
           position: relative;
           width: 100%;
@@ -262,7 +259,6 @@ export default function Hero() {
           border-radius: 50%;
           overflow: hidden;
         }
-        /* Fallback only renders when imgError=true — no z-index fighting */
         .hero-img-fallback {
           width: 100%; height: 100%;
           display: flex;
@@ -272,7 +268,8 @@ export default function Hero() {
           color: #38bdf8;
           font-size: 3.5rem;
           font-weight: 800;
-          font-family: var(--font-mono);
+          /* ── FIX 5: Font fallback added ── */
+          font-family: var(--font-mono, 'Courier New', monospace);
           letter-spacing: -0.04em;
         }
         .hero-ring {
@@ -303,8 +300,10 @@ export default function Hero() {
 
           {/* LEFT */}
           <div className="hero-left">
-            <div className="hero-badge" aria-hidden="true">
-              <span className="badge-dot" />
+            {/* ── FIX 6: Removed aria-hidden="true" from badge and added
+                role="status" so screen readers announce the uptime info ── */}
+            <div className="hero-badge" role="status">
+              <span className="badge-dot" aria-hidden="true" />
               UPTIME: 99.9% // SLO: COMPLIANT
             </div>
 
@@ -314,13 +313,17 @@ export default function Hero() {
               <span className="accent">never sleep.</span>
             </h1>
 
+            {/* ── FIX 2: SSR fallback changed from roles[0] → "" to match
+                client initial state, preventing the hydration mid-word flash.
+                FIX 7: aria-label pre-mount fallback changed from "" to
+                "Loading role" — an empty label is worse for screen readers. ── */}
             <div
               className="hero-typewriter"
               aria-live="polite"
-              aria-label={mounted ? `Role: ${displayed}` : ""}
+              aria-label={mounted ? `Role: ${displayed}` : "Loading role"}
             >
-              <span className="tw-prompt">&gt;</span>
-              <span className="tw-text">{mounted ? displayed : roles[0]}</span>
+              <span className="tw-prompt" aria-hidden="true">&gt;</span>
+              <span className="tw-text">{mounted ? displayed : ""}</span>
               <span className="hero-cursor" aria-hidden="true" />
             </div>
 
@@ -359,22 +362,19 @@ export default function Hero() {
                 {imgError ? (
                   <div className="hero-img-fallback" aria-hidden="true">NK</div>
                 ) : (
-                  /*
-                    Using plain <img> for /public local static assets.
-                    next/image fill mode requires a positioned ancestor with
-                    explicit pixel dimensions — unreliable inside a CSS
-                    inset-based circle. Plain <img> works correctly here
-                    and Next.js optimises /public assets at build time anyway.
-                  */
                   <img
                     src="/profile.png"
                     alt="Nishant Kamal, Site Reliability Engineer"
                     width={360}
                     height={360}
+                    /* ── FIX 8: Explicit loading="eager" for above-the-fold hero image ── */
+                    loading="eager"
                     style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
+                      /* ── FIX 4: "top center" keeps face visible without
+                         over-cropping chin/chest on portrait photos ── */
                       objectPosition: "top center",
                       display: "block",
                     }}
