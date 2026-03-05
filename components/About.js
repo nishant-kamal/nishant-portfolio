@@ -2,21 +2,25 @@
 
 import { useState, useEffect, useRef } from "react";
 
-// --- Data ---
+// FIX 1: Removed @import Google Fonts — loaded via next/font in layout.js
+
 const tags = [
   "Kubernetes", "AWS", "Crossplane", "GitOps",
   "Prometheus", "Grafana", "Kafka", "Istio",
-  "Terraform", "ArgoCD", "Observability"
+  "Terraform", "ArgoCD", "Observability",
 ];
 
-// --- Hook for Animations ---
 function useInView(threshold = 0.1) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setInView(true); },
+      { threshold }
+    );
+    const el = ref.current;
+    if (el) obs.observe(el);
+    return () => { if (el) obs.unobserve(el); obs.disconnect(); };
   }, [threshold]);
   return [ref, inView];
 }
@@ -25,151 +29,299 @@ export default function About() {
   const [sectionRef, inView] = useInView(0.05);
 
   return (
-    <>
+    // FIX 2: Removed duplicate <section id="about"> and duplicate
+    // background + padding — these are set by page.js wrapper section.
+    <div className="about-root" ref={sectionRef}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
-
         .about-root {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          background: #020617;
+          font-family: var(--font-sans);
           color: #f8fafc;
-          padding: 120px 0;
+          padding: 20px 0 60px;
           position: relative;
           overflow: hidden;
         }
 
+        /* Subtle noise texture */
         .about-root::after {
-          content: ''; position: absolute; inset: 0; opacity: 0.02; pointer-events: none;
+          content: ''; position: absolute; inset: 0;
+          opacity: 0.015; pointer-events: none; z-index: 0;
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
-        .container { max-width: 1300px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 10; }
+        .about-inner { position: relative; z-index: 1; }
 
+        .about-header { margin-bottom: 56px; }
+        .about-title {
+          font-size: clamp(3rem, 8vw, 5.5rem);
+          font-weight: 800;
+          letter-spacing: -0.04em;
+          margin: 0 0 14px;
+          color: #f8fafc;
+          line-height: 1.05;
+        }
+        .about-title-accent { color: #a78bfa; }
+        .about-subtitle-row {
+          display: flex; align-items: center; gap: 12px;
+        }
+        .about-subtitle-line {
+          width: 36px; height: 1px; background: #334155; flex-shrink: 0;
+        }
+        .about-subtitle-text {
+          font-family: var(--font-mono);
+          font-size: 0.8rem;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          margin: 0;
+        }
+
+        /* Bento grid */
         .bento-grid {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
-          gap: 24px;
-          margin-top: 60px;
+          gap: 20px;
+        }
+        .card-identity { grid-column: span 8; }
+        .card-terminal { grid-column: span 4; }
+        .card-story    { grid-column: span 12; }
+
+        @media (max-width: 1024px) {
+          .card-identity,
+          .card-terminal,
+          .card-story { grid-column: span 12 !important; }
         }
 
         .bento-card {
-          background: rgba(15, 23, 42, 0.3);
+          background: rgba(15, 23, 42, 0.35);
           border: 1px solid rgba(255, 255, 255, 0.05);
           backdrop-filter: blur(12px);
-          border-radius: 32px;
-          padding: 40px;
-          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-          opacity: 0; transform: translateY(30px);
+          -webkit-backdrop-filter: blur(12px);
+          border-radius: 28px;
+          padding: 36px;
+          transition: border-color 0.4s, background 0.4s, opacity 0.5s, transform 0.5s;
+          opacity: 0;
+          transform: translateY(28px);
         }
         .bento-card.visible { opacity: 1; transform: translateY(0); }
-        .bento-card:hover { border-color: rgba(167, 139, 250, 0.3); background: rgba(30, 41, 59, 0.5); }
-
-        .card-identity { grid-column: span 8; }
-        .card-terminal { grid-column: span 4; }
-        .card-story { grid-column: span 12; }
-
-        @media (max-width: 1024px) {
-          .bento-grid > div { grid-column: span 12 !important; }
+        .bento-card:hover {
+          border-color: rgba(167, 139, 250, 0.25);
+          background: rgba(30, 41, 59, 0.5);
         }
 
+        /* Identity card */
         .status-badge {
           display: inline-flex; align-items: center; gap: 8px;
-          font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
-          color: #22c55e; background: rgba(34, 197, 94, 0.1);
-          padding: 4px 12px; border-radius: 8px; margin-bottom: 24px;
+          font-family: var(--font-mono); font-size: 0.65rem;
+          color: #22c55e;
+          background: rgba(34, 197, 94, 0.08);
+          padding: 4px 12px; border-radius: 8px;
+          margin-bottom: 20px;
+          border: 1px solid rgba(34,197,94,0.15);
         }
-        .pulse { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: p 2s infinite; }
-        @keyframes p { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .pulse {
+          width: 6px; height: 6px;
+          background: #22c55e; border-radius: 50%;
+          box-shadow: 0 0 8px #22c55e;
+          animation: pulse-dot 2s ease-in-out infinite;
+          flex-shrink: 0;
+        }
+        /* Uses global @keyframes pulse-dot from globals.css */
 
+        .identity-name {
+          font-size: clamp(1.8rem, 4vw, 2.5rem);
+          font-weight: 800; margin: 0 0 16px; color: #fff;
+          letter-spacing: -0.03em;
+        }
+        .identity-desc {
+          font-size: 1.1rem; color: #94a3b8;
+          line-height: 1.65; margin: 0 0 28px;
+          max-width: 600px;
+        }
+        .identity-desc strong { color: #e2e8f0; font-weight: 600; }
+        .identity-meta { display: flex; gap: 28px; flex-wrap: wrap; }
+        .meta-item-label {
+          font-family: var(--font-mono);
+          font-size: 0.65rem; text-transform: uppercase;
+          color: #475569; margin-bottom: 4px; letter-spacing: 0.1em;
+        }
+        .meta-item-value { font-size: 1rem; font-weight: 600; color: #f1f5f9; }
+
+        /* Terminal card — no extra padding, handled by card-terminal style */
+        .terminal-card-inner { padding: 0; overflow: hidden; border-radius: 28px; }
+        .terminal-header {
+          background: #0d1520;
+          padding: 12px 16px;
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+          display: flex; align-items: center; gap: 6px;
+        }
+        .t-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .terminal-filename {
+          font-family: var(--font-mono);
+          font-size: 0.62rem; color: #475569;
+          margin-left: 8px; letter-spacing: 0.05em;
+        }
+        .terminal-body {
+          padding: 24px 28px;
+          font-family: var(--font-mono);
+          font-size: 0.85rem;
+          color: #a78bfa;
+          line-height: 1.65;
+        }
+        .t-key { color: #f8fafc; }
+        .t-str { color: #34d399; }
+        .t-num { color: #fb923c; }
+
+        /* Story card — FIX 3: Added responsive grid for tablet */
+        .story-inner {
+          display: grid;
+          grid-template-columns: 1.2fr 1fr;
+          gap: 44px;
+        }
+        @media (max-width: 768px) {
+          .story-inner { grid-template-columns: 1fr; gap: 32px; }
+        }
+
+        .story-label {
+          font-family: var(--font-mono);
+          font-size: 0.7rem; color: #a78bfa;
+          margin-bottom: 14px; letter-spacing: 0.08em;
+        }
+        .story-text {
+          font-size: 1rem; color: #94a3b8;
+          line-height: 1.8; margin: 0;
+        }
+        .story-text strong { color: #e2e8f0; font-weight: 600; }
+
+        .toolbox-label {
+          font-family: var(--font-mono);
+          font-size: 0.7rem; color: #64748b;
+          margin-bottom: 14px; letter-spacing: 0.08em;
+        }
+        .tag-pills { display: flex; flex-wrap: wrap; gap: 8px; }
         .tag-pill {
-          font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
-          padding: 8px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);
-          background: rgba(255,255,255,0.02); transition: 0.3s;
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          padding: 7px 14px;
+          border-radius: 10px;
+          border: 1px solid rgba(255,255,255,0.07);
+          background: rgba(255,255,255,0.02);
+          color: #94a3b8;
+          transition: border-color 0.25s, color 0.25s, background 0.25s;
+          cursor: default; user-select: none;
         }
-        .tag-pill:hover { border-color: #a78bfa; color: #a78bfa; background: rgba(167, 139, 250, 0.1); }
-
-        .terminal-header { background: #111820; padding: 12px; border-bottom: 1px solid #1e2d3d; display: flex; gap: 6px; }
-        .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .tag-pill:hover {
+          border-color: #a78bfa;
+          color: #a78bfa;
+          background: rgba(167,139,250,0.08);
+        }
       `}</style>
 
-      <section className="about-root" id="about" ref={sectionRef}>
-        <div className="container">
-          {/* Header section left-aligned with "01" tag removed */}
-          <div style={{ textAlign: 'left', marginBottom: '60px' }}>
-            <h2 style={{ fontSize: 'clamp(3.5rem, 8vw, 6rem)', fontWeight: 800, letterSpacing: '-0.04em', margin: '0 0 16px 0' }}>
-              About <span style={{ color: '#a78bfa' }}>Me.</span>
-            </h2>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-               <div style={{ width: '40px', height: '1px', background: '#334155' }}></div>
-               <p style={{ color: '#64748b', fontFamily: 'JetBrains Mono', fontSize: '0.9rem', textTransform: 'uppercase' }}>
-                 Building Robust Systems & Scalable Infrastructure
-               </p>
-            </div>
-          </div>
-
-          <div className="bento-grid">
-            {/* Card 1: Main Identity */}
-            <div className={`bento-card card-identity ${inView ? "visible" : ""}`} style={{ transitionDelay: '0.1s' }}>
-              <div className="status-badge"><div className="pulse" /> System Operational</div>
-              <h3 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '24px' }}>Nishant Kamal</h3>
-              <p style={{ fontSize: '1.25rem', color: '#94a3b8', lineHeight: 1.6, marginBottom: '32px' }}>
-                Site Reliability Engineer specializing in <strong>Control Plane architecture</strong> and high-availability cloud ecosystems. 
-                Focusing on the intersection of scalability and resilience.
-              </p>
-              <div style={{ display: 'flex', gap: '32px' }}>
-                <div>
-                  <div style={{ color: '#475569', fontSize: '0.7rem', textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>Location</div>
-                  <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>Delhi, India</div>
-                </div>
-                <div>
-                  <div style={{ color: '#475569', fontSize: '0.7rem', textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>Current Focus</div>
-                  <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>Platform Engineering</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2: Terminal JSON (Education) */}
-            <div className={`bento-card card-terminal ${inView ? "visible" : ""}`} style={{ transitionDelay: '0.2s', padding: 0 }}>
-              <div className="terminal-header">
-                <div className="t-dot" style={{ background: '#ff5f56' }} />
-                <div className="t-dot" style={{ background: '#ffbd2e' }} />
-                <div className="t-dot" style={{ background: '#27c93f' }} />
-                <span style={{ fontSize: '0.65rem', color: '#475569', fontFamily: 'JetBrains Mono', marginLeft: '8px' }}>credentials.json</span>
-              </div>
-              <div style={{ padding: '30px', fontFamily: 'JetBrains Mono', fontSize: '0.85rem', color: '#a78bfa', lineHeight: 1.5 }}>
-                <div>{`{`}</div>
-                <div style={{ paddingLeft: '20px' }}>
-                  <span style={{ color: '#f8fafc' }}>"degree":</span> "M.Tech Cloud",<br />
-                  <span style={{ color: '#f8fafc' }}>"institution":</span> "BITS Pilani",<br />
-                  <span style={{ color: '#f8fafc' }}>"status":</span> "In_Progress",<br />
-                  <span style={{ color: '#f8fafc' }}>"GPA":</span> "A+"
-                </div>
-                <div>{`}`}</div>
-              </div>
-            </div>
-
-            {/* Card 3: Narrative & Stack */}
-            <div className={`bento-card card-story ${inView ? "visible" : ""}`} style={{ transitionDelay: '0.3s' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '48px' }}>
-                <div>
-                  <div style={{ color: '#a78bfa', fontFamily: 'JetBrains Mono', fontSize: '0.75rem', marginBottom: '16px' }}>&gt; CORE_PHILOSOPHY</div>
-                  <p style={{ color: '#94a3b8', lineHeight: 1.8, fontSize: '1.1rem' }}>
-                    I model systems before I build them. My work focuses on <span style={{ color: '#fff', fontWeight: 600 }}>resiliency-first architecture</span>. 
-                    From orchestrating multi-region cloud clusters to hardening infrastructure security with zero-trust principles and K8s-native management.
-                  </p>
-                </div>
-                <div>
-                  <div style={{ color: '#94a3b8', fontFamily: 'JetBrains Mono', fontSize: '0.75rem', marginBottom: '16px' }}>&gt; CORE_TOOLBOX</div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                    {tags.map(t => <span key={t} className="tag-pill">{t}</span>)}
-                  </div>
-                </div>
-              </div>
-            </div>
-
+      <div className="about-inner">
+        {/* Header */}
+        <div className="about-header">
+          <h2 className="about-title">
+            About <span className="about-title-accent">Me.</span>
+          </h2>
+          <div className="about-subtitle-row">
+            <div className="about-subtitle-line" aria-hidden="true" />
+            <p className="about-subtitle-text">
+              Building Robust Systems &amp; Scalable Infrastructure
+            </p>
           </div>
         </div>
-      </section>
-    </>
+
+        <div className="bento-grid">
+
+          {/* Card 1: Identity */}
+          <div
+            className={`bento-card card-identity ${inView ? "visible" : ""}`}
+            style={{ transitionDelay: "0.1s" }}
+          >
+            <div className="status-badge" aria-label="System status: operational">
+              <div className="pulse" aria-hidden="true" />
+              System Operational
+            </div>
+            <h3 className="identity-name">Nishant Kamal</h3>
+            <p className="identity-desc">
+              Site Reliability Engineer specializing in{" "}
+              <strong>Control Plane architecture</strong> and high-availability
+              cloud ecosystems. Focusing on the intersection of scalability and
+              resilience.
+            </p>
+            <div className="identity-meta">
+              <div>
+                <div className="meta-item-label">Location</div>
+                <div className="meta-item-value">Delhi, India</div>
+              </div>
+              <div>
+                <div className="meta-item-label">Current Focus</div>
+                <div className="meta-item-value">Platform Engineering</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Terminal */}
+          <div
+            className={`bento-card card-terminal ${inView ? "visible" : ""}`}
+            style={{ transitionDelay: "0.2s", padding: 0 }}
+          >
+            <div className="terminal-card-inner">
+              <div className="terminal-header" aria-hidden="true">
+                <div className="t-dot" style={{ background: "#ff5f56" }} />
+                <div className="t-dot" style={{ background: "#ffbd2e" }} />
+                <div className="t-dot" style={{ background: "#27c93f" }} />
+                <span className="terminal-filename">credentials.json</span>
+              </div>
+              {/* FIX 4: aria-label on terminal block so screen readers get
+                  the meaningful content without reading raw JSON syntax */}
+              <div
+                className="terminal-body"
+                aria-label="M.Tech in Cloud Computing at BITS Pilani, currently in progress, GPA A+"
+              >
+                <span aria-hidden="true">
+                  {"{"}<br />
+                  &nbsp;&nbsp;<span className="t-key">&quot;degree&quot;</span>:{" "}
+                  <span className="t-str">&quot;M.Tech Cloud&quot;</span>,<br />
+                  &nbsp;&nbsp;<span className="t-key">&quot;institution&quot;</span>:{" "}
+                  <span className="t-str">&quot;BITS Pilani&quot;</span>,<br />
+                  &nbsp;&nbsp;<span className="t-key">&quot;status&quot;</span>:{" "}
+                  <span className="t-str">&quot;In_Progress&quot;</span>,<br />
+                  &nbsp;&nbsp;<span className="t-key">&quot;GPA&quot;</span>:{" "}
+                  <span className="t-str">&quot;A+&quot;</span><br />
+                  {"}"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: Story */}
+          <div
+            className={`bento-card card-story ${inView ? "visible" : ""}`}
+            style={{ transitionDelay: "0.3s" }}
+          >
+            <div className="story-inner">
+              <div>
+                <div className="story-label">&gt; CORE_PHILOSOPHY</div>
+                <p className="story-text">
+                  I model systems before I build them. My work focuses on{" "}
+                  <strong>resiliency-first architecture</strong>. From orchestrating
+                  multi-region cloud clusters to hardening infrastructure security
+                  with zero-trust principles and K8s-native management.
+                </p>
+              </div>
+              <div>
+                <div className="toolbox-label">&gt; CORE_TOOLBOX</div>
+                <div className="tag-pills">
+                  {tags.map((t) => (
+                    <span key={t} className="tag-pill">{t}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   );
 }
