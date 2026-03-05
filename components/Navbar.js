@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const navItems = [
-  { name: "About",     link: "#about" },
+  { name: "About",      link: "#about" },
   { name: "Tech Stack", link: "#skills" },
   { name: "Projects",   link: "#projects" },
   { name: "Education",  link: "#education" },
@@ -15,20 +15,31 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive]     = useState("");
 
+  // FIX 1: Removed @import Google Fonts — already loaded via next/font in layout.js
+
+  // FIX 2: Throttle scroll handler with requestAnimationFrame to prevent
+  // dozens of synchronous re-renders per scroll event
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Highlight active section based on scroll
+  // Active section highlight via IntersectionObserver
   useEffect(() => {
     const ids = navItems.map((n) => n.link.slice(1)).concat(["home"]);
     const obs = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        });
+        entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
       },
       { rootMargin: "-40% 0px -55% 0px" }
     );
@@ -39,34 +50,37 @@ export default function Navbar() {
     return () => obs.disconnect();
   }, []);
 
+  // FIX 3: Close drawer on Escape key
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
-
         .nav-root {
           position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-          font-family: 'Inter', sans-serif;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          font-family: var(--font-sans);
+          transition: background 0.4s ease, border-color 0.4s ease, padding 0.4s ease;
           border-bottom: 1px solid transparent;
         }
-        
         .nav-root.scrolled {
-          background: rgba(2, 6, 23, 0.8);
-          backdrop-filter: blur(12px);
+          background: rgba(2, 6, 23, 0.85);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
           border-color: rgba(255, 255, 255, 0.05);
-          padding: 4px 0;
         }
-
         .nav-inner {
           max-width: 1200px; margin: 0 auto;
           padding: 0 24px; height: 72px;
           display: flex; align-items: center; justify-content: space-between;
         }
-
         .nav-logo {
           display: flex; align-items: center; gap: 12px;
           text-decoration: none;
+          flex-shrink: 0;
         }
         .logo-mark {
           width: 36px; height: 36px; border-radius: 10px;
@@ -74,6 +88,7 @@ export default function Navbar() {
           display: flex; align-items: center; justify-content: center;
           font-size: 0.85rem; font-weight: 800; color: #fff;
           box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+          flex-shrink: 0;
         }
         .logo-text-wrap { display: flex; flex-direction: column; }
         .logo-name {
@@ -81,110 +96,172 @@ export default function Navbar() {
           letter-spacing: -0.02em; line-height: 1.2;
         }
         .logo-sub {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: var(--font-mono);
           font-size: 0.6rem; color: #64748b;
           letter-spacing: 0.1em; text-transform: uppercase;
         }
-
-        .nav-links { display: flex; align-items: center; gap: 8px; }
+        .nav-links { display: flex; align-items: center; gap: 4px; }
         @media (max-width: 850px) { .nav-links { display: none; } }
 
         .nav-link {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.75rem; letter-spacing: 0.05em;
+          font-family: var(--font-mono);
+          font-size: 0.72rem; letter-spacing: 0.06em;
           text-transform: uppercase; color: #94a3b8;
-          text-decoration: none; padding: 8px 16px;
-          border-radius: 8px; transition: all 0.2s;
+          text-decoration: none; padding: 8px 14px;
+          border-radius: 8px; transition: color 0.2s, background 0.2s;
+          white-space: nowrap;
         }
-        .nav-link:hover { color: #f8fafc; background: rgba(255, 255, 255, 0.04); }
-        .nav-link.active { color: #38bdf8; background: rgba(56, 189, 248, 0.05); }
+        .nav-link:hover { color: #f8fafc; background: rgba(255, 255, 255, 0.05); }
+        .nav-link.active { color: #38bdf8; background: rgba(56, 189, 248, 0.06); }
+        .nav-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 
         .nav-resume {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.75rem; font-weight: 600;
+          font-family: var(--font-mono);
+          font-size: 0.72rem; font-weight: 600;
           color: #38bdf8; text-decoration: none;
-          border: 1px solid rgba(56, 189, 248, 0.3);
-          padding: 8px 20px; border-radius: 8px;
-          margin-left: 12px; transition: all 0.3s;
+          border: 1px solid rgba(56, 189, 248, 0.35);
+          padding: 7px 18px; border-radius: 8px;
+          margin-left: 8px;
+          transition: background 0.25s, color 0.25s, box-shadow 0.25s;
+          white-space: nowrap;
         }
         .nav-resume:hover {
           background: #38bdf8; color: #020617;
-          box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+          box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
         }
+        .nav-resume:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 
+        /* Hamburger */
         .nav-burger {
           display: none; background: none; border: none;
           color: #94a3b8; padding: 8px; cursor: pointer;
+          border-radius: 8px; transition: background 0.2s;
         }
+        .nav-burger:hover { background: rgba(255,255,255,0.05); }
+        .nav-burger:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
         @media (max-width: 850px) { .nav-burger { display: block; } }
 
         .burger-line {
           display: block; width: 22px; height: 2px;
           background: currentColor; margin: 4px 0;
-          transition: 0.3s; border-radius: 2px;
+          transition: transform 0.3s, opacity 0.3s; border-radius: 2px;
         }
         .nav-burger.open .l1 { transform: translateY(6px) rotate(45deg); }
         .nav-burger.open .l2 { opacity: 0; }
         .nav-burger.open .l3 { transform: translateY(-6px) rotate(-45deg); }
 
+        /* Mobile drawer */
         .mobile-drawer {
           position: absolute; top: 100%; left: 0; right: 0;
-          background: #020617; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-          overflow: hidden; transition: all 0.4s ease;
+          background: rgba(2, 6, 23, 0.98);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          overflow: hidden;
           max-height: 0; opacity: 0;
+          transition: max-height 0.4s ease, opacity 0.3s ease;
         }
-        .mobile-drawer.open { max-height: 450px; opacity: 1; padding: 20px 0; }
+        .mobile-drawer.open { max-height: 480px; opacity: 1; padding: 16px 0 24px; }
 
-        .drawer-inner { display: flex; flex-direction: column; padding: 0 24px; gap: 8px; }
+        .drawer-inner { display: flex; flex-direction: column; padding: 0 20px; gap: 4px; }
         .mobile-link {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: var(--font-mono);
           font-size: 0.8rem; color: #94a3b8;
-          text-decoration: none; padding: 12px;
-          border-radius: 8px; border: 1px solid transparent;
+          text-decoration: none; padding: 12px 16px;
+          border-radius: 10px; border: 1px solid transparent;
+          transition: background 0.2s, color 0.2s, border-color 0.2s;
         }
-        .mobile-link.active { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.2); }
+        .mobile-link:hover { color: #f8fafc; background: rgba(255,255,255,0.04); }
+        .mobile-link.active {
+          background: rgba(56, 189, 248, 0.08);
+          color: #38bdf8;
+          border-color: rgba(56, 189, 248, 0.2);
+        }
+        .mobile-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 
+        .mobile-resume {
+          display: block; text-align: center;
+          margin: 12px 0 0;
+          font-family: var(--font-mono);
+          font-size: 0.8rem; font-weight: 600;
+          color: #38bdf8; text-decoration: none;
+          border: 1px solid rgba(56, 189, 248, 0.3);
+          padding: 12px; border-radius: 10px;
+          transition: background 0.25s, color 0.25s;
+        }
+        .mobile-resume:hover { background: #38bdf8; color: #020617; }
+
+        /* Scroll progress bar */
         .scroll-progress {
           position: absolute; bottom: 0; left: 0;
-          height: 2px; background: linear-gradient(90deg, #38bdf8, #818cf8);
+          height: 2px;
+          background: linear-gradient(90deg, #38bdf8, #818cf8);
           box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
-          transition: width 0.1s linear;
+          /* FIX 4: Use will-change for GPU compositing — avoids layout recalc on width change */
+          will-change: width;
+          transition: width 0.08s linear;
         }
       `}</style>
 
-      <nav className={`nav-root ${scrolled ? "scrolled" : ""}`}>
+      <nav
+        className={`nav-root ${scrolled ? "scrolled" : ""}`}
+        role="navigation"
+        aria-label="Main navigation"
+      >
         <div className="nav-inner">
-          <a href="#home" className="nav-logo">
-            <div className="logo-mark">NK</div>
+          <a href="#home" className="nav-logo" aria-label="Nishant Kamal — go to top">
+            <div className="logo-mark" aria-hidden="true">NK</div>
             <div className="logo-text-wrap">
               <span className="logo-name">Nishant Kamal</span>
               <span className="logo-sub">Site Reliability Engineer</span>
             </div>
           </a>
 
+          {/* Desktop links */}
           <div className="nav-links">
             {navItems.map((item) => (
               <a
                 key={item.name}
                 href={item.link}
                 className={`nav-link ${active === item.link.slice(1) ? "active" : ""}`}
+                aria-current={active === item.link.slice(1) ? "true" : undefined}
               >
                 {item.name}
               </a>
             ))}
-            <a href="/resume.pdf" download className="nav-resume">
+            {/* FIX 5: resume link opens in new tab — downloading a PDF directly
+                is better UX than forcing a download on click */}
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-resume"
+              aria-label="View resume (opens PDF in new tab)"
+            >
               Resume ↗
             </a>
           </div>
 
-          <button className={`nav-burger ${open ? "open" : ""}`} onClick={() => setOpen(!open)}>
-            <span className="burger-line l1"></span>
-            <span className="burger-line l2"></span>
-            <span className="burger-line l3"></span>
+          {/* Mobile hamburger */}
+          <button
+            className={`nav-burger ${open ? "open" : ""}`}
+            onClick={() => setOpen(!open)}
+            aria-expanded={open}
+            aria-controls="mobile-drawer"
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            <span className="burger-line l1" aria-hidden="true" />
+            <span className="burger-line l2" aria-hidden="true" />
+            <span className="burger-line l3" aria-hidden="true" />
           </button>
         </div>
 
-        <div className={`mobile-drawer ${open ? "open" : ""}`}>
+        {/* Mobile drawer */}
+        <div
+          id="mobile-drawer"
+          className={`mobile-drawer ${open ? "open" : ""}`}
+          aria-hidden={!open}
+        >
           <div className="drawer-inner">
             {navItems.map((item) => (
               <a
@@ -192,11 +269,18 @@ export default function Navbar() {
                 href={item.link}
                 className={`mobile-link ${active === item.link.slice(1) ? "active" : ""}`}
                 onClick={() => setOpen(false)}
+                tabIndex={open ? 0 : -1}
               >
                 {item.name}
               </a>
             ))}
-            <a href="/resume.pdf" download className="nav-resume" style={{ textAlign: 'center', marginLeft: 0, marginTop: '10px' }}>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mobile-resume"
+              tabIndex={open ? 0 : -1}
+            >
               Resume ↗
             </a>
           </div>
@@ -210,14 +294,25 @@ export default function Navbar() {
 
 function ScrollIndicator() {
   const [prg, setPrg] = useState(0);
+
   useEffect(() => {
+    // FIX 6: rAF-throttled scroll handler — was firing setState on every
+    // pixel of scroll, causing excessive re-renders
+    let ticking = false;
     const handle = () => {
-      const win = window.scrollY;
-      const doc = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      setPrg(doc > 0 ? (win / doc) * 100 : 0);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrolled = window.scrollY;
+          const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          setPrg(total > 0 ? (scrolled / total) * 100 : 0);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener("scroll", handle);
+    window.addEventListener("scroll", handle, { passive: true });
     return () => window.removeEventListener("scroll", handle);
   }, []);
-  return <div className="scroll-progress" style={{ width: `${prg}%` }} />;
+
+  return <div className="scroll-progress" style={{ width: `${prg}%` }} aria-hidden="true" />;
 }
