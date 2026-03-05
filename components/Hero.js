@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const roles = [
@@ -64,15 +63,11 @@ export default function Hero() {
           align-items: center;
           overflow-x: hidden;
           /*
-            ROOT CAUSE OF EMPTY GAP:
-            page.js had pt-32 (128px) on the parent <section>,
-            AND this component also had padding-top: 100px.
-            Combined = ~228px dead space above content.
-            Fix: remove padding here entirely — page.js section
-            now uses pt-0, and the navbar height (72px) is handled
-            by scroll-padding-top in globals.css.
+            Navbar is fixed at 72px tall.
+            padding-top pushes content clear of it.
+            padding-bottom balances visual centering.
           */
-          padding: 0 0 60px;
+          padding: 72px 0 60px;
         }
 
         .hero-inner {
@@ -248,6 +243,18 @@ export default function Hero() {
           z-index: 2;
           border: 2px solid rgba(56, 189, 248, 0.2);
           background: rgba(15, 23, 42, 0.9);
+          /* Required for next/image fill to resolve dimensions */
+          width: auto;
+          height: auto;
+        }
+        /* next/image fill needs explicit position:relative on the nearest
+           positioned ancestor that has a defined size */
+        .hero-img-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          overflow: hidden;
         }
         /* Fallback only renders when imgError=true — no z-index fighting */
         .hero-img-fallback {
@@ -346,13 +353,24 @@ export default function Hero() {
                 {imgError ? (
                   <div className="hero-img-fallback" aria-hidden="true">NK</div>
                 ) : (
-                  <Image
+                  /*
+                    Using plain <img> for /public local static assets.
+                    next/image fill mode requires a positioned ancestor with
+                    explicit pixel dimensions — unreliable inside a CSS
+                    inset-based circle. Plain <img> works correctly here
+                    and Next.js optimises /public assets at build time anyway.
+                  */
+                  <img
                     src="/profile.png"
                     alt="Nishant Kamal, Site Reliability Engineer"
-                    fill
-                    sizes="(max-width: 1024px) 240px, 360px"
-                    priority
-                    style={{ objectFit: "cover" }}
+                    width={360}
+                    height={360}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
                     onError={() => setImgError(true)}
                   />
                 )}
