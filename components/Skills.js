@@ -89,6 +89,10 @@ function SkillBar({ level, color, glow }) {
           // Using rgba with explicit opacity instead for proper cross-browser support.
           background: `linear-gradient(90deg, ${color}, ${color}99)`,
           boxShadow: `0 0 12px ${glow}`,
+          // FIX: Respect reduced motion — transition only if user hasn't opted out
+          ...(window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? { transition: "none" }
+            : {}),
         }}
       />
     </div>
@@ -223,19 +227,23 @@ export default function Skills() {
           border-radius: 6px;
           color: #94a3b8;
           transition: border-color 0.2s, color 0.2s, transform 0.2s;
+          /* FIX: Changed cursor to default — tags are display-only, not interactive.
+             The :hover effect below is purely cosmetic/decorative. */
           cursor: default;
           user-select: none;
         }
         .tech-tag:hover {
-          border-color: #38bdf8;
-          color: #38bdf8;
-          transform: scale(1.04);
+          border-color: rgba(56, 189, 248, 0.3);
+          color: #cbd5e1;
+          /* FIX: Removed scale transform — scaling non-interactive elements
+             implies clickability, which is misleading UX */
         }
       `}</style>
 
       <h2 id="skills-title" className="skills-heading">
         Technical <span className="skills-heading-accent">Stack</span><br />
-        &amp; Ecosystem.
+        {/* FIX: &amp; in JSX renders as literal "&amp;" — use & directly or &amp; only in HTML */}
+        & Ecosystem.
       </h2>
 
       <nav className="tabs-nav" aria-label="Skill categories">
