@@ -4,12 +4,12 @@ import About from "../components/About"
 import Skills from "../components/Skills"
 import Projects from "../components/Projects"
 import Education from "../components/Education"
+import Awards from "../components/Awards"
 import Contact from "../components/Contact"
 
 export default function Home() {
   return (
     <div className="min-h-screen text-white relative">
-
       {/* 1. HERO
           Hero owns its own max-width (1200px) + padding (100px 0 40px).
           No extra wrapper needed — section just provides the id anchor
@@ -56,13 +56,23 @@ export default function Home() {
       </section>
 
       {/* 6. EDUCATION */}
-      <section id="education" aria-labelledby="education-title" className="bg-slate-900/30">
+      <section id="education" aria-labelledby="education-title" className="border-b border-white/5 bg-slate-900/30">
         <div className="max-w-[1200px] mx-auto px-6 py-16">
           <Education />
         </div>
       </section>
 
-      {/* 7. CONTACT
+      {/* 7. AWARDS
+          Same layout pattern as Education — subtle bg tint for
+          visual rhythm alternation between sections.
+      */}
+      <section id="awards" aria-labelledby="awards-title" className="border-b border-white/5">
+        <div className="max-w-[1200px] mx-auto px-6 py-16">
+          <Awards />
+        </div>
+      </section>
+
+      {/* 8. CONTACT
           Narrower max-width intentional for contact form readability.
       */}
       <section id="contact" aria-labelledby="contact-title" className="py-24 relative z-10">
@@ -76,7 +86,6 @@ export default function Home() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(167,139,250,0.05)_0%,transparent_50%)]" />
       </div>
-
     </div>
   )
 }
