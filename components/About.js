@@ -214,6 +214,35 @@ export default function About() {
           color: #a78bfa;
           background: rgba(167,139,250,0.08);
         }
+
+        /* Quote card */
+        .card-quote { grid-column: span 12; }
+        .quote-blockquote {
+          margin: 0;
+          padding: 0 0 0 24px;
+          border-left: 3px solid #a78bfa;
+          position: relative;
+        }
+        .quote-mark {
+          font-size: 4rem; line-height: 1;
+          color: #a78bfa; opacity: 0.2;
+          font-family: Georgia, serif;
+          position: absolute; top: -10px; left: -6px;
+          pointer-events: none; user-select: none;
+        }
+        .quote-text {
+          font-size: clamp(1.05rem, 2vw, 1.3rem);
+          font-weight: 600; font-style: italic;
+          color: #e2e8f0; line-height: 1.65;
+          letter-spacing: -0.01em;
+          margin: 0 0 14px;
+        }
+        .quote-attr {
+          font-family: var(--font-mono);
+          font-size: 0.68rem; color: #475569;
+          letter-spacing: 0.12em; text-transform: uppercase;
+        }
+        .quote-attr span { color: #a78bfa; }
       `}</style>
 
       <div className="about-inner">
@@ -318,6 +347,22 @@ export default function About() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Card 4: Quote */}
+          <div
+            className={`bento-card card-quote ${inView ? "visible" : ""}`}
+            style={{ transitionDelay: "0.4s" }}
+          >
+            <blockquote className="quote-blockquote">
+              <span className="quote-mark" aria-hidden="true">&ldquo;</span>
+              <p className="quote-text">
+                I was never the smartest in the room — I just never left until I was.
+              </p>
+              <footer className="quote-attr">
+                — <span>Nishant Kamal</span>
+              </footer>
+            </blockquote>
           </div>
 
         </div>
