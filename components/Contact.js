@@ -170,7 +170,7 @@ export default function Contact() {
       `}</style>
 
       <div className="contact-container">
-        <h2 className="contact-headline">
+        <h2 id="contact-title" className="contact-headline">
           Let&apos;s <em>Connect.</em>
         </h2>
         <p className="contact-sub">
