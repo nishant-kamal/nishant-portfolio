@@ -46,10 +46,10 @@ const projects = [
     id: 3,
     index: "03",
     title: "Oracle Cloud Infrastructure POC",
-    subtitle: "OCI · Cloud Migration · QA · Production Deployment",
+    subtitle: "OCI · Karpenter · Cloud Migration · QA · Production Deployment",
     description:
-      "Designed and executed a proof-of-concept for Oracle Cloud Infrastructure (OCI) and successfully deployed the first production environment. Owned the full lifecycle from architecture design through QA — resolving all reported issues to achieve a stable, live deployment.",
-    tags: ["OCI", "Oracle Cloud", "POC", "Cloud Infrastructure", "Production Deployment", "QA"],
+      "Designed and executed a proof-of-concept for Oracle Cloud Infrastructure (OCI) and successfully deployed the first production environment. Deployed Karpenter on OCI to automate node provisioning and manage compute costs efficiently through intelligent bin-packing. Resolved all QA-reported issues to achieve a stable, live deployment.",
+    tags: ["OCI", "Oracle Cloud", "Karpenter", "Node Provisioning", "POC", "Cost Optimization", "Production Deployment", "QA"],
     color: "#f97316",
     glow: "rgba(249,115,22,.12)",
     icon: "◈",
@@ -63,6 +63,24 @@ const projects = [
   {
     id: 4,
     index: "04",
+    title: "ACR Migration & Decommission",
+    subtitle: "Azure Container Registry · Image Cleanup · CI/CD",
+    description:
+      "Led decommissioning of the old Azure Container Registry and migrated all assets to a new ACR instance. Executed a full audit and cleanup of stale and unused images, reducing storage bloat and eliminating legacy registry dependencies across all pipelines.",
+    tags: ["Azure", "ACR", "Container Registry", "Migration", "Image Cleanup", "CI/CD"],
+    color: "#fb7185",
+    glow: "rgba(251,113,133,.12)",
+    icon: "⬡",
+    githubUrl: "https://github.com/nishant-kamal",
+    demoUrl: null,
+    metrics: [
+      { label: "Registry Migrated", val: "100%" },
+      { label: "Stale Images Removed", val: "↓ GB" },
+    ],
+  },
+  {
+    id: 5,
+    index: "05",
     title: "Alerting Standardization",
     subtitle: "Helm · Prometheus · AlertManager",
     description:
