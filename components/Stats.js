@@ -3,10 +3,10 @@
 import { useEffect, useState, useRef } from "react";
 
 const statsData = [
-  { value: 6,    suffix: "+", label: "Years Experience",   color: "#38bdf8", icon: "◈" },
-  { value: 35,   suffix: "%", label: "Cloud Cost Saved",   color: "#34d399", icon: "↓" },
-  { value: 99.9, suffix: "%", label: "Platform Uptime",    color: "#a78bfa", icon: "⬡" },
-  { value: 50,   suffix: "+", label: "Global Deployments", color: "#fb923c", icon: "△" },
+  { value: 5,    suffix: "+",     label: "Years Experience",  color: "#38bdf8", icon: "◈" },
+  { value: null, range: "30–40%", label: "Compute & Storage Cost ↓", color: "#34d399", icon: "↓" },
+  { value: 10,   suffix: "+",     label: "Projects Delivered",color: "#a78bfa", icon: "△" },
+  { value: 3,    suffix: "+",     label: "Cloud Platforms",   color: "#fb923c", icon: "◉" },
 ];
 
 function Counter({ target, suffix, color, cardRef }) {
@@ -61,10 +61,15 @@ function StatCard({ s }) {
         <span className="stat-status" aria-hidden="true">DATA_PULL::OK</span>
       </div>
       <div className="stat-value">
-        <Counter target={s.value} suffix={s.suffix} color={s.color} cardRef={cardRef} />
+        {s.range ? (
+          <span style={{ color: s.color, fontVariantNumeric: "tabular-nums" }}>
+            {s.range}
+          </span>
+        ) : (
+          <Counter target={s.value} suffix={s.suffix} color={s.color} cardRef={cardRef} />
+        )}
       </div>
-      {/* Screen reader gets the full label + value together */}
-      <div className="stat-label" aria-label={`${s.label}: ${s.value}${s.suffix}`}>
+      <div className="stat-label" aria-label={s.range ? `${s.label}: ${s.range}` : `${s.label}: ${s.value}${s.suffix}`}>
         {s.label}
       </div>
     </div>
@@ -248,8 +253,8 @@ export default function Stats() {
             <span className="stats-title-accent">Numbers</span>
           </h2>
           <p className="stats-subtitle">
-            Quantifiable impact on infrastructure performance, security compliance,
-            and operational efficiency.
+            Years of hands-on experience across cloud infrastructure,
+            platform engineering, and site reliability.
           </p>
         </div>
 
