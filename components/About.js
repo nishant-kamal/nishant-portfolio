@@ -219,7 +219,7 @@ export default function About() {
       <div className="about-inner">
         {/* Header */}
         <div className="about-header">
-          <h2 className="about-title">
+          <h2 id="about-title" className="about-title">
             About <span className="about-title-accent">Me.</span>
           </h2>
           <div className="about-subtitle-row">
