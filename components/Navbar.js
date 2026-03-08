@@ -9,6 +9,7 @@ const navItems = [
   { name: "Tech Stack", link: "#skills" },
   { name: "Projects",   link: "#projects" },
   { name: "Education",  link: "#education" },
+  { name: "Awards",     link: "#awards" },
   { name: "Contact",    link: "#contact" },
 ];
 
@@ -207,16 +208,18 @@ export default function Navbar() {
         }
         .mobile-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 
-        .mobile-resume {
-          display: block; text-align: center; margin: 12px 0 0;
-          font-family: var(--font-mono, 'Courier New', monospace);
-          font-size: 0.8rem; font-weight: 600;
-          color: #38bdf8; text-decoration: none;
-          border: 1px solid rgba(56, 189, 248, 0.3);
-          padding: 12px; border-radius: 10px;
-          transition: background 0.25s, color 0.25s;
+        /* Resume button inside mobile drawer — override inline margin, fill width */
+        .mobile-resume-wrap {
+          margin: 12px 0 0;
         }
-        .mobile-resume:hover { background: #38bdf8; color: #020617; }
+        .mobile-resume-wrap .resume-btn {
+          margin-left: 0;
+          width: 100%;
+          justify-content: center;
+          font-size: 0.8rem;
+          padding: 12px;
+          border-radius: 10px;
+        }
 
         /* Scroll progress bar — GPU composited via will-change */
         .scroll-progress {
@@ -295,7 +298,7 @@ export default function Navbar() {
                 {item.name}
               </a>
             ))}
-            <div style={{ marginTop: "12px" }}>
+            <div className="mobile-resume-wrap">
               <Resume />
             </div>
           </div>
