@@ -76,7 +76,7 @@ const awards = [
     id: 6,
     title: "Dark Knight",
     period: "Jun 2022",
-    quarter: "Q1 2022",
+    quarter: "JFM 2022",
     description:
       "For demonstrating the superpower of complex problem-solving for Quarter 1, 2022.",
     color: "#fb923c",
@@ -90,7 +90,7 @@ const awards = [
     id: 7,
     title: "Captain Marvel",
     period: "Oct 2020",
-    quarter: "Q3 2020",
+    quarter: "JAS 2020",
     description:
       "For demonstrating the superpower of passion for customers for Quarter 3, 2020.",
     color: "#fbbf24",
