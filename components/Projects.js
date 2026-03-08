@@ -2,21 +2,23 @@
 
 import { useState } from "react";
 
-// FIX 1: Removed @import Google Fonts — loaded via next/font in layout.js
-
 const projects = [
   {
     id: 1,
     index: "01",
     title: "Kubernetes GitOps Deployment",
-    subtitle: "EKS · FluxCD · Helm · Prometheus",
+    subtitle: "EKS · FluxCD · GitHub Actions · Helm · Prometheus · New Relic · Grafana",
     description:
-      "Weather application deployed on AWS EKS using Helm and FluxCD with full Prometheus monitoring stack. Implemented GitOps workflow enabling zero-touch continuous delivery with automatic drift detection and reconciliation.",
-    tags: ["Kubernetes", "AWS EKS", "FluxCD", "Helm", "Prometheus", "GitOps"],
+      "Deployed scalable, highly available infrastructure on AWS EKS with integrated monitoring via Prometheus, New Relic, and Grafana for proactive issue resolution. Streamlined CI/CD pipelines by integrating FluxCD and GitHub Actions, enhancing automation and improving deployment cycles across teams. Leveraged Helm Charts to automate application deployments, manage Kubernetes resources, and simplify infrastructure-as-code processes.",
+    highlights: [
+      "Integrated Prometheus, New Relic & Grafana — proactive alerting and observability across all services",
+      "FluxCD + GitHub Actions CI/CD pipeline — eliminated manual deploy steps across all teams",
+      "Helm Charts as IaC — versioned, repeatable deployments with zero configuration drift",
+    ],
+    tags: ["Kubernetes", "AWS EKS", "FluxCD", "GitHub Actions", "Helm", "Prometheus", "New Relic", "Grafana", "GitOps"],
     color: "#38bdf8",
     glow: "rgba(56,189,248,.12)",
     icon: "☸",
-    // FIX: Added links for project CTAs
     githubUrl: "https://github.com/nishant-kamal",
     demoUrl: null,
     metrics: [
@@ -27,11 +29,16 @@ const projects = [
   {
     id: 2,
     index: "02",
-    title: "AWS Cost Optimization",
-    subtitle: "Karpenter · EC2 · ASG Migration",
+    title: "AWS Cost Optimization & Karpenter Migration",
+    subtitle: "Karpenter · EC2 · ASG · Spot Instances · Resource Right-Sizing",
     description:
-      "Migrated cluster node scaling from ASG to Karpenter, achieving 35% EC2 cost reduction through intelligent bin-packing and spot instance utilization. Reduced over-provisioning by implementing right-sizing recommendations.",
-    tags: ["Karpenter", "AWS", "EC2", "Cost Optimization", "Spot Instances"],
+      "Implemented Karpenter for dynamic scaling, effectively replacing the Auto Scaling Group (ASG), optimizing resource utilization, and improving cost efficiency across the Kubernetes environment. Deployed multiple microservices using Karpenter for autoscaling while ensuring seamless traffic management. Implemented cost-saving measures by optimizing resource utilization across all cloud-based infrastructure environments.",
+    highlights: [
+      "Replaced ASG with Karpenter — intelligent bin-packing & Spot Instance utilization at scale",
+      "Right-sized all node groups — eliminated chronic over-provisioning across clusters",
+      "Cost-saving framework applied org-wide across all cloud workloads",
+    ],
+    tags: ["Karpenter", "AWS", "EC2", "ASG", "Cost Optimization", "Spot Instances", "Autoscaling"],
     color: "#34d399",
     glow: "rgba(52,211,153,.12)",
     icon: "↓",
@@ -46,10 +53,15 @@ const projects = [
     id: 3,
     index: "03",
     title: "Oracle Cloud Infrastructure POC",
-    subtitle: "OCI · Karpenter · Cloud Migration · QA · Production Deployment",
+    subtitle: "OCI · Karpenter · Istio · Virtual Services · Gateway · Service Mesh · QA",
     description:
-      "Designed and executed a proof-of-concept for Oracle Cloud Infrastructure (OCI) and successfully deployed the first production environment. Deployed Karpenter on OCI to automate node provisioning and manage compute costs efficiently through intelligent bin-packing. Resolved all QA-reported issues to achieve a stable, live deployment.",
-    tags: ["OCI", "Oracle Cloud", "Karpenter", "Node Provisioning", "POC", "Cost Optimization", "Production Deployment", "QA"],
+      "Designed and executed a proof-of-concept for Oracle Cloud Infrastructure (OCI) and successfully deployed the first production environment. Deployed Karpenter on OCI to automate node provisioning and manage compute costs efficiently through intelligent bin-packing. Deployed Istio, Virtual Services, and Gateways to manage traffic routing and enhance microservices communication within Kubernetes clusters, streamlining service mesh configurations. Resolved all QA-reported issues to achieve a stable, live deployment.",
+    highlights: [
+      "Istio + Virtual Services + Gateways — full service mesh traffic control on OCI",
+      "Karpenter on OCI — automated node provisioning with intelligent cost management",
+      "End-to-end QA ownership: resolved every issue from staging to stable live production",
+    ],
+    tags: ["OCI", "Oracle Cloud", "Karpenter", "Istio", "Virtual Services", "Gateway", "Service Mesh", "POC", "Production Deployment", "QA"],
     color: "#f97316",
     glow: "rgba(249,115,22,.12)",
     icon: "◈",
@@ -64,10 +76,15 @@ const projects = [
     id: 4,
     index: "04",
     title: "ACR Migration & Decommission",
-    subtitle: "Azure Container Registry · Image Cleanup · CI/CD",
+    subtitle: "Azure Container Registry · Image Cleanup · CI/CD Pipeline Cutover",
     description:
-      "Led decommissioning of the old Azure Container Registry and migrated all assets to a new ACR instance. Executed a full audit and cleanup of stale and unused images, reducing storage bloat and eliminating legacy registry dependencies across all pipelines.",
-    tags: ["Azure", "ACR", "Container Registry", "Migration", "Image Cleanup", "CI/CD"],
+      "Led decommissioning of the old Azure Container Registry and migrated all assets to a new ACR instance. Executed a full audit and cleanup of stale and unused images, reducing storage bloat and eliminating legacy registry dependencies across all pipelines. Troubleshot production issues effectively, working closely with development teams to implement solutions that improved system uptime and minimized downtime throughout the migration.",
+    highlights: [
+      "Full image audit — all stale & orphaned layers identified and purged from registry",
+      "Zero-downtime pipeline cutover coordinated across all development teams",
+      "Cross-functional collaboration with dev teams ensured no regressions post-migration",
+    ],
+    tags: ["Azure", "ACR", "Container Registry", "Migration", "Image Cleanup", "CI/CD", "DevOps"],
     color: "#fb7185",
     glow: "rgba(251,113,133,.12)",
     icon: "⬡",
@@ -81,11 +98,16 @@ const projects = [
   {
     id: 5,
     index: "05",
-    title: "Alerting Standardization",
-    subtitle: "Helm · Prometheus · AlertManager",
+    title: "Alerting Standardization & Observability",
+    subtitle: "Prometheus · AlertManager · Helm · Grafana · RCA · Automation",
     description:
-      "Built a Helm-based centralized alerting system improving monitoring consistency across 50+ services. Reduced MTTR by establishing unified runbooks, alert routing rules, and escalation policies.",
-    tags: ["Prometheus", "AlertManager", "Helm", "Grafana", "MTTR"],
+      "Built a Helm-based centralized alerting system improving monitoring consistency across 50+ services. Reduced MTTR by establishing unified runbooks, alert routing rules, and escalation policies. Conducted root-cause analyses after major incidents to identify areas for process improvement or technical enhancement. Enhanced system reliability by implementing monitoring tools and automation techniques. Proactively identified performance bottlenecks, working on continuous improvements to system resilience and reliability.",
+    highlights: [
+      "Post-incident RCA framework standardized — consistent learnings captured across all teams",
+      "Unified runbooks + routing rules + escalation policies covering 50+ services",
+      "Proactive bottleneck detection via automation reduced reactive firefighting significantly",
+    ],
+    tags: ["Prometheus", "AlertManager", "Helm", "Grafana", "MTTR", "RCA", "Observability", "Automation", "SRE"],
     color: "#a78bfa",
     glow: "rgba(167,139,250,.12)",
     icon: "△",
@@ -102,7 +124,6 @@ export default function Projects() {
   const [active, setActive] = useState(null);
 
   return (
-    // FIX 2: Removed duplicate <section id="projects"> — already in page.js
     <div className="projects-wrap">
       <style>{`
         .projects-wrap { padding: 20px 0 60px; }
@@ -128,11 +149,8 @@ export default function Projects() {
           -webkit-backdrop-filter: blur(12px);
           overflow: hidden;
           transition: border-color 0.3s, box-shadow 0.3s;
-          /* FIX 3: Added cursor:pointer so the entire card signals clickability */
           cursor: pointer;
         }
-
-        /* FIX 4: Added :focus-visible for keyboard accessibility on the card */
         .proj-card:focus-visible {
           outline: 2px solid #38bdf8;
           outline-offset: 2px;
@@ -178,9 +196,9 @@ export default function Projects() {
         }
         .proj-subtitle {
           font-family: var(--font-mono);
-          font-size: 0.65rem;
+          font-size: 0.62rem;
           color: #475569;
-          letter-spacing: 0.05em;
+          letter-spacing: 0.04em;
         }
         .proj-chevron {
           font-size: 0.6rem; color: #334155;
@@ -196,53 +214,98 @@ export default function Projects() {
         /* Expandable body */
         .proj-body {
           max-height: 0; overflow: hidden;
-          transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: max-height 0.48s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* FIX 5: Increased max-height from 400px to 600px to prevent
-           long descriptions from being cut off */
-        .proj-card.open .proj-body { max-height: 600px; }
+        .proj-card.open .proj-body { max-height: 900px; }
 
         .proj-body-inner {
-          padding: 0 24px 24px;
+          padding: 20px 24px 24px;
           border-top: 1px solid rgba(255, 255, 255, 0.05);
-          padding-top: 20px;
         }
         .proj-desc {
-          font-size: 0.95rem; color: #94a3b8;
-          line-height: 1.78; margin-bottom: 20px;
-          /* FIX 6: Allow text to wrap properly — was sometimes overflowing on mobile */
+          font-size: 0.93rem; color: #94a3b8;
+          line-height: 1.78; margin-bottom: 18px;
           overflow-wrap: break-word;
         }
-        .proj-metrics {
-          display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
+
+        /* ── Key Highlights ── */
+        .proj-highlights {
+          margin-bottom: 20px;
+          border-radius: 10px;
+          border: 1px solid rgba(255,255,255,0.06);
+          overflow: hidden;
         }
-        .proj-metric { padding: 10px 16px; border-radius: 10px; border: 1px solid; }
+        .proj-highlights-label {
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          padding: 8px 14px;
+          background: rgba(255,255,255,0.03);
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .proj-highlights-dot {
+          width: 6px; height: 6px;
+          border-radius: 50%;
+          flex-shrink: 0;
+        }
+        .proj-highlight-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          padding: 9px 14px;
+          border-bottom: 1px solid rgba(255,255,255,0.03);
+          font-size: 0.84rem;
+          color: #94a3b8;
+          line-height: 1.55;
+          transition: background 0.2s;
+        }
+        .proj-highlight-item:last-child { border-bottom: none; }
+        .proj-highlight-item:hover { background: rgba(255,255,255,0.02); }
+        .proj-highlight-arrow {
+          font-size: 0.65rem;
+          margin-top: 2px;
+          flex-shrink: 0;
+        }
+
+        /* Metrics */
+        .proj-metrics {
+          display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap;
+        }
+        .proj-metric {
+          padding: 10px 16px; border-radius: 10px; border: 1px solid; min-width: 110px;
+        }
         .metric-val {
           font-size: 1.2rem; font-weight: 800;
           line-height: 1; margin-bottom: 4px;
         }
         .metric-lbl {
           font-family: var(--font-mono);
-          font-size: 0.58rem;
+          font-size: 0.56rem;
           letter-spacing: 0.1em;
           text-transform: uppercase;
           color: #475569;
         }
+
+        /* Tags */
         .proj-tags { display: flex; flex-wrap: wrap; gap: 7px; }
         .proj-tag {
           font-family: var(--font-mono);
-          font-size: 0.62rem;
+          font-size: 0.6rem;
           letter-spacing: 0.05em;
           padding: 4px 10px;
           border-radius: 6px;
           border: 1px solid rgba(255,255,255,0.07);
         }
 
-        /* FIX: Project action links */
+        /* Action links */
         .proj-actions {
           display: flex;
           gap: 10px;
-          margin-top: 20px;
+          margin-top: 18px;
           flex-wrap: wrap;
         }
         .proj-action-link {
@@ -256,19 +319,16 @@ export default function Projects() {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          transition: background 0.2s, color 0.2s;
+          transition: opacity 0.2s;
         }
-        .proj-action-link:hover { opacity: 0.85; }
+        .proj-action-link:hover { opacity: 0.8; }
         .proj-action-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 
-        /* FIX: min-width on metrics so they don't collapse awkwardly on narrow screens */
-        .proj-metric { padding: 10px 16px; border-radius: 10px; border: 1px solid; min-width: 100px; }
-
-        /* FIX: Respect reduced motion on accordion */
         @media (prefers-reduced-motion: reduce) {
           .proj-body { transition: none; }
           .proj-chevron { transition: none; }
           .proj-card { transition: none; }
+          .proj-highlight-item { transition: none; }
         }
       `}</style>
 
@@ -289,7 +349,6 @@ export default function Projects() {
                 boxShadow: isOpen ? `0 8px 40px ${p.glow}` : "none",
               }}
               onClick={() => setActive(isOpen ? null : p.id)}
-              // FIX 7: Keyboard accessibility — allow Enter/Space to toggle
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
@@ -338,6 +397,34 @@ export default function Projects() {
                 <div className="proj-body-inner">
                   <p className="proj-desc">{p.description}</p>
 
+                  {/* Key Highlights */}
+                  {p.highlights?.length > 0 && (
+                    <div className="proj-highlights">
+                      <div
+                        className="proj-highlights-label"
+                        style={{ color: p.color + "bb" }}
+                      >
+                        <span
+                          className="proj-highlights-dot"
+                          style={{ background: p.color, boxShadow: `0 0 8px ${p.color}` }}
+                          aria-hidden="true"
+                        />
+                        Key Highlights
+                      </div>
+                      {p.highlights.map((h, i) => (
+                        <div key={i} className="proj-highlight-item">
+                          <span
+                            className="proj-highlight-arrow"
+                            style={{ color: p.color }}
+                            aria-hidden="true"
+                          >→</span>
+                          <span>{h}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Metrics */}
                   <div className="proj-metrics">
                     {p.metrics.map((m) => (
                       <div
@@ -354,6 +441,7 @@ export default function Projects() {
                     ))}
                   </div>
 
+                  {/* Tags */}
                   <div className="proj-tags">
                     {p.tags.map((t) => (
                       <span
@@ -369,7 +457,7 @@ export default function Projects() {
                     ))}
                   </div>
 
-                  {/* FIX: Action links — give users somewhere to go after reading */}
+                  {/* Action links */}
                   <div className="proj-actions">
                     {p.githubUrl && (
                       <a
