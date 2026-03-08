@@ -127,7 +127,7 @@ const EDUCATION = [
 // Mirror of Awards.js
 const AWARDS = [
   { title: "Customer Happiness Champion", period: "Jun 2025", detail: "OND 2024 Quarter" },
-  { title: "FarEye Acers — Rising Star",  period: "May 2024", detail: "Leadership & innovation in SRE at FarEye" },
+  { title: "FarEye Acers: Rising Star",  period: "May 2024", detail: "Leadership & innovation in SRE at FarEye" },
   { title: "Spotted Award",               period: "Apr 2023", detail: "Above & beyond customer support JFM 2023" },
   { title: "Captain Marvel",              period: "Mar 2023", detail: "Passion for customers OND 2022" },
   { title: "Dark Knight",                 period: "Oct 2022", detail: "Complex problem-solving JAS 2022" },
