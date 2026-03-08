@@ -211,7 +211,7 @@ export default function Education() {
         }
       `}</style>
 
-      <h2 className="edu-headline">
+      <h2 id="education-title" className="edu-headline">
         Building on <em>Engineering</em> Excellence.
       </h2>
 
