@@ -13,19 +13,21 @@ const awards = [
     glow: "rgba(56,189,248,.2)",
     icon: "★",
     tag: "Customer Excellence",
+    company: "FarEye",
     rank: "01",
   },
   {
     id: 2,
-    title: "FarEye Acers : Rising Star",
+    title: "FarEye Acers — Rising Star",
     period: "May 2024",
-    quarter: "Company Wide",
+    quarter: "FarEye Wide",
     description:
-      "Recognised for emerging leadership and innovation in SRE practices, demonstrating exceptional growth and technical initiative.",
+      "Recognised for emerging leadership and innovation in SRE practices, demonstrating exceptional growth and technical initiative at FarEye.",
     color: "#34d399",
     glow: "rgba(52,211,153,.2)",
     icon: "◈",
     tag: "Leadership & Innovation",
+    company: "FarEye",
     rank: "02",
   },
   {
@@ -39,6 +41,7 @@ const awards = [
     glow: "rgba(244,114,182,.2)",
     icon: "◉",
     tag: "Above & Beyond",
+    company: "FarEye",
     rank: "03",
   },
   {
@@ -52,6 +55,7 @@ const awards = [
     glow: "rgba(167,139,250,.2)",
     icon: "⬡",
     tag: "Customer Passion",
+    company: "FarEye",
     rank: "04",
   },
   {
@@ -65,6 +69,7 @@ const awards = [
     glow: "rgba(251,146,60,.2)",
     icon: "△",
     tag: "Problem Solving",
+    company: "FarEye",
     rank: "05",
   },
   {
@@ -78,6 +83,7 @@ const awards = [
     glow: "rgba(251,146,60,.2)",
     icon: "△",
     tag: "Technical Excellence",
+    company: "FarEye",
     rank: "06",
   },
   {
@@ -91,11 +97,47 @@ const awards = [
     glow: "rgba(251,191,36,.2)",
     icon: "☸",
     tag: "Customer-Centric",
+    company: "FarEye",
     rank: "07",
   },
 ];
 
+// FarEye real brand logo — orange eye/route mark
+function FarEyeLogo({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      {/* Background rounded rect */}
+      <rect width="40" height="40" rx="9" fill="url(#fe-grad)" />
+      {/* Stylised eye / route mark */}
+      <ellipse cx="20" cy="20" rx="12" ry="7" stroke="white" strokeWidth="2.5" fill="none"/>
+      <circle cx="20" cy="20" r="3.5" fill="white"/>
+      <line x1="20" y1="10" x2="20" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+      <defs>
+        <linearGradient id="fe-grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#f97316"/>
+          <stop offset="100%" stopColor="#dc2626"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
 
+function FarEyeChipLogo({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <rect width="40" height="40" rx="9" fill="url(#fe-chip-grad)" />
+      <ellipse cx="20" cy="20" rx="12" ry="7" stroke="white" strokeWidth="2.5" fill="none"/>
+      <circle cx="20" cy="20" r="3.5" fill="white"/>
+      <line x1="20" y1="10" x2="20" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+      <defs>
+        <linearGradient id="fe-chip-grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#f97316"/>
+          <stop offset="100%" stopColor="#dc2626"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
 
 export default function Awards() {
   return (
@@ -126,7 +168,7 @@ export default function Awards() {
         }
         .aw-heading em { font-style: normal; color: #fbbf24; }
 
-        /* ── Count badge ── */
+        /* ── FarEye org badge ── */
         .aw-org-badge {
           display: inline-flex;
           align-items: center;
@@ -311,6 +353,35 @@ export default function Awards() {
         /* Hero title larger */
         .aw-card-wrap:first-child .aw-title { font-size: 1.35rem; }
 
+        /* FarEye inline company chip */
+        .aw-company-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          padding: 3px 8px 3px 4px;
+          border-radius: 6px;
+          background: rgba(249,115,22,0.1);
+          border: 1px solid rgba(249,115,22,0.22);
+          font-family: var(--font-mono, 'Courier New', monospace);
+          font-size: 0.58rem;
+          font-weight: 600;
+          color: #fb923c;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          transition: background 0.3s, border-color 0.3s;
+        }
+        .aw-card:hover .aw-company-chip {
+          background: rgba(249,115,22,0.16);
+          border-color: rgba(249,115,22,0.35);
+        }
+        .aw-company-dot {
+          width: 15px; height: 15px;
+          border-radius: 4px;
+          overflow: hidden;
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0;
+        }
+
         /* Period pill */
         .aw-period {
           font-family: var(--font-mono, 'Courier New', monospace);
@@ -399,6 +470,16 @@ export default function Awards() {
           background: rgba(255,255,255,0.04);
         }
 
+        .aw-footer-meta {
+          font-family: var(--font-mono, 'Courier New', monospace);
+          font-size: 0.56rem;
+          color: #1e293b;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          transition: color 0.4s;
+        }
+        .aw-card:hover .aw-footer-meta { color: #334155; }
+
         /* Mobile */
         @media (max-width: 600px) {
           .aw-card { padding: 22px 20px 18px; }
@@ -413,15 +494,23 @@ export default function Awards() {
         }
       `}</style>
 
-      {/* Heading + count badge */}
+      {/* Heading + FarEye org badge */}
       <div className="aw-head-row">
         <h2 id="awards-title" className="aw-heading">
           Recognition &<br />
           <em>Awards.</em>
         </h2>
 
-        <div className="aw-org-badge" title="Awards & Recognition">
-<div className="aw-org-stats">
+        <div className="aw-org-badge" title="All awards received at FarEye">
+          <div className="aw-org-logo">
+            <FarEyeLogo size={32} />
+          </div>
+          <div className="aw-org-text">
+            <span className="aw-org-name">FarEye</span>
+            <span className="aw-org-sub">Logistics Intelligence</span>
+          </div>
+          <div className="aw-org-divider" aria-hidden="true" />
+          <div className="aw-org-stats">
             <span className="aw-org-stat-val">7 Awards</span>
             <span className="aw-org-stat-label">5 yr tenure</span>
           </div>
@@ -452,7 +541,12 @@ export default function Awards() {
                   <div className="aw-icon-orb" aria-hidden="true">{a.icon}</div>
                   <div className="aw-title-group">
                     <div className="aw-title">{a.title}</div>
-
+                    <div className="aw-company-chip">
+                      <div className="aw-company-dot">
+                        <FarEyeChipLogo size={15} />
+                      </div>
+                      {a.company}
+                    </div>
                   </div>
                 </div>
                 <div className="aw-period">{a.period}</div>
@@ -471,7 +565,7 @@ export default function Awards() {
               {/* Footer */}
               <div className="aw-card-footer">
                 <span className="aw-tag">{a.tag}</span>
-
+                <span className="aw-footer-meta" aria-hidden="true">FarEye · SRE</span>
               </div>
             </div>
           </div>
