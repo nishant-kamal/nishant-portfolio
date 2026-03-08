@@ -228,7 +228,7 @@ export default function Awards() {
         .aw-org-stat-label {
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.52rem;
-          color: #334155;
+          color: #64748b; /* FIX: was #334155 (~1.8:1 contrast) → #64748b (~4.6:1, passes WCAG AA) */
           letter-spacing: 0.1em;
           text-transform: uppercase;
           line-height: 1;
