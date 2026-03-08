@@ -2,8 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 
-// FIX 1: Removed @import Google Fonts — loaded via next/font in layout.js
-
 const categories = [
   {
     label: "Orchestration",
@@ -51,13 +49,8 @@ const categories = [
   },
 ];
 
-// FIX 2: SkillBar animates from 0→level on first inView, not on paint.
-// Previously bar-fill had `width: level%` set immediately — it was already
-// full-width by the time the transition could run.
 function SkillBar({ level, color, glow }) {
   const [width, setWidth] = useState(0);
-  // FIX: Read matchMedia inside useEffect (client-only) to avoid
-  // "window is not defined" during Next.js SSR / static page generation.
   const [reducedMotion, setReducedMotion] = useState(false);
   const ref = useRef(null);
 
@@ -108,9 +101,11 @@ export default function Skills() {
   const [activeCategory, setActiveCategory] = useState(0);
   const cat = categories[activeCategory];
 
+  // FIX: Generate stable IDs for tab/panel ARIA linkage
+  const tabIds    = categories.map((_, i) => `skills-tab-${i}`);
+  const panelId   = "skills-tabpanel";
+
   return (
-    // FIX 4: Removed duplicate <section id="skills"> — already wrapped in
-    // <section id="skills"> in page.js. Using <div> here instead.
     <div className="skills-wrap">
       <style>{`
         .skills-wrap {
@@ -133,7 +128,11 @@ export default function Skills() {
           background-clip: text;
         }
 
-        /* Tab nav */
+        /* Tab nav
+           FIX: Changed from a <nav> with aria-pressed buttons to a proper
+           role="tablist" / role="tab" / role="tabpanel" ARIA pattern.
+           aria-pressed is for independent toggle buttons; tabs require
+           aria-selected + coordinated tabpanel linkage. */
         .tabs-nav {
           display: flex;
           gap: 10px;
@@ -143,7 +142,7 @@ export default function Skills() {
           padding-bottom: 20px;
         }
         .tab-btn {
-          font-family: var(--font-mono);
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.8rem;
           padding: 8px 18px;
           border-radius: 99px;
@@ -154,7 +153,7 @@ export default function Skills() {
           transition: color 0.25s, background 0.25s, border-color 0.25s, box-shadow 0.25s;
         }
         .tab-btn:hover { color: #f8fafc; background: rgba(255, 255, 255, 0.07); }
-        .tab-btn.active {
+        .tab-btn[aria-selected="true"] {
           color: var(--clr);
           background: var(--clr-bg);
           border-color: var(--clr-border);
@@ -201,7 +200,7 @@ export default function Skills() {
         }
         .skill-name { font-size: 1.05rem; font-weight: 600; color: #f1f5f9; }
         .skill-val {
-          font-family: var(--font-mono);
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.85rem;
           color: #94a3b8;
           flex-shrink: 0;
@@ -214,7 +213,7 @@ export default function Skills() {
           border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
         .cloud-title {
-          font-family: var(--font-mono);
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.7rem;
           text-transform: uppercase;
           letter-spacing: 0.12em;
@@ -224,38 +223,46 @@ export default function Skills() {
         }
         .tags-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
         .tech-tag {
-          font-family: var(--font-mono);
+          font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.72rem;
           padding: 5px 12px;
           background: rgba(15, 23, 42, 0.6);
           border: 1px solid rgba(255, 255, 255, 0.05);
           border-radius: 6px;
           color: #94a3b8;
-          transition: border-color 0.2s, color 0.2s, transform 0.2s;
-          /* FIX: Changed cursor to default — tags are display-only, not interactive.
-             The :hover effect below is purely cosmetic/decorative. */
+          transition: border-color 0.2s, color 0.2s;
           cursor: default;
           user-select: none;
         }
         .tech-tag:hover {
           border-color: rgba(56, 189, 248, 0.3);
           color: #cbd5e1;
-          /* FIX: Removed scale transform — scaling non-interactive elements
-             implies clickability, which is misleading UX */
         }
       `}</style>
 
       <h2 id="skills-title" className="skills-heading">
         Technical <span className="skills-heading-accent">Stack</span><br />
-        {/* FIX: &amp; in JSX renders as literal "&amp;" — use & directly or &amp; only in HTML */}
         & Ecosystem.
       </h2>
 
-      <nav className="tabs-nav" aria-label="Skill categories">
+      {/* FIX: Correct ARIA tab pattern.
+          - Container: role="tablist" with aria-label
+          - Each button: role="tab", aria-selected, aria-controls pointing to panel
+          - Panel: role="tabpanel", aria-labelledby pointing to active tab
+          Previously used aria-pressed which is semantically wrong for tabs. */}
+      <div
+        className="tabs-nav"
+        role="tablist"
+        aria-label="Skill categories"
+      >
         {categories.map((c, i) => (
           <button
             key={c.label}
-            className={`tab-btn ${activeCategory === i ? "active" : ""}`}
+            id={tabIds[i]}
+            role="tab"
+            aria-selected={activeCategory === i}
+            aria-controls={panelId}
+            className="tab-btn"
             style={{
               "--clr":        c.color,
               "--clr-bg":     c.color + "18",
@@ -263,14 +270,31 @@ export default function Skills() {
               "--glow":       c.glow,
             }}
             onClick={() => setActiveCategory(i)}
-            aria-pressed={activeCategory === i}
+            // FIX: Roving tabindex — only the active tab is in the tab order.
+            // Arrow keys move between tabs; Tab moves to the panel.
+            tabIndex={activeCategory === i ? 0 : -1}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowRight") {
+                e.preventDefault();
+                setActiveCategory((activeCategory + 1) % categories.length);
+              } else if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                setActiveCategory((activeCategory - 1 + categories.length) % categories.length);
+              }
+            }}
           >
             {c.label}
           </button>
         ))}
-      </nav>
+      </div>
 
-      <div className="skills-grid">
+      <div
+        id={panelId}
+        role="tabpanel"
+        aria-labelledby={tabIds[activeCategory]}
+        tabIndex={0}
+        className="skills-grid"
+      >
         {cat.skills.map((s) => (
           <div
             key={s.name}
@@ -296,8 +320,6 @@ export default function Skills() {
       <div className="footer-cloud">
         <span className="cloud-title">Extended Toolset</span>
         <div className="tags-wrap" aria-label="Additional technologies">
-          {/* FIX 5: Deduplicate tags — flatMap was producing duplicates since
-              GitOps and Helm appear in category skills AND the concat list */}
           {Array.from(new Set([
             ...categories.flatMap((c) => c.skills.map((s) => s.name)),
             "SLOs", "CI/CD", "Service Mesh", "OpenTelemetry", "Linux Kernel",
