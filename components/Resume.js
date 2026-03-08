@@ -13,7 +13,7 @@ const PERSONAL = {
   email:    "nishant.kamal2015@gmail.com",
   phone:    "9543220527",
   location: "New Delhi, Delhi 110030",
-  github:   "https://github.com/imnishantdevops",
+  github:   "https://github.com/nishant-kamal",
   linkedin: "https://www.linkedin.com/in/imnishant19",
   title:    "Site Reliability Engineer",
 };
