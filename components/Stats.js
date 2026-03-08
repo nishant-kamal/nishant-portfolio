@@ -2,24 +2,28 @@
 
 import { useEffect, useState, useRef } from "react";
 
-// Dynamic years of experience — calculated from FarEye join date: 1 Jun 2020
+// FIX: Moved out of module scope — calling new Date() at parse time causes
+// SSR/client mismatch (server date ≠ client date → React hydration warning).
+// Now called only on the client inside a useState initializer guard.
 function getYearsExperience() {
   const joinDate = new Date("2020-06-01");
   const now = new Date();
   const diffMs = now - joinDate;
   const years = diffMs / (1000 * 60 * 60 * 24 * 365.25);
-  return Math.floor(years); // floor so we never overclaim
+  return Math.floor(years);
 }
 
-const statsData = [
-  { value: getYearsExperience(), suffix: "+", label: "Years Experience",         color: "#38bdf8", icon: "◈" },
-  { value: null, range: "30–40%",             label: "Compute & Storage Cost ↓", color: "#34d399", icon: "↓" },
-  { value: 10,   suffix: "+",                 label: "Projects Delivered",       color: "#a78bfa", icon: "△" },
-  { value: 3,    suffix: "+",                 label: "Cloud Platforms",          color: "#fb923c", icon: "◉" },
-];
+// FIX: statsData is now a function so the dynamic value is computed client-side
+function buildStatsData(yearsExp) {
+  return [
+    { value: yearsExp, suffix: "+", label: "Years Experience",         color: "#38bdf8", icon: "◈" },
+    { value: null, range: "30–40%",             label: "Compute & Storage Cost ↓", color: "#34d399", icon: "↓" },
+    { value: 10,   suffix: "+",                 label: "Projects Delivered",       color: "#a78bfa", icon: "△" },
+    { value: 3,    suffix: "+",                 label: "Cloud Platforms",          color: "#fb923c", icon: "◉" },
+  ];
+}
 
 function Counter({ target, suffix, color, cardRef }) {
-  // FIX: Consistent initial type — always string to avoid string/number render diff
   const [val, setVal] = useState(target % 1 !== 0 ? "0.0" : "0");
   const [started, setStarted] = useState(false);
 
@@ -43,7 +47,6 @@ function Counter({ target, suffix, color, cardRef }) {
       const progress = Math.min((ts - startTs) / duration, 1);
       const ease = 1 - Math.pow(1 - progress, 4);
       const current = ease * target;
-      // FIX: Always set string so type is consistent with initial state
       setVal(target % 1 !== 0 ? current.toFixed(1) : String(Math.floor(current)));
       if (progress < 1) rafId = requestAnimationFrame(step);
     };
@@ -86,6 +89,14 @@ function StatCard({ s }) {
 }
 
 export default function Stats() {
+  // FIX: Compute years on the client only to avoid SSR hydration mismatch.
+  // Start with null; populate after mount so server HTML matches initial client render.
+  const [statsData, setStatsData] = useState(null);
+
+  useEffect(() => {
+    setStatsData(buildStatsData(getYearsExperience()));
+  }, []);
+
   return (
     <div className="stats-wrap">
       <style>{`
@@ -145,7 +156,6 @@ export default function Stats() {
         @keyframes ping {
           75%, 100% { transform: scale(2); opacity: 0; }
         }
-        /* FIX: Disable animations for users who prefer reduced motion */
         @media (prefers-reduced-motion: reduce) {
           .stats-badge-dot-ping { animation: none; opacity: 0; }
         }
@@ -223,7 +233,6 @@ export default function Stats() {
         .stat-status {
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.6rem;
-          /* FIX: Improved from #334155 (~1.8:1) to #64748b (~4.6:1) — passes WCAG AA */
           color: #64748b;
           letter-spacing: 0.05em;
           transition: color 0.3s;
@@ -244,11 +253,23 @@ export default function Stats() {
           color: #475569;
           font-weight: 500;
         }
+        /* Skeleton shimmer while stats load */
+        .stat-skeleton {
+          height: 3rem;
+          border-radius: 8px;
+          background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+          background-size: 200% 100%;
+          animation: shimmer 1.4s infinite;
+          margin-bottom: 10px;
+        }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+        @media (prefers-reduced-motion: reduce) {
+          .stat-skeleton { animation: none; background: rgba(255,255,255,0.05); }
+        }
       `}</style>
 
       <div className="stats-inner">
         <div className="stats-header">
-          {/* FIX: role="img" + aria-label — role="status" was live-announcing on every render */}
           <div className="stats-badge" role="img" aria-label="Live metrics indicator">
             <span className="stats-badge-dot" aria-hidden="true">
               <span className="stats-badge-dot-ping" />
@@ -256,7 +277,6 @@ export default function Stats() {
             </span>
             <span className="stats-badge-text">Live Metrics</span>
           </div>
-          {/* id="stats-title" links to aria-labelledby on the section in page.js */}
           <h2 id="stats-title" className="stats-title">
             Reliability by the{" "}
             <span className="stats-title-accent">Numbers</span>
@@ -268,9 +288,20 @@ export default function Stats() {
         </div>
 
         <div className="stats-grid">
-          {statsData.map((s) => (
-            <StatCard key={s.label} s={s} />
-          ))}
+          {/* FIX: Render skeleton cards until client-side data is ready,
+              preventing a blank grid flash and avoiding hydration mismatch */}
+          {statsData
+            ? statsData.map((s) => <StatCard key={s.label} s={s} />)
+            : [0, 1, 2, 3].map((i) => (
+                <div key={i} className="stat-card" aria-hidden="true">
+                  <div className="stat-card-top">
+                    <div className="stat-icon-box" style={{ background: "rgba(255,255,255,0.03)" }} />
+                  </div>
+                  <div className="stat-skeleton" />
+                  <div style={{ height: "0.65rem", width: "60%", borderRadius: 4, background: "rgba(255,255,255,0.04)" }} />
+                </div>
+              ))
+          }
         </div>
       </div>
     </div>
