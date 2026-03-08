@@ -2,11 +2,20 @@
 
 import { useEffect, useState, useRef } from "react";
 
+// Dynamic years of experience — calculated from FarEye join date: 1 Jun 2020
+function getYearsExperience() {
+  const joinDate = new Date("2020-06-01");
+  const now = new Date();
+  const diffMs = now - joinDate;
+  const years = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+  return Math.floor(years); // floor so we never overclaim
+}
+
 const statsData = [
-  { value: 5,    suffix: "+",     label: "Years Experience",  color: "#38bdf8", icon: "◈" },
-  { value: null, range: "30–40%", label: "Compute & Storage Cost ↓", color: "#34d399", icon: "↓" },
-  { value: 10,   suffix: "+",     label: "Projects Delivered",color: "#a78bfa", icon: "△" },
-  { value: 3,    suffix: "+",     label: "Cloud Platforms",   color: "#fb923c", icon: "◉" },
+  { value: getYearsExperience(), suffix: "+", label: "Years Experience",         color: "#38bdf8", icon: "◈" },
+  { value: null, range: "30–40%",             label: "Compute & Storage Cost ↓", color: "#34d399", icon: "↓" },
+  { value: 10,   suffix: "+",                 label: "Projects Delivered",       color: "#a78bfa", icon: "△" },
+  { value: 3,    suffix: "+",                 label: "Cloud Platforms",          color: "#fb923c", icon: "◉" },
 ];
 
 function Counter({ target, suffix, color, cardRef }) {
