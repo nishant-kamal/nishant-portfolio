@@ -78,7 +78,7 @@ const awards = [
     period: "Jun 2022",
     quarter: "JFM 2022",
     description:
-      "For demonstrating the superpower of complex problem-solving for Quarter 1, 2022.",
+      "For demonstrating the superpower of complex problem-solving for JFM 2022.",
     color: "#fb923c",
     glow: "rgba(251,146,60,.2)",
     icon: "△",
@@ -92,7 +92,7 @@ const awards = [
     period: "Oct 2020",
     quarter: "JAS 2020",
     description:
-      "For demonstrating the superpower of passion for customers for Quarter 3, 2020.",
+      "For demonstrating the superpower of passion for customers for JAS 2020.",
     color: "#fbbf24",
     glow: "rgba(251,191,36,.2)",
     icon: "☸",
