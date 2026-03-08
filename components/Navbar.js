@@ -2,13 +2,13 @@
 
 // Removed unused `useCallback` import
 import { useState, useEffect } from "react";
+import Resume from "./Resume";
 
 const navItems = [
   { name: "About",      link: "#about" },
   { name: "Tech Stack", link: "#skills" },
   { name: "Projects",   link: "#projects" },
   { name: "Education",  link: "#education" },
-  { name: "Awards",     link: "#awards" },
   { name: "Contact",    link: "#contact" },
 ];
 
@@ -259,15 +259,7 @@ export default function Navbar() {
                 {item.name}
               </a>
             ))}
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-resume"
-              aria-label="View resume (opens PDF in new tab)"
-            >
-              Resume ↗
-            </a>
+            <Resume />
           </div>
 
           {/* Mobile hamburger */}
@@ -303,16 +295,9 @@ export default function Navbar() {
                 {item.name}
               </a>
             ))}
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mobile-resume"
-              tabIndex={open ? 0 : -1}
-              aria-label="View resume (opens PDF in new tab)"
-            >
-              Resume ↗
-            </a>
+            <div style={{ marginTop: "12px" }}>
+              <Resume />
+            </div>
           </div>
         </div>
 
