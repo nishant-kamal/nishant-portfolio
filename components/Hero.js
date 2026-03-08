@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const roles = [
   "Site Reliability Engineer",
@@ -34,6 +34,16 @@ export default function Hero() {
   const [mounted, setMounted] = useState(false);
   const [imgError, setImgError] = useState(false);
 
+  // FIX: Separate live-region label that only updates when a role is FULLY typed,
+  // not on every character. Previously aria-live="polite" on the typewriter div
+  // caused screen readers to announce every single character — extremely disruptive.
+  // Now the visible typewriter is aria-hidden, and a visually-hidden live region
+  // announces only the completed role string.
+  const [liveAnnounce, setLiveAnnounce] = useState("");
+  // Track whether we've already announced the current completed role to avoid
+  // re-announcing if something re-renders while fully typed.
+  const announcedRef = useRef("");
+
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
@@ -43,6 +53,11 @@ export default function Hero() {
     if (!deleting && displayed.length < current.length) {
       timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 60);
     } else if (!deleting && displayed.length === current.length) {
+      // FIX: Only announce once per completed role
+      if (announcedRef.current !== current) {
+        announcedRef.current = current;
+        setLiveAnnounce(current);
+      }
       timeout = setTimeout(() => setDeleting(true), 2200);
     } else if (deleting && displayed.length > 0) {
       timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 30);
@@ -56,9 +71,6 @@ export default function Hero() {
   return (
     <>
       <style>{`
-        /* ── FIX 1: Removed min-height:100vh and align-items:flex-start.
-           Section now sizes to content with symmetric padding,
-           eliminating the large blank dead zone below the content. ── */
         .hero-section {
           position: relative;
           box-sizing: border-box;
@@ -82,9 +94,7 @@ export default function Hero() {
         }
 
         @media (max-width: 1024px) {
-          .hero-section {
-            align-items: flex-start;
-          }
+          .hero-section { align-items: flex-start; }
           .hero-inner {
             grid-template-columns: 1fr;
             text-align: center;
@@ -98,8 +108,6 @@ export default function Hero() {
           .social-dock     { justify-content: center; }
         }
 
-        /* Badge */
-        /* ── FIX 5: Added monospace font stack fallback on all var(--font-mono) usages ── */
         .hero-badge {
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.7rem;
@@ -128,7 +136,6 @@ export default function Hero() {
           50%       { opacity: 0.25; }
         }
 
-        /* Heading */
         .hero-h1 {
           font-size: clamp(2.8rem, 6vw, 5rem);
           font-weight: 800;
@@ -139,12 +146,10 @@ export default function Hero() {
         }
         .hero-h1 .accent { color: #38bdf8; }
 
-        /* Typewriter */
         .hero-typewriter {
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 1rem;
           color: #64748b;
-          /* FIX: Use min-height instead of fixed height to prevent clipping on long roles */
           min-height: 28px;
           display: flex;
           align-items: center;
@@ -168,7 +173,17 @@ export default function Hero() {
           50%       { opacity: 0; }
         }
 
-        /* Description */
+        /* FIX: Visually hidden live region — readable by screen readers only */
+        .sr-only {
+          position: absolute;
+          width: 1px; height: 1px;
+          padding: 0; margin: -1px;
+          overflow: hidden;
+          clip: rect(0,0,0,0);
+          white-space: nowrap;
+          border: 0;
+        }
+
         .hero-desc {
           font-size: 1.05rem;
           color: #64748b;
@@ -178,7 +193,6 @@ export default function Hero() {
         }
         .hero-desc strong { color: #cbd5e1; font-weight: 600; }
 
-        /* CTAs */
         .hero-ctas {
           display: flex;
           align-items: center;
@@ -196,7 +210,6 @@ export default function Hero() {
           border-radius: 10px;
           font-weight: 700;
           font-size: 0.875rem;
-          /* ── FIX 5: Font fallback added ── */
           font-family: var(--font-mono, 'Courier New', monospace);
           text-decoration: none;
           white-space: nowrap;
@@ -207,7 +220,6 @@ export default function Hero() {
           transform: translateY(-2px);
           box-shadow: 0 8px 24px rgba(56, 189, 248, 0.28);
         }
-        /* FIX: Add active/pressed state for mobile tap feedback */
         .btn-primary:active {
           transform: translateY(0);
           box-shadow: none;
@@ -215,7 +227,6 @@ export default function Hero() {
         }
         .btn-primary:focus-visible { outline: 2px solid #38bdf8; outline-offset: 3px; }
 
-        /* Social */
         .social-dock { display: flex; gap: 10px; }
         .social-link {
           width: 40px; height: 40px;
@@ -234,7 +245,6 @@ export default function Hero() {
         .social-link svg { width: 16px; fill: #475569; transition: fill 0.25s; }
         .social-link:hover svg { fill: #38bdf8; }
 
-        /* Image column */
         .hero-image-col {
           display: flex;
           justify-content: center;
@@ -245,9 +255,6 @@ export default function Hero() {
           width: clamp(260px, 34vw, 400px);
           aspect-ratio: 1 / 1;
         }
-        /* ── FIX 3: Removed stale width:auto / height:auto — these were
-           leftovers from a next/image fill attempt and conflicted with
-           the inset-based sizing. The inset fully controls dimensions. ── */
         .hero-img-circle {
           position: absolute;
           inset: 10px;
@@ -273,7 +280,6 @@ export default function Hero() {
           color: #38bdf8;
           font-size: 3.5rem;
           font-weight: 800;
-          /* ── FIX 5: Font fallback added ── */
           font-family: var(--font-mono, 'Courier New', monospace);
           letter-spacing: -0.04em;
         }
@@ -298,7 +304,6 @@ export default function Hero() {
           from { transform: rotate(0deg); }
           to   { transform: rotate(360deg); }
         }
-        /* FIX: Respect reduced-motion preference */
         @media (prefers-reduced-motion: reduce) {
           .hero-ring,
           .hero-ring-outer { animation: none; }
@@ -313,8 +318,6 @@ export default function Hero() {
 
           {/* LEFT */}
           <div className="hero-left">
-            {/* FIX: role="img" + aria-label for decorative badge; role="status" was
-                announcing on every render which is disruptive for screen readers */}
             <div className="hero-badge" role="img" aria-label="System status: Uptime 99.9%, SLO compliant">
               <span className="badge-dot" aria-hidden="true" />
               UPTIME: 99.9% // SLO: COMPLIANT
@@ -326,19 +329,24 @@ export default function Hero() {
               <span className="accent">never sleep.</span>
             </h1>
 
-            {/* ── FIX 2: SSR fallback changed from roles[0] → "" to match
-                client initial state, preventing the hydration mid-word flash.
-                FIX 7: aria-label pre-mount fallback changed from "" to
-                "Loading role" — an empty label is worse for screen readers. ── */}
-            <div
-              className="hero-typewriter"
-              aria-live="polite"
-              aria-label={mounted ? `Role: ${displayed}` : "Loading role"}
-            >
-              <span className="tw-prompt" aria-hidden="true">&gt;</span>
+            {/* FIX: Typewriter is now aria-hidden — screen readers skip the
+                character-by-character animation entirely.
+                A separate visually-hidden aria-live="polite" region announces
+                only the fully-typed role string, eliminating per-character noise. */}
+            <div className="hero-typewriter" aria-hidden="true">
+              <span className="tw-prompt">&gt;</span>
               <span className="tw-text">{mounted ? displayed : ""}</span>
-              <span className="hero-cursor" aria-hidden="true" />
+              <span className="hero-cursor" />
             </div>
+
+            {/* Screen-reader only live region — fires only on completed role */}
+            <span
+              className="sr-only"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {liveAnnounce ? `Role: ${liveAnnounce}` : ""}
+            </span>
 
             <p className="hero-desc">
               I&apos;m <strong>Nishant Kamal</strong>. I build resilient, automated cloud
@@ -380,14 +388,11 @@ export default function Hero() {
                     alt="Nishant Kamal, Site Reliability Engineer"
                     width={360}
                     height={360}
-                    /* ── FIX 8: Explicit loading="eager" for above-the-fold hero image ── */
                     loading="eager"
                     style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
-                      /* ── FIX 4: "top center" keeps face visible without
-                         over-cropping chin/chest on portrait photos ── */
                       objectPosition: "top center",
                       display: "block",
                     }}
