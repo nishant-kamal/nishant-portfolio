@@ -1,7 +1,6 @@
 "use client";
 
-// Removed unused `useCallback` import
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Resume from "./Resume";
 
 const navItems = [
@@ -17,10 +16,25 @@ export default function Navbar() {
   const [open, setOpen]         = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive]     = useState("");
-  // FIX: Lift scroll progress into Navbar to share ONE rAF scroll listener
   const [prg, setPrg]           = useState(0);
 
-  // FIX: Single rAF-throttled scroll handler for both scrolled state + progress
+  // FIX: Ref for the mobile drawer so we can toggle the `inert` attribute.
+  // aria-hidden hides content from the a11y tree but does NOT remove elements
+  // from the tab order — keyboard users can still Tab into a visually-hidden
+  // closed drawer. `inert` blocks both focus and pointer events entirely.
+  const drawerRef = useRef(null);
+
+  useEffect(() => {
+    const el = drawerRef.current;
+    if (!el) return;
+    if (open) {
+      el.removeAttribute("inert");
+    } else {
+      el.setAttribute("inert", "");
+    }
+  }, [open]);
+
+  // Single rAF-throttled scroll handler
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -40,8 +54,6 @@ export default function Navbar() {
   }, []);
 
   // Active section highlight via IntersectionObserver
-  // FIX: rootMargin was "-40% 0px -55% 0px" = only 5% detection window.
-  // Widened to "-20% 0px -60% 0px" = 20% window, much more reliable.
   useEffect(() => {
     const ids = navItems.map((n) => n.link.slice(1)).concat(["home"]);
     const obs = new IntersectionObserver(
@@ -73,7 +85,6 @@ export default function Navbar() {
   return (
     <>
       <style>{`
-        /* FIX: Skip to content link for keyboard/screen-reader users */
         .skip-link {
           position: absolute;
           top: -100%;
@@ -189,8 +200,11 @@ export default function Navbar() {
           max-height: 0; opacity: 0;
           transition: max-height 0.4s ease, opacity 0.3s ease;
         }
-        /* FIX: Increased max-height from 480px to 640px so additional nav items won't be clipped */
         .mobile-drawer.open { max-height: 640px; opacity: 1; padding: 16px 0 24px; }
+
+        /* FIX: [inert] drawer should not be interactive — pointer-events:none
+           as a CSS-layer safety net (inert handles the real blocking) */
+        .mobile-drawer[inert] { pointer-events: none; }
 
         .drawer-inner { display: flex; flex-direction: column; padding: 0 20px; gap: 4px; }
         .mobile-link {
@@ -208,7 +222,6 @@ export default function Navbar() {
         }
         .mobile-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 
-        /* Resume button inside mobile drawer — override inline margin, fill width */
         .mobile-resume-wrap {
           margin: 12px 0 0;
         }
@@ -221,7 +234,7 @@ export default function Navbar() {
           border-radius: 10px;
         }
 
-        /* Scroll progress bar — GPU composited via will-change */
+        /* Scroll progress bar */
         .scroll-progress {
           position: absolute; bottom: 0; left: 0;
           height: 2px;
@@ -232,7 +245,6 @@ export default function Navbar() {
         }
       `}</style>
 
-      {/* FIX: Skip to main content for keyboard/screen reader users */}
       <a href="#about" className="skip-link">Skip to content</a>
 
       <nav
@@ -279,8 +291,13 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile drawer */}
+        {/* Mobile drawer
+            FIX: Uses ref so we can set/remove the `inert` attribute imperatively.
+            `inert` prevents Tab focus from entering the drawer when closed,
+            which aria-hidden alone does not do. The tabIndex={open ? 0 : -1}
+            fallback on individual links is removed — inert handles everything. */}
         <div
+          ref={drawerRef}
           id="mobile-drawer"
           className={`mobile-drawer ${open ? "open" : ""}`}
           aria-hidden={!open}
@@ -292,7 +309,6 @@ export default function Navbar() {
                 href={item.link}
                 className={`mobile-link ${active === item.link.slice(1) ? "active" : ""}`}
                 onClick={() => setOpen(false)}
-                tabIndex={open ? 0 : -1}
                 aria-current={active === item.link.slice(1) ? "page" : undefined}
               >
                 {item.name}
@@ -310,8 +326,6 @@ export default function Navbar() {
   );
 }
 
-// FIX: ScrollIndicator now receives prg as prop — no duplicate scroll listener
 function ScrollIndicator({ prg }) {
-
   return <div className="scroll-progress" style={{ width: `${prg}%` }} aria-hidden="true" />;
 }
