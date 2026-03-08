@@ -19,7 +19,7 @@ const PERSONAL = {
 };
 
 const SUMMARY =
-  "Results-oriented Site Reliability Engineer with 6+ years of experience managing large-scale production environments across AWS and Oracle Cloud. Proven track record delivering 99.9% platform uptime, 35% cloud cost reduction via Karpenter, and standardised observability across 50+ services. Expert in Kubernetes, GitOps, Istio service mesh, and cross-functional incident response.";
+  "Results-oriented Site Reliability Engineer with 5+ years of experience managing large-scale production environments across AWS and Oracle Cloud. Proven track record delivering 99.9% platform uptime, 35% cloud cost reduction via Karpenter, and standardised observability across 50+ services. Expert in Kubernetes, GitOps, Istio service mesh, and cross-functional incident response.";
 
 // Mirror of Skills.js categories
 const SKILLS = [
@@ -38,7 +38,7 @@ const EXPERIENCE = [
     company:  "FarEye",
     location: "Noida, India",
     role:     "Site Reliability Engineer",
-    period:   "06/2021 – Present",
+    period:   "06/2020 – Present", // FIX: was 06/2021; FarEye join date is Jun 2020 (matches Stats getYearsExperience & Awards "5 yr tenure")
     bullets: [
       "Implemented Karpenter for dynamic scaling, replacing ASG and improving cost efficiency in the Kubernetes environment.",
       "Deployed Istio, Virtual Services, and Gateways to manage traffic routing and enhance microservices communication within clusters.",
