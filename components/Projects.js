@@ -45,6 +45,24 @@ const projects = [
   {
     id: 3,
     index: "03",
+    title: "Oracle Cloud Infrastructure POC",
+    subtitle: "OCI · Cloud Migration · QA · Production Deployment",
+    description:
+      "Designed and executed a proof-of-concept for Oracle Cloud Infrastructure (OCI) and successfully deployed the first production environment. Owned the full lifecycle from architecture design through QA — resolving all reported issues to achieve a stable, live deployment.",
+    tags: ["OCI", "Oracle Cloud", "POC", "Cloud Infrastructure", "Production Deployment", "QA"],
+    color: "#f97316",
+    glow: "rgba(249,115,22,.12)",
+    icon: "◈",
+    githubUrl: "https://github.com/nishant-kamal",
+    demoUrl: null,
+    metrics: [
+      { label: "Environments Deployed", val: "1st" },
+      { label: "QA Issues Resolved", val: "100%" },
+    ],
+  },
+  {
+    id: 4,
+    index: "04",
     title: "Alerting Standardization",
     subtitle: "Helm · Prometheus · AlertManager",
     description:
