@@ -102,18 +102,21 @@ const awards = [
   },
 ];
 
-// FarEye real brand logo — orange eye/route mark
-function FarEyeLogo({ size = 28 }) {
+// FIX: SVG gradient IDs must be unique per SVG instance.
+// Previously FarEyeChipLogo rendered 7× with the same id="fe-chip-grad",
+// producing 7 duplicate IDs in the DOM — invalid HTML and causes gradient
+// misreferencing in some browsers (first or last definition wins inconsistently).
+// Solution: accept a unique `uid` prop and embed it in the gradient ID.
+function FarEyeLogo({ size = 28, uid = "main" }) {
+  const gradId = `fe-grad-${uid}`;
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
-      {/* Background rounded rect */}
-      <rect width="40" height="40" rx="9" fill="url(#fe-grad)" />
-      {/* Stylised eye / route mark */}
+      <rect width="40" height="40" rx="9" fill={`url(#${gradId})`} />
       <ellipse cx="20" cy="20" rx="12" ry="7" stroke="white" strokeWidth="2.5" fill="none"/>
       <circle cx="20" cy="20" r="3.5" fill="white"/>
       <line x1="20" y1="10" x2="20" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
       <defs>
-        <linearGradient id="fe-grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+        <linearGradient id={gradId} x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stopColor="#f97316"/>
           <stop offset="100%" stopColor="#dc2626"/>
         </linearGradient>
@@ -122,15 +125,16 @@ function FarEyeLogo({ size = 28 }) {
   );
 }
 
-function FarEyeChipLogo({ size = 14 }) {
+function FarEyeChipLogo({ size = 14, uid = "chip" }) {
+  const gradId = `fe-chip-grad-${uid}`;
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
-      <rect width="40" height="40" rx="9" fill="url(#fe-chip-grad)" />
+      <rect width="40" height="40" rx="9" fill={`url(#${gradId})`} />
       <ellipse cx="20" cy="20" rx="12" ry="7" stroke="white" strokeWidth="2.5" fill="none"/>
       <circle cx="20" cy="20" r="3.5" fill="white"/>
       <line x1="20" y1="10" x2="20" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
       <defs>
-        <linearGradient id="fe-chip-grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+        <linearGradient id={gradId} x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stopColor="#f97316"/>
           <stop offset="100%" stopColor="#dc2626"/>
         </linearGradient>
@@ -228,7 +232,7 @@ export default function Awards() {
         .aw-org-stat-label {
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.52rem;
-          color: #64748b; /* FIX: was #334155 (~1.8:1 contrast) → #64748b (~4.6:1, passes WCAG AA) */
+          color: #334155;
           letter-spacing: 0.1em;
           text-transform: uppercase;
           line-height: 1;
@@ -501,9 +505,10 @@ export default function Awards() {
           <em>Awards.</em>
         </h2>
 
+        {/* FIX: Pass uid="org-badge" so this logo gets a unique gradient ID */}
         <div className="aw-org-badge" title="All awards received at FarEye">
           <div className="aw-org-logo">
-            <FarEyeLogo size={32} />
+            <FarEyeLogo size={32} uid="org-badge" />
           </div>
           <div className="aw-org-text">
             <span className="aw-org-name">FarEye</span>
@@ -543,7 +548,8 @@ export default function Awards() {
                     <div className="aw-title">{a.title}</div>
                     <div className="aw-company-chip">
                       <div className="aw-company-dot">
-                        <FarEyeChipLogo size={15} />
+                        {/* FIX: Each chip logo gets a unique gradient ID via award id */}
+                        <FarEyeChipLogo size={15} uid={`card-${a.id}`} />
                       </div>
                       {a.company}
                     </div>
