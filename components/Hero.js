@@ -169,24 +169,6 @@ export default function Hero() {
         }
 
         /* Description */
-        /* Quote */
-        .hero-quote {
-          font-family: var(--font-mono, 'Courier New', monospace);
-          font-size: 0.82rem;
-          font-style: italic;
-          color: #475569;
-          border-left: 2px solid #38bdf8;
-          margin: 0 0 24px 0;
-          padding: 6px 0 6px 14px;
-          line-height: 1.65;
-          max-width: 420px;
-          transition: color 0.3s, border-color 0.3s;
-        }
-        .hero-quote:hover {
-          color: #64748b;
-          border-color: #7dd3fc;
-        }
-
         .hero-desc {
           font-size: 1.05rem;
           color: #64748b;
@@ -316,6 +298,30 @@ export default function Hero() {
           from { transform: rotate(0deg); }
           to   { transform: rotate(360deg); }
         }
+        /* Quote blockquote */
+        .hero-quote {
+          margin: 0 0 32px;
+          padding: 0 0 0 18px;
+          border-left: 2px solid rgba(56, 189, 248, 0.4);
+          position: relative;
+        }
+        .hero-quote-text {
+          font-size: 0.95rem;
+          font-style: italic;
+          color: #94a3b8;
+          line-height: 1.65;
+          margin: 0 0 8px;
+          max-width: 420px;
+        }
+        .hero-quote-attr {
+          font-family: var(--font-mono, 'Courier New', monospace);
+          font-size: 0.62rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #334155;
+        }
+        .hero-quote-attr span { color: #38bdf8; }
+
         /* FIX: Respect reduced-motion preference */
         @media (prefers-reduced-motion: reduce) {
           .hero-ring,
@@ -358,14 +364,17 @@ export default function Hero() {
               <span className="hero-cursor" aria-hidden="true" />
             </div>
 
-            <blockquote className="hero-quote">
-              "I was never the smartest in the room — I just never left until I was."
-            </blockquote>
-
             <p className="hero-desc">
               I&apos;m <strong>Nishant Kamal</strong>. I build resilient, automated cloud
               platforms that scale without breaking.
             </p>
+
+            <blockquote className="hero-quote">
+              <p className="hero-quote-text">
+                &ldquo;I was never the smartest in the room — I just never left until I was.&rdquo;
+              </p>
+              <footer className="hero-quote-attr">— <span>Nishant Kamal</span></footer>
+            </blockquote>
 
             <div className="hero-ctas">
               <a href="#projects" className="btn-primary">
