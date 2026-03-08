@@ -6,6 +6,7 @@ import Projects from "../components/Projects"
 import Education from "../components/Education"
 import Awards from "../components/Awards"
 import Contact from "../components/Contact"
+import Resume from "../components/Resume"
 
 export default function Home() {
   return (
