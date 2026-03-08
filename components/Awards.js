@@ -18,7 +18,7 @@ const awards = [
   },
   {
     id: 2,
-    title: "FarEye Acers — Rising Star",
+    title: "FarEye Acers : Rising Star",
     period: "May 2024",
     quarter: "FarEye Wide",
     description:
