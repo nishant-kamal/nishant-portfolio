@@ -13,7 +13,7 @@ const PERSONAL = {
   email:    "nishant.kamal2015@gmail.com",
   phone:    "9543220527",
   location: "New Delhi, Delhi 110030",
-  github:   "https://github.com/nishant-kamal",
+  github:   "https://github.com/imnishantdevops",
   linkedin: "https://www.linkedin.com/in/imnishant19",
   title:    "Site Reliability Engineer",
 };
@@ -181,9 +181,9 @@ async function generatePDF(setStatus) {
     doc.setFont(family, style).setFontSize(size);
 
   const checkPage = (needed = 20) => {
-    if (y + needed > PH - 36) {
+    if (y + needed > PH - 48) {
       doc.addPage();
-      y = 36;
+      y = 48; // FIX: proper top margin on new pages (was 36)
     }
   };
 
@@ -247,53 +247,65 @@ async function generatePDF(setStatus) {
   y += sumLines.length * 12 + 4;
 
   // ── SKILLS ──────────────────────────────────────────────────────────────────
+  // FIX: dynamic row height so wrapped items never bleed into the next row
   sectionHeading("Core Skills & Technologies");
   const colW = CW / 2 - 6;
-  SKILLS.forEach((s, i) => {
-    const col = i % 2;
-    const row = Math.floor(i / 2);
-    const sx = ML + col * (colW + 12);
-    const sy = y + row * 20;
-    checkPage(20);
+  const LH_SKILL = 10;
 
-    // category label
-    font(8, "bold");
-    setColor(NAVY);
-    doc.text(s.category + ":", sx, sy);
-    // items
+  const skillRows = [];
+  for (let i = 0; i < SKILLS.length; i += 2) {
+    skillRows.push([SKILLS[i], SKILLS[i + 1] || null]);
+  }
+
+  skillRows.forEach(([left, right]) => {
     font(8, "normal");
-    setColor(SLATE);
-    const itemLines = doc.splitTextToSize(s.items, colW - 2);
-    doc.text(itemLines, sx, sy + 10);
+    const leftLines  = doc.splitTextToSize(left.items, colW - 2);
+    const rightLines = right ? doc.splitTextToSize(right.items, colW - 2) : [];
+    const rowH = Math.max(leftLines.length, rightLines.length) * LH_SKILL + 16;
+    checkPage(rowH);
+
+    font(8, "bold");   setColor(NAVY);
+    doc.text(left.category + ":", ML, y);
+    font(8, "normal"); setColor(SLATE);
+    doc.text(leftLines, ML, y + 10);
+
+    if (right) {
+      font(8, "bold");   setColor(NAVY);
+      doc.text(right.category + ":", ML + colW + 12, y);
+      font(8, "normal"); setColor(SLATE);
+      doc.text(rightLines, ML + colW + 12, y + 10);
+    }
+
+    y += rowH;
   });
-  y += Math.ceil(SKILLS.length / 2) * 20 + 6;
 
   // ── EXPERIENCE ──────────────────────────────────────────────────────────────
+  // FIX: Separate role header (row 1) and company/date (row 2) with clear spacing.
+  // Role bar = 22pt tall. Company sub-row = 14pt. Then 6pt gap before bullets.
   sectionHeading("Professional Experience");
 
   EXPERIENCE.forEach((exp) => {
-    checkPage(40);
+    checkPage(56);
 
-    // Role + company bar
+    // Row 1: role title + date — on the same navy-tint bar
     setColor(LBUE, "fill");
-    doc.rect(ML, y - 2, CW, 18, "F");
+    doc.rect(ML, y, CW, 22, "F");
 
-    font(10, "bold");
-    setColor(NAVY);
-    doc.text(exp.role, ML + 6, y + 10);
+    font(10, "bold"); setColor(NAVY);
+    doc.text(exp.role, ML + 6, y + 14);
 
-    font(8, "normal");
-    setColor(SLATE);
-    doc.text(`${exp.company}, ${exp.location}`, ML + 6, y + 20);
+    font(8, "bold"); setColor(BLUE);
+    doc.text(exp.period, PW - MR - 6, y + 14, { align: "right" });
 
-    font(8, "bold");
-    setColor(BLUE);
-    doc.text(exp.period, PW - MR - 4, y + 10, { align: "right" });
+    y += 24; // clear the bar
 
-    y += 28;
+    // Row 2: company + location — own line, fully below bar
+    font(8, "normal"); setColor(SLATE);
+    doc.text(`${exp.company}  ·  ${exp.location}`, ML + 6, y);
+    y += 14; // gap before bullets
 
     exp.bullets.forEach((b) => bullet(b));
-    y += 6;
+    y += 8;
   });
 
   // ── PROJECTS ────────────────────────────────────────────────────────────────
@@ -313,46 +325,55 @@ async function generatePDF(setStatus) {
   });
 
   // ── EDUCATION ───────────────────────────────────────────────────────────────
+  // FIX: degree + year on same y baseline, institution on its own line below
   sectionHeading("Education");
 
   EDUCATION.forEach((e) => {
-    checkPage(30);
+    checkPage(36);
     setColor(LBUE, "fill");
-    doc.rect(ML, y - 2, CW, 16, "F");
+    doc.rect(ML, y, CW, 22, "F");
 
-    font(9, "bold");
-    setColor(NAVY);
-    doc.text(e.degree, ML + 6, y + 9);
+    font(9, "bold"); setColor(NAVY);
+    doc.text(e.degree, ML + 6, y + 14);
 
-    font(8, "normal");
-    setColor(SLATE);
-    doc.text(e.institution, ML + 6, y + 19);
+    font(8, "bold"); setColor(BLUE);
+    doc.text(e.year, PW - MR - 6, y + 14, { align: "right" });
 
-    font(8, "bold");
-    setColor(BLUE);
-    doc.text(e.year, PW - MR - 4, y + 9, { align: "right" });
+    y += 24;
 
-    y += 28;
+    font(8, "normal"); setColor(SLATE);
+    doc.text(e.institution, ML + 6, y);
+
+    y += 16;
   });
 
   // ── AWARDS ──────────────────────────────────────────────────────────────────
+  // FIX: Title in left col, period pill right-aligned, detail below on own line.
+  // Previously both title+period were drawn at x=56 causing text to print on top of each other.
   sectionHeading("Awards & Recognition");
 
   AWARDS.forEach((a) => {
-    checkPage(16);
-    font(8.5, "bold");
-    setColor(NAVY);
-    doc.text(`${a.title}`, ML + 14, y);
+    checkPage(26);
 
-    font(8, "normal");
-    setColor(SLATE);
-    doc.text(`${a.period} — ${a.detail}`, ML + 14 + doc.getTextWidth(a.title) + 6, y);
-
-    // dot
+    // amber dot
     setColor([251, 146, 60], "fill");
-    doc.circle(ML + 6, y - 2.5, 1.8, "F");
+    doc.circle(ML + 6, y - 2, 2, "F");
 
-    y += 13;
+    // title — bold, navy
+    font(9, "bold"); setColor(NAVY);
+    doc.text(a.title, ML + 14, y);
+
+    // period — right-aligned, blue pill
+    font(8, "bold"); setColor(BLUE);
+    doc.text(a.period, PW - MR - 6, y, { align: "right" });
+
+    y += 12;
+
+    // detail — indented below title
+    font(8, "normal"); setColor(SLATE);
+    const detailLines = doc.splitTextToSize(a.detail, CW - 20);
+    doc.text(detailLines, ML + 14, y);
+    y += detailLines.length * 10 + 5;
   });
 
   // ── FOOTER on every page ────────────────────────────────────────────────────
@@ -402,12 +423,6 @@ export default function Resume() {
   return (
     <>
       <style>{`
-        .resume-btn-wrap {
-          display: inline-flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 6px;
-        }
         .resume-btn {
           display: inline-flex;
           align-items: center;
@@ -425,8 +440,8 @@ export default function Resume() {
           transition: background 0.25s, color 0.25s, box-shadow 0.25s, opacity 0.2s;
           white-space: nowrap;
           user-select: none;
-          position: relative;
-          overflow: hidden;
+          margin-left: 8px;
+          line-height: 1;
         }
         .resume-btn:hover:not(:disabled) {
           background: #38bdf8;
@@ -461,32 +476,22 @@ export default function Resume() {
         @keyframes resume-spin {
           to { transform: rotate(360deg); }
         }
-        .resume-hint {
-          font-family: var(--font-mono, 'Courier New', monospace);
-          font-size: 0.58rem;
-          color: #475569;
-          letter-spacing: 0.08em;
-          padding-left: 2px;
-        }
         @media (prefers-reduced-motion: reduce) {
           .resume-spinner { animation: none; }
           .resume-btn { transition: none; }
         }
       `}</style>
 
-      <div className="resume-btn-wrap">
-        <button
-          className={`resume-btn ${status === "done" ? "done" : ""}`}
-          onClick={handleClick}
-          disabled={busy}
-          aria-label="Download resume as PDF"
-          aria-busy={busy}
-        >
-          {busy && <span className="resume-spinner" aria-hidden="true" />}
-          {label}
-        </button>
-        <span className="resume-hint">Auto-generated from site data</span>
-      </div>
+      <button
+        className={`resume-btn ${status === "done" ? "done" : ""}`}
+        onClick={handleClick}
+        disabled={busy}
+        aria-label="Download resume as PDF"
+        aria-busy={busy}
+      >
+        {busy && <span className="resume-spinner" aria-hidden="true" />}
+        {label}
+      </button>
     </>
   );
 }
