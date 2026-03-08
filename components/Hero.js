@@ -104,7 +104,6 @@ export default function Hero() {
           .hero-left       { order: 2; display: flex; flex-direction: column; align-items: center; }
           .hero-image-col  { order: 1; display: flex; justify-content: center; }
           .hero-desc       { margin-inline: auto; }
-          .hero-quote      { margin-inline: auto; text-align: left; }
           .hero-ctas       { justify-content: center; }
           .social-dock     { justify-content: center; }
         }
@@ -298,29 +297,6 @@ export default function Hero() {
           from { transform: rotate(0deg); }
           to   { transform: rotate(360deg); }
         }
-        /* Quote blockquote */
-        .hero-quote {
-          margin: 0 0 32px;
-          padding: 0 0 0 18px;
-          border-left: 2px solid rgba(56, 189, 248, 0.4);
-        }
-        .hero-quote-text {
-          font-size: 0.95rem;
-          font-style: italic;
-          color: #94a3b8;
-          line-height: 1.65;
-          margin: 0 0 8px;
-          max-width: 460px;
-        }
-        .hero-quote-attr {
-          font-family: var(--font-mono, 'Courier New', monospace);
-          font-size: 0.62rem;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: #334155;
-        }
-        .hero-quote-attr span { color: #38bdf8; }
-
         @media (prefers-reduced-motion: reduce) {
           .hero-ring,
           .hero-ring-outer { animation: none; }
@@ -369,13 +345,6 @@ export default function Hero() {
               I&apos;m <strong>Nishant Kamal</strong>. I build resilient, automated cloud
               platforms that scale without breaking.
             </p>
-
-            <blockquote className="hero-quote">
-              <p className="hero-quote-text">
-                &ldquo;I was never the smartest in the room — I just never left until I was.&rdquo;
-              </p>
-              <footer className="hero-quote-attr">— <span>Nishant Kamal</span></footer>
-            </blockquote>
 
             <div className="hero-ctas">
               <a href="#projects" className="btn-primary">
