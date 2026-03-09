@@ -19,8 +19,10 @@ export const metadata = {
     default: "Nishant Kamal | Site Reliability & Platform Engineer",
     template: "%s | Nishant Kamal",
   },
+  // SEO FIX: Corrected "6+ years" -> "5+ years" (join date Jun 2020),
+  // front-loaded name for branded search, added Karpenter + Observability keywords.
   description:
-    "Expert Site Reliability Engineer with 6+ years experience and M.Tech in Cloud (BITS Pilani). Specializing in Kubernetes, AWS, and GitOps to build resilient, self-healing platforms.",
+    "Nishant Kamal — Site Reliability Engineer with 5+ years building resilient Kubernetes platforms on AWS. M.Tech Cloud Computing, BITS Pilani. Specializing in GitOps, Karpenter, and Observability.",
   keywords: [
     "Nishant Kamal",
     "Site Reliability Engineer",
@@ -29,6 +31,8 @@ export const metadata = {
     "AWS Architect",
     "FinOps",
     "GitOps",
+    "Karpenter",
+    "Observability",
     "BITS Pilani Cloud M.Tech",
   ],
   authors: [{ name: "Nishant Kamal" }],
@@ -67,6 +71,61 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="theme-color" content="#020617" />
         <meta name="color-scheme" content="dark" />
+
+        {/* SEO FIX: author meta tag */}
+        <meta name="author" content="Nishant Kamal" />
+
+        {/*
+          SEO FIX: JSON-LD Person schema.
+          Helps Google display rich results for branded searches ("Nishant Kamal SRE").
+          Includes alumni, knowsAbout, and sameAs social profile links.
+        */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Nishant Kamal",
+              jobTitle: "Site Reliability Engineer",
+              url: "https://nishantkamal.com",
+              image: "https://nishantkamal.com/profile.png",
+              description:
+                "Site Reliability Engineer with 5+ years building resilient Kubernetes platforms on AWS. Specializing in GitOps, Karpenter, Observability, and Platform Engineering.",
+              alumniOf: [
+                {
+                  "@type": "CollegeOrUniversity",
+                  name: "BITS Pilani",
+                  description: "M.Tech Cloud Computing",
+                },
+                {
+                  "@type": "CollegeOrUniversity",
+                  name: "VIT University, Vellore",
+                  description: "B.Tech Electrical & Electronics Engineering",
+                },
+              ],
+              knowsAbout: [
+                "Kubernetes",
+                "AWS",
+                "GitOps",
+                "Platform Engineering",
+                "Site Reliability Engineering",
+                "Karpenter",
+                "Terraform",
+                "Prometheus",
+                "Grafana",
+                "Istio",
+                "FluxCD",
+                "Docker",
+              ],
+              sameAs: [
+                "https://github.com/nishant-kamal",
+                "https://www.linkedin.com/in/imnishant19",
+                "https://x.com/imnishant19",
+              ],
+            }),
+          }}
+        />
 
         {/*
           Font loading via Google Fonts CDN.
