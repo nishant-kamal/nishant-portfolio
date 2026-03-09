@@ -1,6 +1,8 @@
 "use client";
 
-// Awards data — ordered chronologically descending (source: LinkedIn)
+// ─── Awards data — ordered chronologically descending (source: LinkedIn) ───────
+// To add/remove awards: just edit this array. All counts, tenure, ranks, and
+// labels throughout the UI are derived automatically — nothing else to change.
 const awards = [
   {
     id: 1,
@@ -14,7 +16,8 @@ const awards = [
     icon: "★",
     tag: "Customer Excellence",
     company: "FarEye",
-    rank: "01",
+    companyDomain: "Logistics Intelligence",
+    role: "SRE",
   },
   {
     id: 2,
@@ -28,7 +31,8 @@ const awards = [
     icon: "◈",
     tag: "Leadership & Innovation",
     company: "FarEye",
-    rank: "02",
+    companyDomain: "Logistics Intelligence",
+    role: "SRE",
   },
   {
     id: 3,
@@ -42,7 +46,8 @@ const awards = [
     icon: "◉",
     tag: "Above & Beyond",
     company: "FarEye",
-    rank: "03",
+    companyDomain: "Logistics Intelligence",
+    role: "SRE",
   },
   {
     id: 4,
@@ -56,7 +61,8 @@ const awards = [
     icon: "⬡",
     tag: "Customer Passion",
     company: "FarEye",
-    rank: "04",
+    companyDomain: "Logistics Intelligence",
+    role: "SRE",
   },
   {
     id: 5,
@@ -70,7 +76,8 @@ const awards = [
     icon: "△",
     tag: "Problem Solving",
     company: "FarEye",
-    rank: "05",
+    companyDomain: "Logistics Intelligence",
+    role: "SRE",
   },
   {
     id: 6,
@@ -84,7 +91,8 @@ const awards = [
     icon: "△",
     tag: "Technical Excellence",
     company: "FarEye",
-    rank: "06",
+    companyDomain: "Logistics Intelligence",
+    role: "SRE",
   },
   {
     id: 7,
@@ -98,27 +106,67 @@ const awards = [
     icon: "☸",
     tag: "Customer-Centric",
     company: "FarEye",
-    rank: "07",
+    companyDomain: "Logistics Intelligence",
+    role: "SRE",
   },
 ];
 
-// FIX: SVG gradient IDs must be unique per SVG instance.
-// Previously FarEyeChipLogo rendered 7× with the same id="fe-chip-grad",
-// producing 7 duplicate IDs in the DOM — invalid HTML and causes gradient
-// misreferencing in some browsers (first or last definition wins inconsistently).
-// Solution: accept a unique `uid` prop and embed it in the gradient ID.
+// ─── Derived stats (computed from data — nothing hardcoded) ───────────────────
+
+/** Parse "Mon YYYY" → { month: 0-11, year: YYYY }
+ *  Uses an explicit month map so it works in every JS environment
+ *  without relying on Date's locale-dependent string parsing.
+ */
+const MONTH_MAP = {
+  jan:0, feb:1, mar:2, apr:3, may:4, jun:5,
+  jul:6, aug:7, sep:8, oct:9, nov:10, dec:11,
+};
+function parsePeriod(str) {
+  const [mon, yr] = str.trim().split(/\s+/);
+  const month = MONTH_MAP[mon.slice(0, 3).toLowerCase()];
+  const year  = parseInt(yr, 10);
+  if (month === undefined || isNaN(year)) return null;
+  return new Date(year, month, 1);
+}
+
+/** Whole years between the earliest and latest period in the list */
+function computeTenureYears(items) {
+  if (!items.length) return 0;
+  const dates = items.map((a) => parsePeriod(a.period)).filter(Boolean);
+  if (!dates.length) return 0;
+  const earliest = new Date(Math.min(...dates));
+  const latest   = new Date(Math.max(...dates));
+  const diff = (latest - earliest) / (1000 * 60 * 60 * 24 * 365.25);
+  return Math.max(1, Math.round(diff));
+}
+
+/** Most-frequently occurring company across all awards */
+function primaryCompany(items) {
+  const freq = {};
+  items.forEach((a) => { freq[a.company] = (freq[a.company] || 0) + 1; });
+  return Object.entries(freq).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "";
+}
+
+/** Pluralise: plural(7, "award") → "7 awards", plural(1, "award") → "1 award" */
+function plural(count, word) {
+  return `${count} ${word}${count !== 1 ? "s" : ""}`;
+}
+
+// ─── SVG Logos ────────────────────────────────────────────────────────────────
+// Each instance gets a unique gradient ID via `uid` to avoid duplicate IDs in DOM.
+
 function FarEyeLogo({ size = 28, uid = "main" }) {
   const gradId = `fe-grad-${uid}`;
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
       <rect width="40" height="40" rx="9" fill={`url(#${gradId})`} />
-      <ellipse cx="20" cy="20" rx="12" ry="7" stroke="white" strokeWidth="2.5" fill="none"/>
-      <circle cx="20" cy="20" r="3.5" fill="white"/>
-      <line x1="20" y1="10" x2="20" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+      <ellipse cx="20" cy="20" rx="12" ry="7" stroke="white" strokeWidth="2.5" fill="none" />
+      <circle cx="20" cy="20" r="3.5" fill="white" />
+      <line x1="20" y1="10" x2="20" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round" />
       <defs>
         <linearGradient id={gradId} x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#f97316"/>
-          <stop offset="100%" stopColor="#dc2626"/>
+          <stop offset="0%" stopColor="#f97316" />
+          <stop offset="100%" stopColor="#dc2626" />
         </linearGradient>
       </defs>
     </svg>
@@ -130,20 +178,27 @@ function FarEyeChipLogo({ size = 14, uid = "chip" }) {
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
       <rect width="40" height="40" rx="9" fill={`url(#${gradId})`} />
-      <ellipse cx="20" cy="20" rx="12" ry="7" stroke="white" strokeWidth="2.5" fill="none"/>
-      <circle cx="20" cy="20" r="3.5" fill="white"/>
-      <line x1="20" y1="10" x2="20" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+      <ellipse cx="20" cy="20" rx="12" ry="7" stroke="white" strokeWidth="2.5" fill="none" />
+      <circle cx="20" cy="20" r="3.5" fill="white" />
+      <line x1="20" y1="10" x2="20" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round" />
       <defs>
         <linearGradient id={gradId} x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#f97316"/>
-          <stop offset="100%" stopColor="#dc2626"/>
+          <stop offset="0%" stopColor="#f97316" />
+          <stop offset="100%" stopColor="#dc2626" />
         </linearGradient>
       </defs>
     </svg>
   );
 }
 
+// ─── Main component ───────────────────────────────────────────────────────────
+
 export default function Awards() {
+  const totalAwards   = awards.length;
+  const tenureYears   = computeTenureYears(awards);
+  const company       = primaryCompany(awards);
+  const companyDomain = awards.find((a) => a.company === company)?.companyDomain ?? "";
+
   return (
     <div className="aw-root">
       <style>{`
@@ -172,7 +227,7 @@ export default function Awards() {
         }
         .aw-heading em { font-style: normal; color: #fbbf24; }
 
-        /* ── FarEye org badge ── */
+        /* ── Org badge ── */
         .aw-org-badge {
           display: inline-flex;
           align-items: center;
@@ -357,7 +412,7 @@ export default function Awards() {
         /* Hero title larger */
         .aw-card-wrap:first-child .aw-title { font-size: 1.35rem; }
 
-        /* FarEye inline company chip */
+        /* Inline company chip */
         .aw-company-chip {
           display: inline-flex;
           align-items: center;
@@ -498,84 +553,98 @@ export default function Awards() {
         }
       `}</style>
 
-      {/* Heading + FarEye org badge */}
+      {/* Heading + org badge */}
       <div className="aw-head-row">
         <h2 id="awards-title" className="aw-heading">
           Recognition &<br />
           <em>Awards.</em>
         </h2>
 
-        {/* FIX: Pass uid="org-badge" so this logo gets a unique gradient ID */}
-        <div className="aw-org-badge" title="All awards received at FarEye">
+        <div
+          className="aw-org-badge"
+          title={`All ${plural(totalAwards, "award")} received at ${company}`}
+        >
           <div className="aw-org-logo">
             <FarEyeLogo size={32} uid="org-badge" />
           </div>
           <div className="aw-org-text">
-            <span className="aw-org-name">FarEye</span>
-            <span className="aw-org-sub">Logistics Intelligence</span>
+            <span className="aw-org-name">{company}</span>
+            <span className="aw-org-sub">{companyDomain}</span>
           </div>
           <div className="aw-org-divider" aria-hidden="true" />
           <div className="aw-org-stats">
-            <span className="aw-org-stat-val">7 Awards</span>
-            <span className="aw-org-stat-label">5 yr tenure</span>
+            <span className="aw-org-stat-val">{plural(totalAwards, "Award")}</span>
+            <span className="aw-org-stat-label">{plural(tenureYears, "yr")} tenure</span>
           </div>
         </div>
       </div>
 
-      <p className="aw-subhead">7 awards across 5 years</p>
+      <p className="aw-subhead">
+        {plural(totalAwards, "award")} across {plural(tenureYears, "year")}
+      </p>
 
       {/* Grid */}
-      <div className="aw-grid" role="list" aria-label="Awards">
-        {awards.map((a) => (
-          <div key={a.id} className="aw-card-wrap" role="listitem">
-            <div
-              className="aw-card"
-              style={{
-                "--clr":      a.color,
-                "--clr-fade": a.color + "40",
-                "--clr-bg":   a.color + "10",
-                "--glow":     a.glow,
-              }}
-            >
-              {/* Watermark rank */}
-              <span className="aw-rank-wm" aria-hidden="true">{a.rank}</span>
+      <div
+        className="aw-grid"
+        role="list"
+        aria-label={plural(totalAwards, "award")}
+      >
+        {awards.map((a, index) => {
+          // Rank derived from position — zero-padded to 2 digits, not stored in data
+          const rank = String(index + 1).padStart(2, "0");
 
-              {/* Top row: icon + title + period */}
-              <div className="aw-card-top">
-                <div className="aw-card-left">
-                  <div className="aw-icon-orb" aria-hidden="true">{a.icon}</div>
-                  <div className="aw-title-group">
-                    <div className="aw-title">{a.title}</div>
-                    <div className="aw-company-chip">
-                      <div className="aw-company-dot">
-                        {/* FIX: Each chip logo gets a unique gradient ID via award id */}
-                        <FarEyeChipLogo size={15} uid={`card-${a.id}`} />
+          return (
+            <div key={a.id} className="aw-card-wrap" role="listitem">
+              <div
+                className="aw-card"
+                style={{
+                  "--clr":      a.color,
+                  "--clr-fade": a.color + "40",
+                  "--clr-bg":   a.color + "10",
+                  "--glow":     a.glow,
+                }}
+              >
+                {/* Rank watermark — derived from index, not stored in data */}
+                <span className="aw-rank-wm" aria-hidden="true">{rank}</span>
+
+                {/* Top row: icon + title + period */}
+                <div className="aw-card-top">
+                  <div className="aw-card-left">
+                    <div className="aw-icon-orb" aria-hidden="true">{a.icon}</div>
+                    <div className="aw-title-group">
+                      <div className="aw-title">{a.title}</div>
+                      <div className="aw-company-chip">
+                        <div className="aw-company-dot">
+                          <FarEyeChipLogo size={15} uid={`card-${a.id}`} />
+                        </div>
+                        {a.company}
                       </div>
-                      {a.company}
                     </div>
                   </div>
+                  <div className="aw-period">{a.period}</div>
                 </div>
-                <div className="aw-period">{a.period}</div>
-              </div>
 
-              {/* Quarter */}
-              <div className="aw-quarter-row">
-                <span className="aw-quarter-label">Quarter</span>
-                <div className="aw-quarter-sep" aria-hidden="true" />
-                <span className="aw-quarter-val">{a.quarter}</span>
-              </div>
+                {/* Quarter */}
+                <div className="aw-quarter-row">
+                  <span className="aw-quarter-label">Quarter</span>
+                  <div className="aw-quarter-sep" aria-hidden="true" />
+                  <span className="aw-quarter-val">{a.quarter}</span>
+                </div>
 
-              {/* Description */}
-              <p className="aw-desc">{a.description}</p>
+                {/* Description */}
+                <p className="aw-desc">{a.description}</p>
 
-              {/* Footer */}
-              <div className="aw-card-footer">
-                <span className="aw-tag">{a.tag}</span>
-                <span className="aw-footer-meta" aria-hidden="true">FarEye · SRE</span>
+                {/* Footer — company & role from data, never hardcoded */}
+                <div className="aw-card-footer">
+                  <span className="aw-tag">{a.tag}</span>
+                  <span className="aw-footer-meta" aria-hidden="true">
+                    {a.company} · {a.role}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
