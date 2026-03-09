@@ -1,14 +1,12 @@
 export default function sitemap() {
   const baseUrl = "https://nishantkamal.com";
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      // Change frequency "monthly" is often better for a portfolio to 
-      // reduce unnecessary crawl budget usage unless you update weekly.
-      changeFrequency: "monthly", 
-      priority: 1,
-    },
-  ];
+  const routes = ["", "/projects", "/about", "/contact"];
+
+  return routes.map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: route === "" ? 1 : 0.8,
+  }));
 }
