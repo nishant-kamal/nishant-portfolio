@@ -20,7 +20,7 @@ const awards = [
     id: 2,
     title: "FarEye Acers : Rising Star",
     period: "May 2024",
-    quarter: "FarEye Wide",
+    quarter: "JFM 2024",
     description:
       "Recognised for emerging leadership and innovation in SRE practices, demonstrating exceptional growth and technical initiative at FarEye.",
     color: "#34d399",
