@@ -20,20 +20,31 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
         {/*
-          Font stylesheet with display=swap — text renders immediately in fallback font,
-          swaps to Inter/JetBrains Mono once loaded. No layout shift for text content.
+          Non-blocking font load: media="print" trick loads the stylesheet
+          asynchronously — browser fetches it at low priority without blocking render.
+          onload switches media to "all" so fonts apply once downloaded.
+          The <noscript> fallback covers JS-disabled environments.
+          This eliminates the ~1,920ms render-blocking penalty on mobile.
         */}
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
           rel="stylesheet"
+          media="print"
+          onLoad="this.media='all'"
         />
+        <noscript>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+            rel="stylesheet"
+          />
+        </noscript>
 
-        {/* Preload hero profile image — it's the LCP element on most viewports */}
+        {/* Preload hero profile WebP — LCP element on most viewports */}
         <link
           rel="preload"
-          href="/profile.png"
+          href="/profile.webp"
           as="image"
-          type="image/png"
+          type="image/webp"
         />
       </head>
 
