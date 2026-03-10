@@ -2,69 +2,13 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 
 /*
-  REMOVED: next/font/google (Inter, JetBrains_Mono)
-  
-  next/font does NOT work with output: "export" (static export mode).
-  This project deploys to GitHub Pages which requires static export.
-  
-  Fonts are now loaded via <link> preconnect + stylesheet in <head>,
-  and CSS variables --font-sans / --font-mono are set in globals.css.
-  All components that use var(--font-sans) and var(--font-mono) continue
-  to work exactly as before — only the loading mechanism changes.
-*/
+  NOTE: All SEO metadata (title, description, openGraph, twitter, robots, keywords)
+  is defined in app/page.js — the single canonical source of truth for this SPA.
 
-export const metadata = {
-  metadataBase: new URL("https://nishantkamal.com"),
-  title: {
-    default: "Nishant Kamal: SRE",
-    template: "%s | Nishant Kamal",
-  },
-  // SEO FIX: Corrected "6+ years" -> "5+ years" (join date Jun 2020),
-  // front-loaded name for branded search, added Karpenter + Observability keywords.
-  description:
-    "Nishant Kamal — Site Reliability Engineer with 5+ years building resilient Kubernetes platforms on AWS. M.Tech Cloud Computing, BITS Pilani. Specializing in GitOps, Karpenter, and Observability.",
-  keywords: [
-    "Nishant Kamal",
-    "Site Reliability Engineer",
-    "Platform Engineer",
-    "Kubernetes Expert",
-    "AWS Architect",
-    "DevOps",
-    "FinOps",
-    "GitOps",
-    "Karpenter",
-    "Observability",
-    "BITS Pilani Cloud M.Tech",
-  ],
-  authors: [{ name: "Nishant Kamal" }],
-  openGraph: {
-    title: "Nishant Kamal: SRE",
-    description:
-      "Engineering resilient cloud infrastructure and scalable platforms. Explore my technical stack and projects.",
-    url: "https://nishantkamal.com",
-    siteName: "Nishant Kamal Portfolio",
-    locale: "en_IN",
-    type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Nishant Kamal Portfolio Preview",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Nishant Kamal: SRE",
-    description: "Production-ready systems and cloud-native architecture expert.",
-    creator: "@imnishant19",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+  next/font is NOT used because output: "export" (GitHub Pages static export)
+  is incompatible with next/font. Fonts are loaded via <link> preconnect below.
+  CSS variables --font-sans / --font-mono are defined in globals.css :root.
+*/
 
 export default function RootLayout({ children }) {
   return (
@@ -114,7 +58,7 @@ export default function RootLayout({ children }) {
               nishantkamal.com
             </span>
             <span className="footer-copy">
-              © 2026 — Engineering Reliability
+              © {new Date().getFullYear()} — Engineering Reliability
             </span>
             <span className="footer-mono footer-stack">
               Next.js · Tailwind · JetBrains Mono

@@ -7,30 +7,36 @@ import Education from "../components/Education"
 import Awards from "../components/Awards"
 import Contact from "../components/Contact"
 
-// ─── SEO Metadata ─────────────────────────────────────────────────────────────
+// ─── SEO Metadata — single canonical source of truth for the entire site ──────
+// layout.js intentionally has NO metadata export; all SEO lives here.
 export const metadata = {
+  // metadataBase is required so Next.js can resolve relative image paths in OG/Twitter
+  metadataBase: new URL("https://nishantkamal.com"),
+
   title: "Nishant Kamal: SRE",
   description:
-    "Nishant Kamal is a Site Reliability Engineer from Delhi, India, specialising in Control Plane architecture, Kubernetes, AWS, Crossplane, GitOps, and high-availability cloud ecosystems. M.Tech Cloud Computing at BITS Pilani.",
+    "Nishant Kamal — Site Reliability Engineer from Delhi, India, with 5+ years specialising in Control Plane architecture, Kubernetes, AWS, Crossplane, GitOps, and high-availability cloud ecosystems. M.Tech Cloud Computing at BITS Pilani.",
   keywords: [
     "Nishant Kamal",
     "nishant kamal",
     "imnishant19",
     "Site Reliability Engineer",
-    "Platform Engineering",
-    "Kubernetes",
-    "AWS",
+    "Platform Engineer",
+    "Kubernetes Expert",
+    "AWS Architect",
     "DevOps",
+    "FinOps",
     "Crossplane",
     "GitOps",
+    "Karpenter",
     "Terraform",
-    "Fluxcd",
+    "FluxCD",
     "Prometheus",
     "Grafana",
     "Kafka",
     "Istio",
-    "BITS Pilani",
-    "Cloud Computing",
+    "Observability",
+    "BITS Pilani Cloud M.Tech",
     "VIT University",
     "Delhi India",
     "nishantkamal.com",
@@ -44,11 +50,20 @@ export const metadata = {
   openGraph: {
     title: "Nishant Kamal: SRE",
     description:
-      "Portfolio of Nishant Kamal — SRE specialising in Control Plane architecture, Kubernetes, AWS, and cloud-native infrastructure. M.Tech Cloud at BITS Pilani.",
+      "Portfolio of Nishant Kamal — SRE specialising in Control Plane architecture, Kubernetes, AWS, Crossplane & GitOps. M.Tech Cloud at BITS Pilani.",
     url: "https://nishantkamal.com",
     siteName: "Nishant Kamal",
     type: "website",
     locale: "en_IN",
+    // FIX: Absolute URL — relative paths can fail in static export OG crawlers
+    images: [
+      {
+        url: "https://nishantkamal.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Nishant Kamal — Site Reliability Engineer Portfolio",
+      },
+    ],
   },
 
   twitter: {
@@ -57,6 +72,8 @@ export const metadata = {
     description:
       "SRE specialising in Control Plane architecture, Kubernetes, AWS, Crossplane & GitOps. M.Tech Cloud @ BITS Pilani.",
     creator: "@imnishant19",
+    // FIX: Absolute URL for Twitter card image
+    images: ["https://nishantkamal.com/og-image.png"],
   },
 
   robots: {

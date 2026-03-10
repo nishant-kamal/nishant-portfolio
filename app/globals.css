@@ -63,7 +63,7 @@
 html {
   scroll-behavior: smooth;
   /* Prevent scroll-behavior from fighting with JS-driven smooth scroll */
-  scroll-padding-top: 80px; /* offset for fixed navbar height */
+  scroll-padding-top: 72px; /* matches .nav-inner { height: 72px } in Navbar.js */
 }
 
 body {
