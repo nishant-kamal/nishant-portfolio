@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-
 const nextConfig = {
   // Required for GitHub Pages — generates ./out static folder
   output: "export",
@@ -9,9 +8,14 @@ const nextConfig = {
     unoptimized: true,
   },
 
+  // Disable Next.js telemetry instrumentation hook — prevents
+  // @opentelemetry/api and picocolors from leaking into client bundle
+  experimental: {
+    instrumentationHook: false,
+  },
+
   // Uncomment these two lines ONLY if your site is served from a subpath
   // e.g. https://nishant-kamal.github.io/nishant-portfolio/
-  // If you have nishantkamal.com as a custom domain on Pages, leave commented.
   // basePath: "/nishant-portfolio",
   // assetPrefix: "/nishant-portfolio/",
 };
