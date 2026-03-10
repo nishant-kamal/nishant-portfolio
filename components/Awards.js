@@ -129,15 +129,17 @@ function parsePeriod(str) {
   return new Date(year, month, 1);
 }
 
-/** Whole years between the earliest and latest period in the list */
+/** Years at company — anchored to join date (Jun 2020) through the latest award.
+ *  Using the actual join date gives an accurate tenure rather than the span
+ *  between first and last award (which understates time at company). */
 function computeTenureYears(items) {
   if (!items.length) return 0;
+  const JOIN_DATE = new Date(2020, 5, 1); // Jun 2020 — FarEye start date
   const dates = items.map((a) => parsePeriod(a.period)).filter(Boolean);
   if (!dates.length) return 0;
-  const earliest = new Date(Math.min(...dates));
-  const latest   = new Date(Math.max(...dates));
-  const diff = (latest - earliest) / (1000 * 60 * 60 * 24 * 365.25);
-  return Math.max(1, Math.round(diff));
+  const latest = new Date(Math.max(...dates));
+  const diff = (latest - JOIN_DATE) / (1000 * 60 * 60 * 24 * 365.25);
+  return Math.max(1, Math.floor(diff));
 }
 
 /** Most-frequently occurring company across all awards */

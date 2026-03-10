@@ -37,7 +37,7 @@ const EXPERIENCE = [
     company:  "FarEye",
     location: "Noida, India",
     role:     "Site Reliability Engineer",
-    period:   "06/2020 – Present", // FIX: was 06/2021; FarEye join date is Jun 2020 (matches Stats getYearsExperience & Awards "5 yr tenure")
+    period:   "06/2021 – Present", // Promoted from Infra Support Engineer in Jun 2021
     bullets: [
       "Implemented Karpenter for dynamic scaling, replacing ASG and improving cost efficiency in the Kubernetes environment.",
       "Deployed Istio, Virtual Services, and Gateways to manage traffic routing and enhance microservices communication within clusters.",

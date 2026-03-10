@@ -1,27 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // Google Form action URL — update here if the form is ever recreated
 const GOOGLE_FORM_ACTION =
   "https://docs.google.com/forms/d/e/1FAIpQLSeOfYCnQBiw8tp8xF3jBA16_EGd4BItPuAavMXxGqmsFjnpMA/formResponse";
 
-// FIX 1: Removed @import Google Fonts — loaded via next/font in layout.js
-
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // Track whether the iframe has loaded at least once (its initial empty load),
+  // so subsequent loads (after form POST) correctly signal delivery.
+  const iframeLoadedOnce = useRef(false);
 
-  // FIX 2: handleSubmit now receives the event so we can call
-  // preventDefault and show a loading state before success
-  const handleSubmit = (e) => {
-    // We do NOT preventDefault here — the form submits to Google Forms
-    // via the hidden iframe target. We just track the UI state.
+  // FIX 11: Listen to the hidden iframe's load event as the real success signal.
+  // The iframe fires load twice: once on mount (empty page) and once after the
+  // Google Form POST response. We ignore the first and act on the second.
+  const handleIframeLoad = () => {
+    if (!iframeLoadedOnce.current) {
+      // First load = iframe initialised — ignore it
+      iframeLoadedOnce.current = true;
+      return;
+    }
+    // Second load = Google Forms responded — POST completed successfully
+    setSubmitting(false);
+    setSubmitted(true);
+  };
+
+  const handleSubmit = () => {
+    // Do NOT preventDefault — the form submits to Google Forms via the iframe target.
     setSubmitting(true);
+    // Safety fallback: if the iframe load event never fires (e.g. network error,
+    // CORS block), resolve after 6 s so the UI doesn't stay stuck on "Transmitting…"
     setTimeout(() => {
-      setSubmitting(false);
-      setSubmitted(true);
-    }, 800);
+      setSubmitting((still) => {
+        if (still) {
+          setSubmitted(true); // best-effort fallback
+        }
+        return false;
+      });
+    }, 6000);
   };
 
   return (
@@ -183,8 +201,16 @@ export default function Contact() {
         </p>
 
         <div className="form-card">
-          {/* Hidden iframe for Google Forms silent POST */}
-          <iframe name="hidden_iframe" style={{ display: "none" }} aria-hidden="true" />
+          {/* Hidden iframe for Google Forms silent POST.
+              FIX 13: title attribute added for a11y linter compliance.
+              FIX 11: onLoad fires after the POST response — used as the real success signal. */}
+          <iframe
+            name="hidden_iframe"
+            title="Form submission target"
+            style={{ display: "none" }}
+            aria-hidden="true"
+            onLoad={handleIframeLoad}
+          />
 
           {!submitted ? (
             <form
@@ -227,6 +253,7 @@ export default function Contact() {
                   placeholder="How can I help you?"
                   rows={4}
                   className="field-style"
+                  autoComplete="off"
                   required
                 />
               </div>

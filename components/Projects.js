@@ -19,8 +19,6 @@ const projects = [
     color: "#38bdf8",
     glow: "rgba(56,189,248,.12)",
     icon: "☸",
-    githubUrl: null,
-    demoUrl: null,
     metrics: [
       { label: "Deployment Time", val: "-70%" },
       { label: "Drift Incidents", val: "0" },
@@ -42,8 +40,6 @@ const projects = [
     color: "#34d399",
     glow: "rgba(52,211,153,.12)",
     icon: "↓",
-    githubUrl: null,
-    demoUrl: null,
     metrics: [
       { label: "Cost Reduction", val: "35%" },
       { label: "Provisioning Speed", val: "3×" },
@@ -65,8 +61,6 @@ const projects = [
     color: "#f97316",
     glow: "rgba(249,115,22,.12)",
     icon: "◈",
-    githubUrl: null,
-    demoUrl: null,
     metrics: [
       { label: "Environments Deployed", val: "1st" },
       { label: "QA Issues Resolved", val: "100%" },
@@ -88,8 +82,6 @@ const projects = [
     color: "#fb7185",
     glow: "rgba(251,113,133,.12)",
     icon: "⬡",
-    githubUrl: null,
-    demoUrl: null,
     metrics: [
       { label: "Registry Migrated", val: "100%" },
       { label: "Stale Images Removed", val: "↓ GB" },
@@ -111,11 +103,30 @@ const projects = [
     color: "#a78bfa",
     glow: "rgba(167,139,250,.12)",
     icon: "△",
-    githubUrl: null,
-    demoUrl: null,
     metrics: [
       { label: "Alerts Standardized", val: "50+" },
       { label: "MTTR", val: "-40%" },
+    ],
+  },
+  {
+    id: 6,
+    index: "06",
+    title: "Crossplane Infrastructure Automation",
+    subtitle: "Crossplane · Compositions · XRDs · Azure · OCI · Developer Self-Service",
+    description:
+      "Implemented Crossplane across Oracle Cloud (OCI) and Azure to standardise infrastructure definitions and eliminate manual provisioning. Created reusable Compositions and XRDs enabling developer self-service for on-demand cloud environments. Reduced provisioning time by 40–60% and improved reproducibility across both cloud providers.",
+    highlights: [
+      "Crossplane on OCI & Azure — unified control-plane IaC across two cloud providers",
+      "Reusable Compositions & XRDs — developers provision environments without ops involvement",
+      "40–60% cut in manual provisioning time with full environment reproducibility",
+    ],
+    tags: ["Crossplane", "OCI", "Azure", "Compositions", "XRDs", "IaC", "GitOps", "Platform Engineering", "Self-Service"],
+    color: "#38bdf8",
+    glow: "rgba(56,189,248,.12)",
+    icon: "⊕",
+    metrics: [
+      { label: "Provisioning Time", val: "-50%" },
+      { label: "Cloud Providers", val: "2" },
     ],
   },
 ];
@@ -301,28 +312,6 @@ export default function Projects() {
           border: 1px solid rgba(255,255,255,0.07);
         }
 
-        /* Action links */
-        .proj-actions {
-          display: flex;
-          gap: 10px;
-          margin-top: 18px;
-          flex-wrap: wrap;
-        }
-        .proj-action-link {
-          font-family: var(--font-mono);
-          font-size: 0.7rem;
-          letter-spacing: 0.06em;
-          padding: 7px 16px;
-          border-radius: 8px;
-          border: 1px solid;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          transition: opacity 0.2s;
-        }
-        .proj-action-link:hover { opacity: 0.8; }
-        .proj-action-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 
         @media (prefers-reduced-motion: reduce) {
           .proj-body { transition: none; }
@@ -455,36 +444,6 @@ export default function Projects() {
                         {t}
                       </span>
                     ))}
-                  </div>
-
-                  {/* Action links */}
-                  <div className="proj-actions">
-                    {p.githubUrl && (
-                      <a
-                        href={p.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="proj-action-link"
-                        style={{ color: p.color, borderColor: p.color + "40", background: p.color + "0d" }}
-                        onClick={(e) => e.stopPropagation()}
-                        aria-label={`View ${p.title} on GitHub (opens in new tab)`}
-                      >
-                        ↗ GitHub
-                      </a>
-                    )}
-                    {p.demoUrl && (
-                      <a
-                        href={p.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="proj-action-link"
-                        style={{ color: p.color, borderColor: p.color + "40", background: p.color + "0d" }}
-                        onClick={(e) => e.stopPropagation()}
-                        aria-label={`View live demo of ${p.title} (opens in new tab)`}
-                      >
-                        ↗ Live Demo
-                      </a>
-                    )}
                   </div>
                 </div>
               </div>

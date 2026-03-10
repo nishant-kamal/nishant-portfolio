@@ -306,7 +306,7 @@ export default function Hero() {
         }
       `}</style>
 
-      <section className="hero-section" aria-label="Introduction">
+      <div className="hero-section">
         <div className="hero-inner">
 
           {/* LEFT */}
@@ -399,7 +399,7 @@ export default function Hero() {
           </div>
 
         </div>
-      </section>
+      </div>
     </>
   );
 }
