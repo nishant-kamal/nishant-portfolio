@@ -16,7 +16,7 @@ import Navbar from "../components/Navbar";
 export const metadata = {
   metadataBase: new URL("https://nishantkamal.com"),
   title: {
-    default: "Nishant Kamal | Site Reliability & Platform Engineer",
+    default: "Nishant Kamal: SRE DevOps & Platform",
     template: "%s | Nishant Kamal",
   },
   // SEO FIX: Corrected "6+ years" -> "5+ years" (join date Jun 2020),
@@ -37,7 +37,7 @@ export const metadata = {
   ],
   authors: [{ name: "Nishant Kamal" }],
   openGraph: {
-    title: "Nishant Kamal | SRE & Platform Architect",
+    title: "Nishant Kamal: SRE DevOps & Platform",
     description:
       "Engineering resilient cloud infrastructure and scalable platforms. Explore my technical stack and projects.",
     url: "https://nishantkamal.com",
@@ -55,7 +55,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nishant Kamal | Site Reliability Engineer",
+    title: "Nishant Kamal: SRE DevOps & Platform",
     description: "Production-ready systems and cloud-native architecture expert.",
     creator: "@imnishant19",
   },
@@ -113,7 +113,7 @@ export default function RootLayout({ children }) {
               nishantkamal.com
             </span>
             <span className="footer-copy">
-              © {new Date().getFullYear()} — Engineering Reliability
+              © 2026 — Engineering Reliability
             </span>
             <span className="footer-mono footer-stack">
               Next.js · Tailwind · JetBrains Mono
