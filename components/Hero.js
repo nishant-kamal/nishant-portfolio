@@ -129,6 +129,7 @@ export default function Hero() {
           border-radius: 50%;
           box-shadow: 0 0 6px #38bdf8;
           flex-shrink: 0;
+          will-change: opacity;
           animation: badge-pulse 2s ease-in-out infinite;
         }
         @keyframes badge-pulse {
@@ -166,6 +167,7 @@ export default function Hero() {
           background: #38bdf8;
           margin-left: 2px;
           flex-shrink: 0;
+          will-change: opacity;
           animation: blink 1s step-end infinite;
         }
         @keyframes blink {
@@ -281,6 +283,7 @@ export default function Hero() {
           inset: 0;
           border-radius: 50%;
           border: 1px dashed rgba(56, 189, 248, 0.18);
+          will-change: transform;
           animation: spin-slow 25s linear infinite;
           pointer-events: none;
           z-index: 1;
@@ -290,6 +293,7 @@ export default function Hero() {
           inset: -14px;
           border-radius: 50%;
           border: 1px solid rgba(167, 139, 250, 0.07);
+          will-change: transform;
           animation: spin-slow 45s linear infinite reverse;
           pointer-events: none;
         }
@@ -376,21 +380,24 @@ export default function Hero() {
                 {imgError ? (
                   <div className="hero-img-fallback" aria-hidden="true">NK</div>
                 ) : (
-                  <img
-                    src="/profile.webp"
-                    alt="Nishant Kamal, Site Reliability Engineer"
-                    width={360}
-                    height={360}
-                    loading="eager"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      objectPosition: "top center",
-                      display: "block",
-                    }}
-                    onError={() => setImgError(true)}
-                  />
+                  <picture>
+                    <source srcSet="/profile.webp" type="image/webp" />
+                    <img
+                      src="/profile.png"
+                      alt="Nishant Kamal, Site Reliability Engineer"
+                      width={360}
+                      height={360}
+                      loading="eager"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "top center",
+                        display: "block",
+                      }}
+                      onError={() => setImgError(true)}
+                    />
+                  </picture>
                 )}
               </div>
               <div className="hero-ring" aria-hidden="true" />
