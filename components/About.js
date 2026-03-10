@@ -2,12 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 
-// FIX 1: Removed @import Google Fonts — loaded via next/font in layout.js
-
 const tags = [
-  "Kubernetes", "AWS", "Crossplane", "GitOps",
-  "Prometheus", "Grafana", "Kafka", "Istio",
-  "Terraform", "ArgoCD", "Observability",
+  "Kubernetes", "AWS", "OCI", "Crossplane",
+  "FluxCD", "Helm", "GitOps", "Prometheus",
+  "Grafana", "Istio", "Terraform", "Observability",
 ];
 
 function useInView(threshold = 0.1) {
@@ -29,8 +27,6 @@ export default function About() {
   const [sectionRef, inView] = useInView(0.05);
 
   return (
-    // FIX 2: Removed duplicate <section id="about"> and duplicate
-    // background + padding — these are set by page.js wrapper section.
     <div className="about-root" ref={sectionRef}>
       <style>{`
         .about-root {
@@ -41,7 +37,6 @@ export default function About() {
           overflow: hidden;
         }
 
-        /* Subtle noise texture */
         .about-root::after {
           content: ''; position: absolute; inset: 0;
           opacity: 0.015; pointer-events: none; z-index: 0;
@@ -75,7 +70,6 @@ export default function About() {
           margin: 0;
         }
 
-        /* Bento grid */
         .bento-grid {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
@@ -84,11 +78,13 @@ export default function About() {
         .card-identity { grid-column: span 8; }
         .card-terminal { grid-column: span 4; }
         .card-story    { grid-column: span 12; }
+        .card-quote    { grid-column: span 12; }
 
         @media (max-width: 1024px) {
           .card-identity,
           .card-terminal,
-          .card-story { grid-column: span 12 !important; }
+          .card-story,
+          .card-quote { grid-column: span 12 !important; }
         }
 
         .bento-card {
@@ -108,7 +104,6 @@ export default function About() {
           background: rgba(30, 41, 59, 0.5);
         }
 
-        /* Identity card */
         .status-badge {
           display: inline-flex; align-items: center; gap: 8px;
           font-family: var(--font-mono); font-size: 0.65rem;
@@ -125,7 +120,6 @@ export default function About() {
           animation: pulse-dot 2s ease-in-out infinite;
           flex-shrink: 0;
         }
-        /* Uses global @keyframes pulse-dot from globals.css */
 
         .identity-name {
           font-size: clamp(1.8rem, 4vw, 2.5rem);
@@ -146,7 +140,6 @@ export default function About() {
         }
         .meta-item-value { font-size: 1rem; font-weight: 600; color: #f1f5f9; }
 
-        /* Terminal card — no extra padding, handled by card-terminal style */
         .terminal-card-inner { padding: 0; overflow: hidden; border-radius: 28px; }
         .terminal-header {
           background: #0d1520;
@@ -171,7 +164,6 @@ export default function About() {
         .t-str { color: #34d399; }
         .t-num { color: #fb923c; }
 
-        /* Story card — FIX 3: Added responsive grid for tablet */
         .story-inner {
           display: grid;
           grid-template-columns: 1.2fr 1fr;
@@ -215,7 +207,6 @@ export default function About() {
           background: rgba(167,139,250,0.08);
         }
 
-        /* Quote card */
         .card-quote { grid-column: span 12; }
         .quote-blockquote {
           margin: 0;
@@ -243,9 +234,20 @@ export default function About() {
           letter-spacing: 0.12em; text-transform: uppercase;
         }
         .quote-attr span { color: #a78bfa; }
+
+        .quote-cta {
+          margin-top: 28px;
+          padding-top: 24px;
+          border-top: 1px solid rgba(255,255,255,0.05);
+          font-size: 1rem; color: #94a3b8;
+          line-height: 1.8;
+          max-width: none;
+        }
+        .quote-cta strong { color: #e2e8f0; font-weight: 600; }
       `}</style>
 
       <div className="about-inner">
+
         {/* Header */}
         <div className="about-header">
           <h2 id="about-title" className="about-title">
@@ -272,12 +274,18 @@ export default function About() {
             </div>
             <h3 className="identity-name">Nishant Kamal</h3>
             <p className="identity-desc">
-              Site Reliability Engineer specializing in{" "}
-              <strong>Control Plane architecture</strong> and high-availability
-              cloud ecosystems. Focusing on the intersection of scalability and
-              resilience.
+              Site Reliability Engineer at <strong>FarEye</strong>, ensuring the
+              reliability, scalability, and performance of a large-scale{" "}
+              <strong>logistics SaaS platform</strong>. Working extensively with
+              cloud-native and Kubernetes-based distributed systems — handling
+              production reliability and mitigating outages during high-traffic,
+              business-critical events.
             </p>
             <div className="identity-meta">
+              <div>
+                <div className="meta-item-label">Company</div>
+                <div className="meta-item-value">FarEye</div>
+              </div>
               <div>
                 <div className="meta-item-label">Location</div>
                 <div className="meta-item-value">Delhi, India</div>
@@ -301,22 +309,24 @@ export default function About() {
                 <div className="t-dot" style={{ background: "#27c93f" }} />
                 <span className="terminal-filename">credentials.json</span>
               </div>
-              {/* FIX 4: aria-label on terminal block so screen readers get
-                  the meaningful content without reading raw JSON syntax */}
               <div
                 className="terminal-body"
-                aria-label="M.Tech in Cloud Computing at BITS Pilani, currently in progress, GPA A+"
+                aria-label="SRE at FarEye, M.Tech Cloud Computing at BITS Pilani in progress, GPA A+"
               >
                 <span aria-hidden="true">
                   {"{"}<br />
+                  &nbsp;&nbsp;<span className="t-key">&quot;role&quot;</span>:{" "}
+                  <span className="t-str">&quot;Site Reliability Engineer&quot;</span>,<br />
+                  &nbsp;&nbsp;<span className="t-key">&quot;company&quot;</span>:{" "}
+                  <span className="t-str">&quot;FarEye&quot;</span>,<br />
                   &nbsp;&nbsp;<span className="t-key">&quot;degree&quot;</span>:{" "}
                   <span className="t-str">&quot;M.Tech Cloud&quot;</span>,<br />
-                  &nbsp;&nbsp;<span className="t-key">&quot;institution&quot;</span>:{" "}
+                  &nbsp;&nbsp;<span className="t-key">&quot;institute&quot;</span>:{" "}
                   <span className="t-str">&quot;BITS Pilani&quot;</span>,<br />
                   &nbsp;&nbsp;<span className="t-key">&quot;status&quot;</span>:{" "}
                   <span className="t-str">&quot;In_Progress&quot;</span>,<br />
                   &nbsp;&nbsp;<span className="t-key">&quot;GPA&quot;</span>:{" "}
-                  <span className="t-str">&quot;A+&quot;</span><br />
+                  <span className="t-num">&quot;A+&quot;</span><br />
                   {"}"}
                 </span>
               </div>
@@ -330,15 +340,27 @@ export default function About() {
           >
             <div className="story-inner">
               <div>
-                <div className="story-label">&gt; CORE_PHILOSOPHY</div>
+                <div className="story-label">&gt; WHAT_I_DO</div>
                 <p className="story-text">
-                  I model systems before I build them. My work focuses on{" "}
-                  <strong>resiliency-first architecture</strong>. From orchestrating
-                  multi-region cloud clusters to hardening infrastructure security
-                  with zero-trust principles and K8s-native management.
+                  I have a strong foundation in{" "}
+                  <strong>cloud computing, Kubernetes, networking, and system
+                  observability</strong> — with hands-on experience designing,
+                  deploying, and operating highly available infrastructure. My work
+                  involves optimizing system performance, improving fault tolerance,
+                  and collaborating closely with development teams to reduce downtime
+                  and improve operational efficiency.
                 </p>
               </div>
               <div>
+                <div className="story-label">&gt; WHAT_I_BUILD</div>
+                <p className="story-text" style={{ marginBottom: "24px" }}>
+                  Passionate about <strong>infrastructure automation</strong> and
+                  modern deployment practices — implementing{" "}
+                  <strong>GitOps workflows</strong> with FluxCD and Helm for
+                  automated, consistent, auditable Kubernetes deployments. Also
+                  leveraging <strong>OCI + Crossplane</strong> to provision cloud
+                  infrastructure declaratively through Kubernetes CRDs.
+                </p>
                 <div className="toolbox-label">&gt; CORE_TOOLBOX</div>
                 <div className="tag-pills">
                   {tags.map((t) => (
@@ -349,7 +371,7 @@ export default function About() {
             </div>
           </div>
 
-          {/* Card 4: Quote */}
+          {/* Card 4: Quote + CTA */}
           <div
             className={`bento-card card-quote ${inView ? "visible" : ""}`}
             style={{ transitionDelay: "0.4s" }}
@@ -363,6 +385,13 @@ export default function About() {
                 — <span>Nishant Kamal</span>
               </footer>
             </blockquote>
+            <p className="quote-cta">
+              Always eager to collaborate on{" "}
+              <strong>DevOps, SRE, and platform engineering</strong> initiatives —
+              whether it&apos;s infrastructure design, automation strategies, or
+              building resilient, scalable systems.{" "}
+              <strong>Let&apos;s connect and build reliable systems together.</strong>
+            </p>
           </div>
 
         </div>
