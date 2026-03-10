@@ -1,16 +1,19 @@
+import dynamic from "next/dynamic"
 import Hero from "../components/Hero"
-import Stats from "../components/Stats"
-import About from "../components/About"
-import Skills from "../components/Skills"
-import Projects from "../components/Projects"
-import Education from "../components/Education"
-import Awards from "../components/Awards"
-import Contact from "../components/Contact"
+
+// ─── Lazy-load all below-fold sections ───────────────────────────────────────
+// This splits each component into its own JS chunk, loaded only when needed.
+// Hero is kept eager (above-fold, critical for LCP).
+const Stats     = dynamic(() => import("../components/Stats"))
+const About     = dynamic(() => import("../components/About"))
+const Skills    = dynamic(() => import("../components/Skills"))
+const Projects  = dynamic(() => import("../components/Projects"))
+const Education = dynamic(() => import("../components/Education"))
+const Awards    = dynamic(() => import("../components/Awards"))
+const Contact   = dynamic(() => import("../components/Contact"))
 
 // ─── SEO Metadata — single canonical source of truth for the entire site ──────
-// layout.js intentionally has NO metadata export; all SEO lives here.
 export const metadata = {
-  // metadataBase is required so Next.js can resolve relative image paths in OG/Twitter
   metadataBase: new URL("https://nishantkamal.com"),
 
   title: "Nishant Kamal: SRE",
@@ -55,7 +58,6 @@ export const metadata = {
     siteName: "Nishant Kamal",
     type: "website",
     locale: "en_IN",
-    // FIX: Absolute URL — relative paths can fail in static export OG crawlers
     images: [
       {
         url: "https://nishantkamal.com/og-image.png",
@@ -72,7 +74,6 @@ export const metadata = {
     description:
       "SRE specialising in Control Plane architecture, Kubernetes, AWS, Crossplane & GitOps. M.Tech Cloud @ BITS Pilani.",
     creator: "@imnishant19",
-    // FIX: Absolute URL for Twitter card image
     images: ["https://nishantkamal.com/og-image.png"],
   },
 
@@ -90,7 +91,6 @@ export const metadata = {
 
 // ─── Page Component ───────────────────────────────────────────────────────────
 export default function Home() {
-  // JSON-LD: Person schema — tells Google exactly who Nishant Kamal is
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -146,52 +146,46 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* 1. HERO */}
+      {/* 1. HERO — eager, above fold */}
       <section id="home" aria-label="Introduction" className="border-b border-white/5 relative z-10">
         <Hero />
       </section>
 
-      {/* 2. STATS */}
+      {/* 2–8: lazy loaded below-fold sections */}
       <section id="stats" aria-labelledby="stats-title" className="border-b border-white/5 relative z-10">
         <Stats />
       </section>
 
-      {/* 3. ABOUT */}
       <section id="about" aria-labelledby="about-title" className="border-b border-white/5">
         <div className="max-w-[1200px] mx-auto px-6">
           <About />
         </div>
       </section>
 
-      {/* 4. SKILLS */}
       <section id="skills" aria-labelledby="skills-title" className="border-b border-white/5 bg-slate-900/20">
         <div className="max-w-[1200px] mx-auto px-6 py-16">
           <Skills />
         </div>
       </section>
 
-      {/* 5. PROJECTS */}
       <section id="projects" aria-labelledby="projects-title" className="border-b border-white/5">
         <div className="max-w-[1200px] mx-auto px-6 py-16">
           <Projects />
         </div>
       </section>
 
-      {/* 6. EDUCATION */}
       <section id="education" aria-labelledby="education-title" className="border-b border-white/5 bg-slate-900/30">
         <div className="max-w-[1200px] mx-auto px-6 py-16">
           <Education />
         </div>
       </section>
 
-      {/* 7. AWARDS */}
       <section id="awards" aria-labelledby="awards-title" className="border-b border-white/5">
         <div className="max-w-[1200px] mx-auto px-6 py-16">
           <Awards />
         </div>
       </section>
 
-      {/* 8. CONTACT */}
       <section id="contact" aria-labelledby="contact-title" className="py-24 relative z-10">
         <div className="max-w-4xl mx-auto px-6">
           <Contact />
