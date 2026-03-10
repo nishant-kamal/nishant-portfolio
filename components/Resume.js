@@ -402,20 +402,23 @@ async function generatePDF(setStatus) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function Resume() {
-  const [status, setStatus] = useState("idle"); // idle | loading | generating | done
+  const [status, setStatus] = useState("idle"); // idle | loading | generating | done | error
 
   const label = {
     idle:       "↓ Download Resume PDF",
     loading:    "Loading PDF engine...",
     generating: "Generating PDF...",
     done:       "✓ Downloaded!",
+    error:      "✗ Failed — try again",
   }[status];
 
   const handleClick = () => {
-    if (status !== "idle") return;
+    if (status !== "idle" && status !== "error") return;
+    setStatus("idle"); // reset error before retry
     generatePDF(setStatus).catch((err) => {
       console.error("PDF generation failed:", err);
-      setStatus("idle");
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 4000);
     });
   };
 
@@ -462,6 +465,15 @@ export default function Resume() {
           color: #020617;
           box-shadow: 0 0 20px rgba(52, 211, 153, 0.35);
         }
+        .resume-btn.error {
+          color: #f87171;
+          border-color: rgba(248, 113, 113, 0.4);
+        }
+        .resume-btn.error:hover {
+          background: #f87171;
+          color: #020617;
+          box-shadow: 0 0 20px rgba(248, 113, 113, 0.35);
+        }
         .resume-btn:focus-visible {
           outline: 2px solid #38bdf8;
           outline-offset: 2px;
@@ -484,7 +496,7 @@ export default function Resume() {
       `}</style>
 
       <button
-        className={`resume-btn ${status === "done" ? "done" : ""}`}
+        className={`resume-btn ${status === "done" ? "done" : ""} ${status === "error" ? "error" : ""}`}
         onClick={handleClick}
         disabled={busy}
         aria-label="Download resume as PDF"

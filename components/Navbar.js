@@ -245,7 +245,7 @@ export default function Navbar() {
         }
       `}</style>
 
-      <a href="#about" className="skip-link">Skip to content</a>
+      <a href="#top" className="skip-link">Skip to main content</a>
 
       <nav
         className={`nav-root ${scrolled ? "scrolled" : ""}`}

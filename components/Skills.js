@@ -276,10 +276,14 @@ export default function Skills() {
             onKeyDown={(e) => {
               if (e.key === "ArrowRight") {
                 e.preventDefault();
-                setActiveCategory((activeCategory + 1) % categories.length);
+                const next = (activeCategory + 1) % categories.length;
+                setActiveCategory(next);
+                document.getElementById(tabIds[next])?.focus();
               } else if (e.key === "ArrowLeft") {
                 e.preventDefault();
-                setActiveCategory((activeCategory - 1 + categories.length) % categories.length);
+                const prev = (activeCategory - 1 + categories.length) % categories.length;
+                setActiveCategory(prev);
+                document.getElementById(tabIds[prev])?.focus();
               }
             }}
           >

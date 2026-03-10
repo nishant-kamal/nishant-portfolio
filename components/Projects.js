@@ -19,7 +19,7 @@ const projects = [
     color: "#38bdf8",
     glow: "rgba(56,189,248,.12)",
     icon: "☸",
-    githubUrl: "https://github.com/nishant-kamal",
+    githubUrl: null,
     demoUrl: null,
     metrics: [
       { label: "Deployment Time", val: "-70%" },
@@ -42,7 +42,7 @@ const projects = [
     color: "#34d399",
     glow: "rgba(52,211,153,.12)",
     icon: "↓",
-    githubUrl: "https://github.com/nishant-kamal",
+    githubUrl: null,
     demoUrl: null,
     metrics: [
       { label: "Cost Reduction", val: "35%" },
@@ -65,7 +65,7 @@ const projects = [
     color: "#f97316",
     glow: "rgba(249,115,22,.12)",
     icon: "◈",
-    githubUrl: "https://github.com/nishant-kamal",
+    githubUrl: null,
     demoUrl: null,
     metrics: [
       { label: "Environments Deployed", val: "1st" },
@@ -88,7 +88,7 @@ const projects = [
     color: "#fb7185",
     glow: "rgba(251,113,133,.12)",
     icon: "⬡",
-    githubUrl: "https://github.com/nishant-kamal",
+    githubUrl: null,
     demoUrl: null,
     metrics: [
       { label: "Registry Migrated", val: "100%" },
@@ -111,7 +111,7 @@ const projects = [
     color: "#a78bfa",
     glow: "rgba(167,139,250,.12)",
     icon: "△",
-    githubUrl: "https://github.com/nishant-kamal",
+    githubUrl: null,
     demoUrl: null,
     metrics: [
       { label: "Alerts Standardized", val: "50+" },
