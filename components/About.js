@@ -458,7 +458,7 @@ export default function About() {
             <h3 className="hero-name">Nishant Kamal</h3>
 
             <p className="hero-desc">
-              SRE ensuring the reliability, scalability,
+              As a Site Reliablity Engineer ensuring the reliability, scalability,
               and performance of a large-scale <strong>logistics SaaS platform</strong>.
               Working extensively with cloud-native and Kubernetes-based distributed
               systems — handling production reliability and mitigating outages during
