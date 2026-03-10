@@ -16,7 +16,7 @@ import Navbar from "../components/Navbar";
 export const metadata = {
   metadataBase: new URL("https://nishantkamal.com"),
   title: {
-    default: "Nishant Kamal: SRE DevOps & Platform",
+    default: "Nishant Kamal: SRE",
     template: "%s | Nishant Kamal",
   },
   // SEO FIX: Corrected "6+ years" -> "5+ years" (join date Jun 2020),
@@ -29,6 +29,7 @@ export const metadata = {
     "Platform Engineer",
     "Kubernetes Expert",
     "AWS Architect",
+    "DevOps",
     "FinOps",
     "GitOps",
     "Karpenter",
@@ -37,7 +38,7 @@ export const metadata = {
   ],
   authors: [{ name: "Nishant Kamal" }],
   openGraph: {
-    title: "Nishant Kamal: SRE DevOps & Platform",
+    title: "Nishant Kamal: SRE",
     description:
       "Engineering resilient cloud infrastructure and scalable platforms. Explore my technical stack and projects.",
     url: "https://nishantkamal.com",
@@ -55,7 +56,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nishant Kamal: SRE DevOps & Platform",
+    title: "Nishant Kamal: SRE",
     description: "Production-ready systems and cloud-native architecture expert.",
     creator: "@imnishant19",
   },
