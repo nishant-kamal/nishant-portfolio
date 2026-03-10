@@ -20,7 +20,7 @@ export const metadata = {
     "Platform Engineering",
     "Kubernetes",
     "AWS",
-    "DevOp",
+    "DevOps",
     "Crossplane",
     "GitOps",
     "Terraform",
