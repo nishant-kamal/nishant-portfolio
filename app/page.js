@@ -9,7 +9,7 @@ import Contact from "../components/Contact"
 
 // ─── SEO Metadata ─────────────────────────────────────────────────────────────
 export const metadata = {
-  title: "Nishant Kamal: SRE DevOps & Platform",
+  title: "Nishant Kamal: SRE",
   description:
     "Nishant Kamal is a Site Reliability Engineer from Delhi, India, specialising in Control Plane architecture, Kubernetes, AWS, Crossplane, GitOps, and high-availability cloud ecosystems. M.Tech Cloud Computing at BITS Pilani.",
   keywords: [
@@ -20,10 +20,11 @@ export const metadata = {
     "Platform Engineering",
     "Kubernetes",
     "AWS",
+    "DevOp",
     "Crossplane",
     "GitOps",
     "Terraform",
-    "ArgoCD",
+    "Fluxcd",
     "Prometheus",
     "Grafana",
     "Kafka",
@@ -41,7 +42,7 @@ export const metadata = {
   },
 
   openGraph: {
-    title: "Nishant Kamal: SRE DevOps & Platform",
+    title: "Nishant Kamal: SRE",
     description:
       "Portfolio of Nishant Kamal — SRE specialising in Control Plane architecture, Kubernetes, AWS, and cloud-native infrastructure. M.Tech Cloud at BITS Pilani.",
     url: "https://nishantkamal.com",
@@ -52,7 +53,7 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Nishant Kamal: SRE DevOps & Platform",
+    title: "Nishant Kamal: SRE",
     description:
       "SRE specialising in Control Plane architecture, Kubernetes, AWS, Crossplane & GitOps. M.Tech Cloud @ BITS Pilani.",
     creator: "@imnishant19",
