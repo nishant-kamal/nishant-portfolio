@@ -377,7 +377,7 @@ export default function Hero() {
                   <div className="hero-img-fallback" aria-hidden="true">NK</div>
                 ) : (
                   <img
-                    src="/profile.png"
+                    src="/profile.webp"
                     alt="Nishant Kamal, Site Reliability Engineer"
                     width={360}
                     height={360}
