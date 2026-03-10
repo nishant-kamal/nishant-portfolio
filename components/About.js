@@ -77,7 +77,7 @@ export default function About() {
         .ab-root {
           font-family: var(--font-sans);
           color: #f8fafc;
-          padding: 20px 0 80px;
+          padding: 20px 0 40px;
           position: relative;
           overflow: hidden;
         }
@@ -99,7 +99,7 @@ export default function About() {
         .ab-inner { position: relative; z-index: 1; }
 
         /* ── Header ───────────────────────────────────────────────────── */
-        .ab-header { margin-bottom: 64px; }
+        .ab-header { margin-bottom: 36px; }
         .ab-title {
           font-size: clamp(3rem, 8vw, 5.5rem);
           font-weight: 800;
@@ -153,7 +153,7 @@ export default function About() {
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
           border-radius: 24px;
-          padding: 36px;
+          padding: 24px;
           opacity: 0;
           transform: translateY(32px);
           transition:
@@ -189,8 +189,8 @@ export default function About() {
         .status-row {
           display: flex; align-items: center;
           justify-content: space-between;
-          flex-wrap: wrap; gap: 12px;
-          margin-bottom: 24px;
+          flex-wrap: wrap; gap: 8px;
+          margin-bottom: 14px;
         }
         .status-badge {
           display: inline-flex; align-items: center; gap: 8px;
@@ -231,15 +231,15 @@ export default function About() {
           font-family: var(--font-mono);
           font-size: 0.8rem; color: #a78bfa;
           letter-spacing: 0.1em; text-transform: uppercase;
-          margin: 0 0 20px;
+          margin: 0 0 10px;
         }
         .hero-desc {
           font-size: 1.05rem; color: #94a3b8;
-          line-height: 1.75; margin: 0 0 32px;
+          line-height: 1.7; margin: 0 0 20px;
         }
         .hero-desc strong { color: #e2e8f0; font-weight: 600; }
 
-        .meta-row { display: flex; gap: 32px; flex-wrap: wrap; }
+        .meta-row { display: flex; gap: 20px; flex-wrap: wrap; }
         .meta-chip {
           display: flex; flex-direction: column; gap: 4px;
         }
@@ -255,7 +255,7 @@ export default function About() {
         .meta-chip-value.accent { color: #a78bfa; }
 
         /* tag pills */
-        .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.04); }
+        .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
         .tag-pill {
           font-family: var(--font-mono);
           font-size: 0.68rem;
@@ -290,7 +290,7 @@ export default function About() {
           margin-left: 6px; letter-spacing: 0.06em;
         }
         .creds-body {
-          padding: 22px 22px;
+          padding: 16px 20px;
           font-family: var(--font-mono);
           font-size: 0.82rem;
           line-height: 1.7;
@@ -458,11 +458,10 @@ export default function About() {
             <h3 className="hero-name">Nishant Kamal</h3>
 
             <p className="hero-desc">
-              As a Site Reliablity Engineer ensuring the reliability, scalability,
-              and performance of a large-scale <strong>logistics SaaS platform</strong>.
-              Working extensively with cloud-native and Kubernetes-based distributed
-              systems — handling production reliability and mitigating outages during
-              high-traffic, business-critical events.
+              Site Reliability Engineer working extensively with cloud-native and
+              Kubernetes-based distributed systems at scale — handling production
+              reliability, mitigating outages during high-traffic events, and
+              building resilient platform infrastructure.
             </p>
 
             <div className="meta-row">
