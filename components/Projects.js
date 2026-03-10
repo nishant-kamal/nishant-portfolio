@@ -219,7 +219,7 @@ export default function Projects() {
         }
         .proj-card.open .proj-chevron {
           transform: rotate(180deg);
-          color: #64748b;
+          color: #94a3b8;
         }
 
         /* Expandable body */

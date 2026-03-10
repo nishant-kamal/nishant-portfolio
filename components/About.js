@@ -113,7 +113,7 @@ export default function About() {
         .ab-subtitle-line { width: 36px; height: 1px; background: #334155; flex-shrink: 0; }
         .ab-subtitle-text {
           font-family: var(--font-mono);
-          font-size: 0.8rem; color: #64748b;
+          font-size: 0.8rem; color: #94a3b8;
           text-transform: uppercase; letter-spacing: 0.1em; margin: 0;
         }
 
@@ -263,7 +263,7 @@ export default function About() {
           border-radius: 8px;
           border: 1px solid rgba(255,255,255,0.06);
           background: rgba(255,255,255,0.02);
-          color: #64748b;
+          color: #94a3b8;
           transition: border-color 0.2s, color 0.2s, background 0.2s;
           cursor: default; user-select: none;
           position: relative;
@@ -374,7 +374,7 @@ export default function About() {
           color: #e2e8f0; margin-bottom: 6px;
         }
         .build-item-desc {
-          font-size: 0.8rem; color: #64748b; line-height: 1.6;
+          font-size: 0.8rem; color: #94a3b8; line-height: 1.6;
         }
 
         /* ── Quote card ───────────────────────────────────────────────── */
@@ -403,7 +403,7 @@ export default function About() {
 
         .quote-right {}
         .cta-text {
-          font-size: 0.98rem; color: #64748b; line-height: 1.8; margin: 0 0 20px;
+          font-size: 0.98rem; color: #94a3b8; line-height: 1.8; margin: 0 0 20px;
         }
         .cta-text strong { color: #cbd5e1; font-weight: 600; }
         .open-badge {

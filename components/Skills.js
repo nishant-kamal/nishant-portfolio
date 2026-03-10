@@ -150,7 +150,7 @@ export default function Skills() {
           border-radius: 99px;
           border: 1px solid transparent;
           background: rgba(255, 255, 255, 0.03);
-          color: #64748b;
+          color: #94a3b8;
           cursor: pointer;
           transition: color 0.25s, background 0.25s, border-color 0.25s, box-shadow 0.25s;
         }

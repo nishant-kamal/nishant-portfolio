@@ -150,7 +150,7 @@ export default function Hero() {
         .hero-typewriter {
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 1rem;
-          color: #64748b;
+          color: #94a3b8;
           min-height: 28px;
           display: flex;
           align-items: center;
@@ -188,7 +188,7 @@ export default function Hero() {
 
         .hero-desc {
           font-size: 1.05rem;
-          color: #64748b;
+          color: #94a3b8;
           line-height: 1.75;
           max-width: 460px;
           margin: 0 0 36px 0;
@@ -315,7 +315,7 @@ export default function Hero() {
 
           {/* LEFT */}
           <div className="hero-left">
-            <div className="hero-badge" role="img" aria-label="System status: Uptime 99.9%, SLO compliant">
+            <div className="hero-badge" aria-label="System status: Uptime 99.9%, SLO compliant">
               <span className="badge-dot" aria-hidden="true" />
               UPTIME: 99.9% // SLO: COMPLIANT
             </div>

@@ -68,7 +68,7 @@ export default function Contact() {
         .contact-headline em { font-style: normal; color: #8b5cf6; }
 
         .contact-sub {
-          color: #64748b;
+          color: #94a3b8;
           font-size: 1rem;
           line-height: 1.7;
           margin: 0 auto 48px;

@@ -181,7 +181,7 @@ export default function Stats() {
           background-clip: text;
         }
         .stats-subtitle {
-          color: #64748b;
+          color: #94a3b8;
           font-size: 0.95rem;
           max-width: 440px;
           line-height: 1.6;
@@ -233,7 +233,7 @@ export default function Stats() {
         .stat-status {
           font-family: var(--font-mono, 'Courier New', monospace);
           font-size: 0.6rem;
-          color: #64748b;
+          color: #94a3b8;
           letter-spacing: 0.05em;
           transition: color 0.3s;
         }

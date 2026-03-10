@@ -468,7 +468,7 @@ export default function Awards() {
         /* Description */
         .aw-desc {
           font-size: 0.875rem;
-          color: #64748b;
+          color: #94a3b8;
           line-height: 1.75;
           margin: 0;
           overflow-wrap: break-word;

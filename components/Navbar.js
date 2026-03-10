@@ -137,7 +137,7 @@ export default function Navbar() {
         }
         .logo-sub {
           font-family: var(--font-mono, 'Courier New', monospace);
-          font-size: 0.6rem; color: #64748b;
+          font-size: 0.6rem; color: #94a3b8;
           letter-spacing: 0.1em; text-transform: uppercase;
         }
         .nav-links { display: flex; align-items: center; gap: 4px; }
@@ -250,20 +250,20 @@ export default function Navbar() {
           </a>
 
           {/* Desktop links */}
-          <div className="nav-links" role="list">
+          <ul className="nav-links" role="list">
             {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.link}
-                role="listitem"
-                className={`nav-link ${active === item.link.slice(1) ? "active" : ""}`}
-                aria-current={active === item.link.slice(1) ? "page" : undefined}
-              >
-                {item.name}
-              </a>
+              <li key={item.name} role="listitem" style={{ display: "contents" }}>
+                <a
+                  href={item.link}
+                  className={`nav-link ${active === item.link.slice(1) ? "active" : ""}`}
+                  aria-current={active === item.link.slice(1) ? "page" : undefined}
+                >
+                  {item.name}
+                </a>
+              </li>
             ))}
-            <Resume />
-          </div>
+            <li style={{ display: "contents" }}><Resume /></li>
+          </ul>
 
           {/* Mobile hamburger */}
           <button

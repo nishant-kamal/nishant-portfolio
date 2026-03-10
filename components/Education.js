@@ -192,7 +192,7 @@ export default function Education() {
           padding: 5px 12px; border-radius: 8px;
           background: rgba(255,255,255,0.03);
           border: 1px solid rgba(255,255,255,0.05);
-          color: #64748b;
+          color: #94a3b8;
           transition: color 0.3s, border-color 0.3s, background 0.3s;
         }
         .edu-entry.active .edu-tag {
