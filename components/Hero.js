@@ -74,7 +74,7 @@ export default function Hero() {
         .hero-section {
           position: relative;
           box-sizing: border-box;
-          padding: 100px 0 40px;
+          padding: 72px 0 24px;
           display: flex;
           align-items: center;
           overflow-x: hidden;

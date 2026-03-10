@@ -102,7 +102,7 @@ export default function Stats() {
       <style>{`
         .stats-wrap {
           background: #020617;
-          padding: 48px 24px 80px;
+          padding: 32px 24px 80px;
           position: relative;
           overflow: hidden;
         }
