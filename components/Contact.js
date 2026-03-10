@@ -115,11 +115,10 @@ export default function Contact() {
           padding: 13px 16px;
           color: #f8fafc;
           font-family: var(--font-sans);
-          font-size: 0.95rem;
-          transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
-          /* FIX 4: Added missing font-size to prevent iOS auto-zoom on focus
-             (must be >= 16px on mobile; 0.95rem ≈ 15.2px so we clamp it) */
+          /* FIX: Single font-size declaration — max(0.95rem, 16px) clamps to ≥16px
+             on mobile to prevent iOS auto-zoom on focus (original 0.95rem was removed). */
           font-size: max(0.95rem, 16px);
+          transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
         }
         .field-style::placeholder { color: #334155; }
         .field-style:focus {
@@ -166,10 +165,12 @@ export default function Contact() {
           transform: translateY(-2px);
           box-shadow: 0 12px 28px -8px rgba(139, 92, 246, 0.6);
         }
-        .submit-btn:disabled {
+        .submit-btn:disabled,
+        .submit-btn.submitting {
           opacity: 0.6;
           cursor: not-allowed;
           transform: none;
+          background: #6d28d9 !important;
         }
         .submit-btn:focus-visible { outline: 2px solid #a78bfa; outline-offset: 3px; }
 
@@ -258,11 +259,13 @@ export default function Contact() {
                 />
               </div>
 
+              {/* FIX: Removed redundant inline style — background is controlled by
+                  .submit-btn CSS class and :disabled opacity. Inline style was
+                  overriding !important CSS declarations inconsistently. */}
               <button
                 type="submit"
-                className="submit-btn"
+                className={`submit-btn${submitting ? " submitting" : ""}`}
                 disabled={submitting}
-                style={{ background: submitting ? "#6d28d9" : "#8b5cf6" }}
               >
                 {submitting ? "Transmitting..." : "Transmit Message"}
               </button>

@@ -17,12 +17,14 @@ const tags = [
   { label: "Observability", color: "#34d399" },
 ];
 
-const skills = [
-  { label: "Kubernetes & Cloud-Native", pct: 94 },
-  { label: "Infrastructure as Code",    pct: 88 },
-  { label: "GitOps & CI/CD",            pct: 91 },
-  { label: "Observability & SRE",       pct: 89 },
-  { label: "Platform Engineering",      pct: 85 },
+// Skill bars removed — Skills.js already covers expertise with tabs + animated bars.
+// This section now shows unique career highlight stats not shown elsewhere.
+const highlights = [
+  { icon: "◈", value: "99.9%",  label: "Platform Uptime",       sub: "SLO-compliant delivery"       },
+  { icon: "↓", value: "35%",    label: "Cloud Cost Reduction",   sub: "via Karpenter + Spot"         },
+  { icon: "☸", value: "50+",    label: "Services Monitored",     sub: "Prometheus + AlertManager"    },
+  { icon: "⚡", value: "-40%",   label: "MTTR Improvement",       sub: "standardised runbooks"        },
+  { icon: "△", value: "7",      label: "Awards at FarEye",       sub: "over 5+ years"                },
 ];
 
 function useInView(threshold = 0.1) {
@@ -62,26 +64,6 @@ function UptimeCounter() {
       {pad(m)}<span className="uptime-unit">m</span>{" "}
       {pad(s)}<span className="uptime-unit">s</span>
     </span>
-  );
-}
-
-function SkillBar({ label, pct, inView, delay }) {
-  const [width, setWidth] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    const t = setTimeout(() => setWidth(pct), delay);
-    return () => clearTimeout(t);
-  }, [inView, pct, delay]);
-  return (
-    <div className="skill-row">
-      <div className="skill-meta">
-        <span className="skill-label">{label}</span>
-        <span className="skill-pct">{inView ? pct : 0}%</span>
-      </div>
-      <div className="skill-track">
-        <div className="skill-fill" style={{ width: `${width}%` }} />
-      </div>
-    </div>
   );
 }
 
@@ -319,42 +301,48 @@ export default function About() {
         .cc  { color: #475569; }
 
         /* ── Skills card ──────────────────────────────────────────────── */
-        .section-label {
+        /* FIX: Renamed from .section-label to avoid collision with globals.css .section-label */
+        .ab-section-label {
           font-family: var(--font-mono);
           font-size: 0.68rem; color: #a78bfa;
           letter-spacing: 0.1em; text-transform: uppercase;
           margin-bottom: 24px;
           display: flex; align-items: center; gap: 10px;
         }
-        .section-label::after {
+        .ab-section-label::after {
           content: ''; flex: 1; height: 1px;
           background: linear-gradient(to right, rgba(167,139,250,0.2), transparent);
         }
 
-        .skill-row { margin-bottom: 18px; }
-        .skill-row:last-child { margin-bottom: 0; }
-        .skill-meta {
-          display: flex; justify-content: space-between;
-          margin-bottom: 7px;
+        /* ── Highlights card ──────────────────────────────────────────── */
+        .hl-list { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+        .hl-item {
+          display: flex; align-items: center; gap: 14px;
+          padding: 10px 14px;
+          background: rgba(255,255,255,0.02);
+          border: 1px solid rgba(255,255,255,0.04);
+          border-radius: 12px;
+          transition: border-color 0.25s, background 0.25s;
         }
-        .skill-label { font-size: 0.82rem; color: #cbd5e1; font-weight: 500; }
-        .skill-pct {
+        .hl-item:hover {
+          border-color: rgba(167,139,250,0.15);
+          background: rgba(167,139,250,0.04);
+        }
+        .hl-icon {
+          font-size: 1rem; color: #a78bfa;
+          width: 28px; text-align: center; flex-shrink: 0;
+        }
+        .hl-body { flex: 1; min-width: 0; }
+        .hl-value {
           font-family: var(--font-mono);
-          font-size: 0.72rem; color: #475569;
-          transition: color 0.3s;
+          font-size: 1rem; font-weight: 700;
+          color: #a78bfa; line-height: 1.1;
         }
-        .skill-track {
-          height: 3px;
-          background: rgba(255,255,255,0.05);
-          border-radius: 2px;
-          overflow: hidden;
-        }
-        .skill-fill {
-          height: 100%;
-          background: linear-gradient(to right, #6366f1, #a78bfa);
-          border-radius: 2px;
-          transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-          box-shadow: 0 0 12px rgba(167,139,250,0.4);
+        .hl-label { font-size: 0.78rem; color: #e2e8f0; font-weight: 600; margin-top: 1px; }
+        .hl-sub {
+          font-family: var(--font-mono);
+          font-size: 0.62rem; color: #334155;
+          letter-spacing: 0.06em; margin-top: 1px;
         }
 
         /* ── Build card ───────────────────────────────────────────────── */
@@ -427,14 +415,10 @@ export default function About() {
           border: 1px solid rgba(167,139,250,0.2);
           letter-spacing: 0.06em;
         }
+        /* FIX: Removed duplicate pulse-ring2 keyframe — now reuses pulse-ring animation */
         .open-dot {
           width: 6px; height: 6px; background: #a78bfa;
-          border-radius: 50%; animation: pulse-ring2 2.5s ease-out infinite;
-        }
-        @keyframes pulse-ring2 {
-          0%   { box-shadow: 0 0 0 0 rgba(167,139,250,0.5); }
-          70%  { box-shadow: 0 0 0 6px rgba(167,139,250,0); }
-          100% { box-shadow: 0 0 0 0 rgba(167,139,250,0); }
+          border-radius: 50%; animation: pulse-ring 2.5s ease-out infinite;
         }
       `}</style>
 
@@ -464,8 +448,8 @@ export default function About() {
                 <div className="pulse" aria-hidden="true" />
                 System Operational
               </div>
-              <div className="uptime-badge" aria-label="Time at FarEye">
-                <span className="uptime-label">Uptime @FarEye</span>
+              <div className="uptime-badge" aria-label="Time as SRE at FarEye (since Jun 2021)">
+                <span className="uptime-label">SRE Uptime</span>
                 <UptimeCounter />
               </div>
             </div>
@@ -532,7 +516,7 @@ export default function About() {
                 &nbsp;&nbsp;<span className="ck">"company"</span>:{" "}
                 <span className="cs">"FarEye"</span>,<br />
                 &nbsp;&nbsp;<span className="ck">"exp_years"</span>:{" "}
-                <span className="cn">5</span>,<br />
+                <span className="cs">"5+"</span>,<br />
                 &nbsp;&nbsp;<span className="ck">"location"</span>:{" "}
                 <span className="cs">"Delhi, India"</span>,<br />
                 <br />
@@ -554,25 +538,28 @@ export default function About() {
             </div>
           </div>
 
-          {/* ── Card 3: Skill Bars ── */}
+          {/* ── Card 3: Career Highlights ── */}
           <div className={`ab-card ab-card-skills ${inView ? "visible" : ""}`}
             style={{ transitionDelay: "0.25s" }}>
-            <div className="section-label">Expertise</div>
-            {skills.map((s, i) => (
-              <SkillBar
-                key={s.label}
-                label={s.label}
-                pct={s.pct}
-                inView={inView}
-                delay={400 + i * 120}
-              />
-            ))}
+            <div className="ab-section-label">Highlights</div>
+            <div className="hl-list" aria-label="Career highlights">
+              {highlights.map((h) => (
+                <div key={h.label} className="hl-item">
+                  <span className="hl-icon" aria-hidden="true">{h.icon}</span>
+                  <div className="hl-body">
+                    <div className="hl-value">{h.value}</div>
+                    <div className="hl-label">{h.label}</div>
+                    <div className="hl-sub">{h.sub}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* ── Card 4: What I Build ── */}
           <div className={`ab-card ab-card-build ${inView ? "visible" : ""}`}
             style={{ transitionDelay: "0.35s" }}>
-            <div className="section-label">What I Build</div>
+            <div className="ab-section-label">What I Build</div>
             <div className="build-grid">
               <div className="build-item">
                 <span className="build-icon" aria-hidden="true">⎈</span>

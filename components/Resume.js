@@ -65,7 +65,8 @@ const EXPERIENCE = [
 // Mirror of Projects.js (top 5 shown on site)
 const PROJECTS = [
   {
-    title:  "Weather Forecast App — Kubernetes + GitOps Deployment",
+    // FIX: Aligned title with Projects.js (was "Weather Forecast App — ..." which doesn't exist)
+    title:  "Kubernetes GitOps Deployment",
     points: [
       "Deployed on AWS EKS using Helm and FluxCD for GitOps-based CD with HPA, Liveness/Readiness Probes, and ingress controllers.",
       "Integrated Prometheus and Grafana for metrics; achieved -70% deployment time and 0 drift incidents.",
@@ -443,7 +444,8 @@ export default function Resume() {
           transition: background 0.25s, color 0.25s, box-shadow 0.25s, opacity 0.2s;
           white-space: nowrap;
           user-select: none;
-          margin-left: 8px;
+          /* FIX: Removed margin-left: 8px — external spacing is the parent's responsibility.
+             Navbar.js .nav-resume / .mobile-resume-wrap already handle positioning. */
           line-height: 1;
         }
         .resume-btn:hover:not(:disabled) {

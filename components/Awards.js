@@ -154,29 +154,13 @@ function plural(count, word) {
   return `${count} ${word}${count !== 1 ? "s" : ""}`;
 }
 
-// ─── SVG Logos ────────────────────────────────────────────────────────────────
+// ─── SVG Logo ─────────────────────────────────────────────────────────────────
+// Single unified FarEye logo component — accepts size and uid props.
 // Each instance gets a unique gradient ID via `uid` to avoid duplicate IDs in DOM.
+// FIX: Merged duplicate FarEyeLogo + FarEyeChipLogo (were identical SVGs) into one.
 
 function FarEyeLogo({ size = 28, uid = "main" }) {
   const gradId = `fe-grad-${uid}`;
-  return (
-    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
-      <rect width="40" height="40" rx="9" fill={`url(#${gradId})`} />
-      <ellipse cx="20" cy="20" rx="12" ry="7" stroke="white" strokeWidth="2.5" fill="none" />
-      <circle cx="20" cy="20" r="3.5" fill="white" />
-      <line x1="20" y1="10" x2="20" y2="8" stroke="white" strokeWidth="2" strokeLinecap="round" />
-      <defs>
-        <linearGradient id={gradId} x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#f97316" />
-          <stop offset="100%" stopColor="#dc2626" />
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
-
-function FarEyeChipLogo({ size = 14, uid = "chip" }) {
-  const gradId = `fe-chip-grad-${uid}`;
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
       <rect width="40" height="40" rx="9" fill={`url(#${gradId})`} />
@@ -617,7 +601,7 @@ export default function Awards() {
                       <div className="aw-title">{a.title}</div>
                       <div className="aw-company-chip">
                         <div className="aw-company-dot">
-                          <FarEyeChipLogo size={15} uid={`card-${a.id}`} />
+                          <FarEyeLogo size={15} uid={`card-${a.id}`} />
                         </div>
                         {a.company}
                       </div>

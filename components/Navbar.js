@@ -155,20 +155,8 @@ export default function Navbar() {
         .nav-link.active { color: #38bdf8; background: rgba(56, 189, 248, 0.06); }
         .nav-link:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 
-        .nav-resume {
-          font-family: var(--font-mono, 'Courier New', monospace);
-          font-size: 0.72rem; font-weight: 600;
-          color: #38bdf8; text-decoration: none;
-          border: 1px solid rgba(56, 189, 248, 0.35);
-          padding: 7px 18px; border-radius: 8px; margin-left: 8px;
-          transition: background 0.25s, color 0.25s, box-shadow 0.25s;
-          white-space: nowrap;
-        }
-        .nav-resume:hover {
-          background: #38bdf8; color: #020617;
-          box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
-        }
-        .nav-resume:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
+        /* FIX: Removed dead .nav-resume CSS rule — class was never applied in JSX.
+           Resume button is styled entirely by Resume.js .resume-btn. */
 
         /* Hamburger */
         .nav-burger {

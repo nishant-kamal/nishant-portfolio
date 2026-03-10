@@ -37,7 +37,9 @@ const categories = [
     ],
   },
   {
-    label: "Data & Streaming",
+    // FIX: Renamed from "Data & Streaming" — category also contains GitOps & Helm
+    // which are CI/CD tools, not data/streaming. "GitOps & Tools" is more accurate.
+    label: "GitOps & Tools",
     color: "#34d399",
     glow: "rgba(52,211,153,.15)",
     skills: [
