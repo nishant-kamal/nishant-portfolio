@@ -58,7 +58,8 @@ export default function RootLayout({ children }) {
               nishantkamal.com
             </span>
             <span className="footer-copy">
-              © {new Date().getFullYear()} — Engineering Reliability
+              {/* FIX: suppressHydrationWarning on span prevents SSR/client year mismatch warning */}
+            © <span suppressHydrationWarning>{new Date().getFullYear()}</span> — Engineering Reliability
             </span>
             <span className="footer-mono footer-stack">
               Next.js · Tailwind · JetBrains Mono
