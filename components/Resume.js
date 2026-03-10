@@ -11,7 +11,6 @@ import { useState } from "react";
 const PERSONAL = {
   name:     "Nishant Kamal",
   email:    "nishant.kamal2015@gmail.com",
-  phone:    "9543220527",
   location: "New Delhi, Delhi 110030",
   github:   "https://github.com/nishant-kamal",
   linkedin: "https://www.linkedin.com/in/imnishant19",
@@ -115,7 +114,7 @@ const EDUCATION = [
   {
     degree:      "M.Tech — Cloud Computing",
     institution: "Birla Institute of Technology and Science (BITS Pilani)",
-    year:        "Expected 05/2026",
+    year:        "05/2026",
   },
   {
     degree:      "B.Tech — Electrical and Electronics Engineering",
@@ -229,7 +228,7 @@ async function generatePDF(setStatus) {
   // Contact row
   font(7.5, "normal");
   setColor([125, 211, 252]);
-  const contactLine = `${PERSONAL.email}   |   ${PERSONAL.phone}   |   ${PERSONAL.location}`;
+  const contactLine = `${PERSONAL.email}   |   ${PERSONAL.location}`;
   doc.text(contactLine, PW / 2, 58, { align: "center" });
 
   // Links row

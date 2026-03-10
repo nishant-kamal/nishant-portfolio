@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 
+// Google Form action URL — update here if the form is ever recreated
+const GOOGLE_FORM_ACTION =
+  "https://docs.google.com/forms/d/e/1FAIpQLSeOfYCnQBiw8tp8xF3jBA16_EGd4BItPuAavMXxGqmsFjnpMA/formResponse";
+
 // FIX 1: Removed @import Google Fonts — loaded via next/font in layout.js
 
 export default function Contact() {
@@ -184,7 +188,7 @@ export default function Contact() {
 
           {!submitted ? (
             <form
-              action="https://docs.google.com/forms/d/e/1FAIpQLSeOfYCnQBiw8tp8xF3jBA16_EGd4BItPuAavMXxGqmsFjnpMA/formResponse"
+              action={GOOGLE_FORM_ACTION}
               method="POST"
               target="hidden_iframe"
               onSubmit={handleSubmit}
