@@ -42,7 +42,7 @@ export const metadata = {
       "Engineering resilient cloud infrastructure and scalable platforms. Explore my technical stack and projects.",
     url: "https://nishantkamal.com",
     siteName: "Nishant Kamal Portfolio",
-    locale: "en_US",
+    locale: "en_IN",
     type: "website",
     images: [
       {
@@ -76,56 +76,10 @@ export default function RootLayout({ children }) {
         <meta name="author" content="Nishant Kamal" />
 
         {/*
-          SEO FIX: JSON-LD Person schema.
-          Helps Google display rich results for branded searches ("Nishant Kamal SRE").
-          Includes alumni, knowsAbout, and sameAs social profile links.
+          NOTE: JSON-LD Person schema is rendered in page.js (more complete version
+          includes hasCredential, address, and full alumniOf). Removed from here
+          to avoid duplicate schema blocks which can trigger Search Console warnings.
         */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Nishant Kamal",
-              jobTitle: "Site Reliability Engineer",
-              url: "https://nishantkamal.com",
-              image: "https://nishantkamal.com/profile.png",
-              description:
-                "Site Reliability Engineer with 5+ years building resilient Kubernetes platforms on AWS. Specializing in GitOps, Karpenter, Observability, and Platform Engineering.",
-              alumniOf: [
-                {
-                  "@type": "CollegeOrUniversity",
-                  name: "BITS Pilani",
-                  description: "M.Tech Cloud Computing",
-                },
-                {
-                  "@type": "CollegeOrUniversity",
-                  name: "VIT University, Vellore",
-                  description: "B.Tech Electrical & Electronics Engineering",
-                },
-              ],
-              knowsAbout: [
-                "Kubernetes",
-                "AWS",
-                "GitOps",
-                "Platform Engineering",
-                "Site Reliability Engineering",
-                "Karpenter",
-                "Terraform",
-                "Prometheus",
-                "Grafana",
-                "Istio",
-                "FluxCD",
-                "Docker",
-              ],
-              sameAs: [
-                "https://github.com/nishant-kamal",
-                "https://www.linkedin.com/in/imnishant19",
-                "https://x.com/imnishant19",
-              ],
-            }),
-          }}
-        />
 
         {/*
           Font loading via Google Fonts CDN.
