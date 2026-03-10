@@ -24,7 +24,7 @@ const highlights = [
   { icon: "↓", value: "35%",    label: "Cloud Cost Reduction",   sub: "via Karpenter + Spot"         },
   { icon: "☸", value: "50+",    label: "Services Monitored",     sub: "Prometheus + AlertManager"    },
   { icon: "⚡", value: "-40%",   label: "MTTR Improvement",       sub: "standardised runbooks"        },
-  { icon: "△", value: "7",      label: "Awards at FarEye",       sub: "over 5+ years"                },
+  { icon: "△", value: "7",      label: "Awards",                  sub: "over 5+ years"                },
 ];
 
 function useInView(threshold = 0.1) {
@@ -448,7 +448,7 @@ export default function About() {
                 <div className="pulse" aria-hidden="true" />
                 System Operational
               </div>
-              <div className="uptime-badge" aria-label="Time as SRE at FarEye (since Jun 2021)">
+              <div className="uptime-badge" aria-label="Time as SRE (since Jun 2021)">
                 <span className="uptime-label">SRE Uptime</span>
                 <UptimeCounter />
               </div>
@@ -458,7 +458,7 @@ export default function About() {
             <h3 className="hero-name">Nishant Kamal</h3>
 
             <p className="hero-desc">
-              SRE at <strong>FarEye</strong>, ensuring the reliability, scalability,
+              SRE ensuring the reliability, scalability,
               and performance of a large-scale <strong>logistics SaaS platform</strong>.
               Working extensively with cloud-native and Kubernetes-based distributed
               systems — handling production reliability and mitigating outages during
@@ -466,10 +466,6 @@ export default function About() {
             </p>
 
             <div className="meta-row">
-              <div className="meta-chip">
-                <span className="meta-chip-label">Company</span>
-                <span className="meta-chip-value accent">FarEye</span>
-              </div>
               <div className="meta-chip">
                 <span className="meta-chip-label">Location</span>
                 <span className="meta-chip-value">Delhi, India</span>
@@ -507,14 +503,12 @@ export default function About() {
               <span className="creds-filename">nishant.config.json</span>
             </div>
             <div className="creds-body"
-              aria-label="SRE at FarEye, M.Tech Cloud Computing at BITS Pilani in progress, GPA A+">
+              aria-label="SRE with 5+ years experience, M.Tech Cloud Computing at BITS Pilani in progress, GPA A+">
               <span aria-hidden="true">
                 <span className="cc">{"// professional profile"}</span><br />
                 {"{"}<br />
                 &nbsp;&nbsp;<span className="ck">"role"</span>:{" "}
                 <span className="cs">"Site Reliability Engineer"</span>,<br />
-                &nbsp;&nbsp;<span className="ck">"company"</span>:{" "}
-                <span className="cs">"FarEye"</span>,<br />
                 &nbsp;&nbsp;<span className="ck">"exp_years"</span>:{" "}
                 <span className="cs">"5+"</span>,<br />
                 &nbsp;&nbsp;<span className="ck">"location"</span>:{" "}
@@ -528,11 +522,7 @@ export default function About() {
                 &nbsp;&nbsp;<span className="ck">"status"</span>:{" "}
                 <span className="cs">"In_Progress"</span>,<br />
                 &nbsp;&nbsp;<span className="ck">"GPA"</span>:{" "}
-                <span className="cn">"A+"</span>,<br />
-                <br />
-                &nbsp;&nbsp;<span className="cc">{"// availability"}</span><br />
-                &nbsp;&nbsp;<span className="ck">"open_to"</span>:{" "}
-                <span className="cs">"SRE · DevOps · Platform"</span><br />
+                <span className="cn">"A+"</span><br />
                 {"}"}
               </span>
             </div>
