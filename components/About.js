@@ -46,7 +46,7 @@ function UptimeCounter() {
   const [seconds, setSeconds] = useState(0);
   useEffect(() => {
     // FarEye join: June 2021
-    const start = new Date(2021, 5, 1).getTime();
+    const start = new Date(2020, 6, 1).getTime();
     const update = () => setSeconds(Math.floor((Date.now() - start) / 1000));
     update();
     const id = setInterval(update, 1000);
