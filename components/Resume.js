@@ -31,41 +31,51 @@ const SKILLS = [
   { category: "Other Tools",              items: "Jira, Confluence, Istio, Virtual Services, Gateways" },
 ];
 
-// Mirror of Experience from the PDF / site
+// FIX: Updated to match LinkedIn profile — 3 distinct roles at FarEye
 const EXPERIENCE = [
   {
     company:  "FarEye",
     location: "Noida, India",
     role:     "Site Reliability Engineer",
-    period:   "06/2021 – Present", // Promoted from Infra Support Engineer in Jun 2021
+    period:   "05/2023 – Present",
     bullets: [
+      "Architected and created cloud infrastructure on AWS EKS, ensuring high availability and scalability, with integrated observability using Prometheus, Grafana, and New Relic.",
       "Implemented Karpenter for dynamic scaling, replacing ASG and improving cost efficiency in the Kubernetes environment.",
       "Deployed Istio, Virtual Services, and Gateways to manage traffic routing and enhance microservices communication within clusters.",
-      "Extensive hands-on experience with Helm Charts for automating application deployments and simplifying IaC processes.",
-      "Leveraged AWS EKS to deploy scalable, highly available infrastructure with integrated monitoring via Prometheus, New Relic, and Grafana.",
+      "Leveraged Helm Charts extensively for automating application deployments and simplifying IaC processes.",
       "Streamlined CI/CD pipelines by integrating FluxCD and GitHub Actions, improving deployment cycles across teams.",
-      "Troubleshot production issues, working closely with dev teams to improve system uptime and minimise downtime.",
       "Conducted root-cause analyses after major incidents to identify process improvement and technical enhancement opportunities.",
-      "Proactively identified performance bottlenecks; implemented monitoring and automation techniques to enhance reliability.",
       "Implemented cost-saving measures by optimising resource utilisation across cloud-based infrastructure environments.",
     ],
   },
   {
     company:  "FarEye",
     location: "Noida, India",
-    role:     "Infra Support Engineer",
-    period:   "06/2020 – 05/2021",
+    role:     "Senior Tech Engineer",
+    period:   "06/2022 – 04/2023",
     bullets: [
+      "Visited Landmark Group in Dubai to collaborate with cross-functional teams, addressing infrastructure challenges and optimising system performance.",
+      "Proactively identified performance bottlenecks; implemented monitoring and automation techniques to enhance reliability.",
+      "Troubleshot production issues, working closely with dev teams to improve system uptime and minimise downtime.",
+      "Collaborated on migration initiatives, improving deployment consistency and platform stability across environments.",
+    ],
+  },
+  {
+    company:  "FarEye",
+    location: "Remote",
+    role:     "Tech Engineer",
+    period:   "06/2020 – 05/2022",
+    bullets: [
+      "Enhanced infrastructure performance through proactive system monitoring and troubleshooting, ensuring minimal downtime.",
       "Provided infrastructure support for production environments, ensuring high availability and rapid incident response.",
       "Collaborated with SRE and development teams to resolve operational issues and maintain SLA compliance.",
     ],
   },
 ];
 
-// Mirror of Projects.js (top 5 shown on site)
+// Mirror of Projects.js (top 6 shown on site)
 const PROJECTS = [
   {
-    // FIX: Aligned title with Projects.js (was "Weather Forecast App — ..." which doesn't exist)
     title:  "Kubernetes GitOps Deployment",
     points: [
       "Deployed on AWS EKS using Helm and FluxCD for GitOps-based CD with HPA, Liveness/Readiness Probes, and ingress controllers.",
@@ -127,7 +137,7 @@ const EDUCATION = [
 // Mirror of Awards.js
 const AWARDS = [
   { title: "Customer Happiness Champion", period: "Jun 2025", detail: "OND 2024 Quarter" },
-  { title: "FarEye Acers: Rising Star",  period: "May 2024", detail: "Leadership & innovation in SRE at FarEye" },
+  { title: "FarEye Acers: Rising Star",   period: "May 2024", detail: "Leadership & innovation in SRE at FarEye" },
   { title: "Spotted Award",               period: "Apr 2023", detail: "Above & beyond customer support JFM 2023" },
   { title: "Captain Marvel",              period: "Mar 2023", detail: "Passion for customers OND 2022" },
   { title: "Dark Knight",                 period: "Oct 2022", detail: "Complex problem-solving JAS 2022" },
@@ -184,14 +194,13 @@ async function generatePDF(setStatus) {
   const checkPage = (needed = 20) => {
     if (y + needed > PH - 48) {
       doc.addPage();
-      y = 48; // FIX: proper top margin on new pages (was 36)
+      y = 48;
     }
   };
 
   const sectionHeading = (text) => {
     checkPage(32);
     y += 10;
-    // full-width navy bar
     setColor(NAVY, "fill");
     doc.rect(ML, y, CW, 18, "F");
     font(9, "bold");
@@ -204,7 +213,6 @@ async function generatePDF(setStatus) {
     checkPage(14);
     font(8.5, "normal");
     setColor(BLACK);
-    // bullet dot
     setColor(BLUE, "fill");
     doc.circle(x - 6, y - 2.5, 1.5, "F");
     const lines = doc.splitTextToSize(text, maxW);
@@ -216,23 +224,19 @@ async function generatePDF(setStatus) {
   setColor(NAVY, "fill");
   doc.rect(0, 0, PW, 90, "F");
 
-  // Name
   font(26, "bold");
   setColor(WHITE);
   doc.text(PERSONAL.name.toUpperCase(), PW / 2, 30, { align: "center" });
 
-  // Title
   font(10, "normal");
   setColor([147, 197, 253]);
   doc.text(PERSONAL.title, PW / 2, 45, { align: "center" });
 
-  // Contact row
   font(7.5, "normal");
   setColor([125, 211, 252]);
   const contactLine = `${PERSONAL.email}   |   ${PERSONAL.location}`;
   doc.text(contactLine, PW / 2, 58, { align: "center" });
 
-  // Links row
   setColor([147, 197, 253]);
   const linksLine = `${PERSONAL.github}   |   ${PERSONAL.linkedin}`;
   doc.text(linksLine, PW / 2, 70, { align: "center" });
@@ -248,7 +252,6 @@ async function generatePDF(setStatus) {
   y += sumLines.length * 12 + 4;
 
   // ── SKILLS ──────────────────────────────────────────────────────────────────
-  // FIX: dynamic row height so wrapped items never bleed into the next row
   sectionHeading("Core Skills & Technologies");
   const colW = CW / 2 - 6;
   const LH_SKILL = 10;
@@ -281,14 +284,11 @@ async function generatePDF(setStatus) {
   });
 
   // ── EXPERIENCE ──────────────────────────────────────────────────────────────
-  // FIX: Separate role header (row 1) and company/date (row 2) with clear spacing.
-  // Role bar = 22pt tall. Company sub-row = 14pt. Then 6pt gap before bullets.
   sectionHeading("Professional Experience");
 
   EXPERIENCE.forEach((exp) => {
     checkPage(56);
 
-    // Row 1: role title + date — on the same navy-tint bar
     setColor(LBUE, "fill");
     doc.rect(ML, y, CW, 22, "F");
 
@@ -298,12 +298,11 @@ async function generatePDF(setStatus) {
     font(8, "bold"); setColor(BLUE);
     doc.text(exp.period, PW - MR - 6, y + 14, { align: "right" });
 
-    y += 24; // clear the bar
+    y += 24;
 
-    // Row 2: company + location — own line, fully below bar
     font(8, "normal"); setColor(SLATE);
     doc.text(`${exp.company}  ·  ${exp.location}`, ML + 6, y);
-    y += 14; // gap before bullets
+    y += 14;
 
     exp.bullets.forEach((b) => bullet(b));
     y += 8;
@@ -315,7 +314,6 @@ async function generatePDF(setStatus) {
   PROJECTS.forEach((p, i) => {
     checkPage(36);
 
-    // project title
     font(9, "bold");
     setColor(NAVY);
     doc.text(`${i + 1}. ${p.title}`, ML, y);
@@ -326,7 +324,6 @@ async function generatePDF(setStatus) {
   });
 
   // ── EDUCATION ───────────────────────────────────────────────────────────────
-  // FIX: degree + year on same y baseline, institution on its own line below
   sectionHeading("Education");
 
   EDUCATION.forEach((e) => {
@@ -349,28 +346,22 @@ async function generatePDF(setStatus) {
   });
 
   // ── AWARDS ──────────────────────────────────────────────────────────────────
-  // FIX: Title in left col, period pill right-aligned, detail below on own line.
-  // Previously both title+period were drawn at x=56 causing text to print on top of each other.
   sectionHeading("Awards & Recognition");
 
   AWARDS.forEach((a) => {
     checkPage(26);
 
-    // amber dot
     setColor([251, 146, 60], "fill");
     doc.circle(ML + 6, y - 2, 2, "F");
 
-    // title — bold, navy
     font(9, "bold"); setColor(NAVY);
     doc.text(a.title, ML + 14, y);
 
-    // period — right-aligned, blue pill
     font(8, "bold"); setColor(BLUE);
     doc.text(a.period, PW - MR - 6, y, { align: "right" });
 
     y += 12;
 
-    // detail — indented below title
     font(8, "normal"); setColor(SLATE);
     const detailLines = doc.splitTextToSize(a.detail, CW - 20);
     doc.text(detailLines, ML + 14, y);
@@ -387,7 +378,6 @@ async function generatePDF(setStatus) {
       `Nishant Kamal — SRE Resume   |   Page ${i} of ${pageCount}`,
       PW / 2, PH - 18, { align: "center" }
     );
-    // thin bottom rule
     setColor(NAVY, "fill");
     doc.rect(ML, PH - 28, CW, 1, "F");
   }
@@ -414,7 +404,7 @@ export default function Resume() {
 
   const handleClick = () => {
     if (status !== "idle" && status !== "error") return;
-    setStatus("idle"); // reset error before retry
+    setStatus("idle");
     generatePDF(setStatus).catch((err) => {
       console.error("PDF generation failed:", err);
       setStatus("error");
@@ -444,8 +434,6 @@ export default function Resume() {
           transition: background 0.25s, color 0.25s, box-shadow 0.25s, opacity 0.2s;
           white-space: nowrap;
           user-select: none;
-          /* FIX: Removed margin-left: 8px — external spacing is the parent's responsibility.
-             Navbar.js .nav-resume / .mobile-resume-wrap already handle positioning. */
           line-height: 1;
         }
         .resume-btn:hover:not(:disabled) {
