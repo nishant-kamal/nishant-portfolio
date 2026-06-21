@@ -24,7 +24,7 @@ const highlights = [
   { icon: "↓", value: "35%",    label: "Cloud Cost Reduction",   sub: "via Karpenter + Spot"         },
   { icon: "☸", value: "50+",    label: "Services Monitored",     sub: "Prometheus + AlertManager"    },
   { icon: "⚡", value: "-40%",   label: "MTTR Improvement",       sub: "standardised runbooks"        },
-  { icon: "△", value: "7",      label: "Awards",                  sub: "over 5+ years"                },
+  { icon: "△", value: "7",      label: "Awards",                  sub: "over 6+ years"                },
 ];
 
 function useInView(threshold = 0.1) {
@@ -475,7 +475,7 @@ export default function About() {
               </div>
               <div className="meta-chip">
                 <span className="meta-chip-label">Education</span>
-                <span className="meta-chip-value">M.Tech · BITS Pilani</span>
+                <span className="meta-chip-value">M.Tech · BITS Pilani · 2026</span>
               </div>
             </div>
 
@@ -502,14 +502,14 @@ export default function About() {
               <span className="creds-filename">nishant.config.json</span>
             </div>
             <div className="creds-body"
-              aria-label="SRE with 5+ years experience, M.Tech Cloud Computing at BITS Pilani in progress, GPA A+">
+              aria-label="SRE with 6+ years experience, M.Tech Cloud Computing at BITS Pilani completed May 2026, GPA A+">
               <span aria-hidden="true">
                 <span className="cc">{"// professional profile"}</span><br />
                 {"{"}<br />
                 &nbsp;&nbsp;<span className="ck">"role"</span>:{" "}
                 <span className="cs">"Site Reliability Engineer"</span>,<br />
                 &nbsp;&nbsp;<span className="ck">"exp_years"</span>:{" "}
-                <span className="cs">"5+"</span>,<br />
+                <span className="cs">"6+"</span>,<br />
                 &nbsp;&nbsp;<span className="ck">"location"</span>:{" "}
                 <span className="cs">"Delhi, India"</span>,<br />
                 <br />
@@ -519,7 +519,7 @@ export default function About() {
                 &nbsp;&nbsp;<span className="ck">"institute"</span>:{" "}
                 <span className="cs">"BITS Pilani"</span>,<br />
                 &nbsp;&nbsp;<span className="ck">"status"</span>:{" "}
-                <span className="cs">"In_Progress"</span>,<br />
+                <span className="cs">"Completed_2026"</span>,<br />
                 &nbsp;&nbsp;<span className="ck">"GPA"</span>:{" "}
                 <span className="cn">"A+"</span><br />
                 {"}"}
