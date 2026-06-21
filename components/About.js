@@ -502,7 +502,7 @@ export default function About() {
               <span className="creds-filename">nishant.config.json</span>
             </div>
             <div className="creds-body"
-              aria-label="SRE with 6+ years experience, M.Tech Cloud Computing at BITS Pilani completed May 2026, GPA A+">
+              aria-label="SRE with 6+ years experience, M.Tech Cloud Computing at BITS Pilani completed May 2026">
               <span aria-hidden="true">
                 <span className="cc">{"// professional profile"}</span><br />
                 {"{"}<br />
@@ -519,9 +519,7 @@ export default function About() {
                 &nbsp;&nbsp;<span className="ck">"institute"</span>:{" "}
                 <span className="cs">"BITS Pilani"</span>,<br />
                 &nbsp;&nbsp;<span className="ck">"status"</span>:{" "}
-                <span className="cs">"Completed_2026"</span>,<br />
-                &nbsp;&nbsp;<span className="ck">"GPA"</span>:{" "}
-                <span className="cn">"A+"</span><br />
+                <span className="cs">"Completed_2026"</span><br />
                 {"}"}
               </span>
             </div>
