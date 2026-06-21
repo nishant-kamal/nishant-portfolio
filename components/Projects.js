@@ -129,6 +129,28 @@ const projects = [
       { label: "Cloud Providers", val: "2" },
     ],
   },
+  {
+    id: 7,
+    index: "07",
+    title: "Metrics-Driven Self-Healing Canary Framework",
+    subtitle: "Istio · Flux CD GitOps · Prometheus · Grafana · Python Controller · M.Tech Dissertation",
+    description:
+      "Designed and built a three-layer self-healing architecture for canary deployments as part of my BITS Pilani M.Tech dissertation. A lightweight Python controller observes P99 latency and 5xx error rate from Istio telemetry every 30 seconds, evaluates canary health against threshold logic, and autonomously patches Istio VirtualServices to step traffic 10→30→50→80→100% or trigger instant rollback — with every promotion and rollback committed through Flux CD GitOps for full auditability. Validated across multiple controlled fault-injection scenarios on a live Minikube + Istio + Prometheus cluster.",
+    highlights: [
+      "Three-layer architecture (Observability → Decision & Control → Execution) — fully autonomous canary promotion and rollback",
+      "Python controller evaluates canary health every 30s via PromQL and patches VirtualService weights with zero human intervention",
+      ">99% MTTR reduction validated across fault-injection scenarios — rollback in under 5 seconds vs. 20–30 min manual detection",
+      "GitOps-first design — every canary promotion and rollback is a Git commit via Flux CD, with full audit trail and drift prevention",
+    ],
+    tags: ["Istio", "Flux CD", "GitOps", "Prometheus", "Grafana", "Python", "Canary Deployment", "Self-Healing", "SRE", "M.Tech Dissertation"],
+    color: "#a78bfa",
+    glow: "rgba(167,139,250,.12)",
+    icon: "⟲",
+    metrics: [
+      { label: "MTTR Reduction", val: ">99%" },
+      { label: "Rollback Time", val: "<5s" },
+    ],
+  },
 ];
 
 export default function Projects() {
